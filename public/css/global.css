@@ -1,4 +1,13 @@
 @layer components {
+  /* Player wrapper */
+
+  .user-wrapper {
+    @apply w-[150px] flex items-center justify-between;
+  }
+  .user-img {
+    @apply w-16 h-16 rounded-full;
+  }
+
   /* buttons */
   .button {
     @apply shadow-lg capitalize font-spiegel font-bold py-2 w-full text-xl
@@ -64,7 +73,7 @@
 
   /* small components dots for status */
   .dot {
-    @apply relative inline-flex rounded-full h-3 w-3;
+    @apply inline-flex rounded-full h-3 w-3 absolute top-12 right-1;
   }
   .red-dot {
     @apply dot bg-red;

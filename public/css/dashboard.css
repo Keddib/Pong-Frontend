@@ -1,19 +1,45 @@
 @layer components {
-  /* nav bar styles  */
+  /* dashboard back ground  */
+  .backGround-img {
+    @apply text-lotion bg-cover bg-fixed bg-origin-border bg-center bg-repeat;
+  }
+  /* header */
+  .DashHeader-clc {
+    width: calc(100vw - 91px);
+  }
+  .DashHeader {
+    @apply DashHeader-clc flex items-center h-fit py-4 px-16;
+  }
 
+  .HeaderBell {
+    @apply;
+  }
+  /* nav bar styles  */
   /* icon box */
 
   .icon-wrapper {
-    @apply group flex items-center cursor-pointer w-full h-[60px] mb-2;
+    @apply flex items-center cursor-pointer w-full h-[60px] mb-2;
   }
   .icon-line {
-    @apply transition ease-in-out delay-75  w-[5px] h-4/6 bg-transparent group-hover:bg-lotion rounded-2xl group-hover:shadow-lotion shadow-sm;
+    @apply transition ease-in-out delay-75  w-[5px] h-4/6 bg-transparent
+     group-hover:bg-lotion rounded-2xl group-hover:shadow-lotion shadow-sm;
   }
   .icon-div {
     @apply w-full mr-[5px] flex justify-center;
   }
   .nav-icon {
-    @apply w-8 fill-lotion/70 group-hover:fill-lotion transition ease-in-out delay-75;
+    @apply w-[26px] h-[26px] fill-lotion/70 group-hover:fill-lotion
+     transition ease-in-out delay-75;
+  }
+
+  .iconBell {
+    @apply nav-icon group-hover:fill-pictonBlue;
+  }
+
+  /* navbar style */
+
+  .navbar {
+    @apply gradientSpaceCadet shadow-sm rounded-r-2xl;
   }
 
   /* .homeIcon {

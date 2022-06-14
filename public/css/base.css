@@ -94,7 +94,7 @@
   }
 
   h4 {
-    @apply font-spiegel capitalize font-bold text-base sm:text-lg md:text-xl lg:text-2xl;
+    @apply font-spiegel capitalize font-bold text-base sm:text-lg;
     letter-spacing: 0.54px;
     line-height: 20.7px;
   }
