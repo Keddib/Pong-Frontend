@@ -9,7 +9,7 @@ const Signup = () => {
     <div className=" page-dark xl:flex overflow-hidden">
       <div className="page flex justify-center items-center xl:w-1/2">
         <div className="p-4">
-          <div className="mb-2 lg:mb-10">
+          <div className="mb-10">
             <Logo className="group-hover:animate-bounce" />
             <h2 className="my-2 lg:my-4">
               Join us playing <h1 className="inline-block ">pong</h1>

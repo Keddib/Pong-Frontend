@@ -1,18 +1,51 @@
 @layer components {
   /* nav bar styles  */
-  .homeIcon {
-    @apply fill-lotion/50 group-hover:fill-pictonBlue;
+
+  /* icon box */
+
+  .icon-wrapper {
+    @apply group flex items-center cursor-pointer w-full h-[60px] mb-2;
+  }
+  .icon-line {
+    @apply transition ease-in-out delay-75  w-[5px] h-4/6 bg-transparent group-hover:bg-lotion rounded-2xl group-hover:shadow-lotion shadow-sm;
+  }
+  .icon-div {
+    @apply w-full mr-[5px] flex justify-center;
+  }
+  .nav-icon {
+    @apply w-8 fill-lotion/70 group-hover:fill-lotion transition ease-in-out delay-75;
+  }
+
+  /* .homeIcon {
+    @apply fill-lotion/70 group-hover:fill-lotion transition ease-in-out delay-75;
   }
 
   .activeIcon {
     @apply fill-pictonBlue;
+  } */
+
+  .gradientColor {
+    background-image: linear-gradient(
+      to right top,
+      #0d1f41,
+      #0e2144,
+      #0f2247,
+      #10244b,
+      #11264e,
+      #122851,
+      #122953,
+      #132b56,
+      #132c59,
+      #132d5c,
+      #142e5f,
+      #142f62
+    );
+  }
+  .gradientSpaceCadet {
+    @apply h-full w-[88px] gradientColor;
   }
 
   /* shining line basic style */
-  .gradientSpaceCadet {
-    @apply bg-gradient-to-b from-spaceCadet/95 via-spaceCadet to-spaceCadet/90 h-full w-[88px];
-  }
-
   .shiningLine {
     @apply w-[5px] h-4/6 bg-transparent group-hover:bg-pictonBlue rounded-2xl group-hover:shadow-pictonBlue shadow-sm;
   }

@@ -15,7 +15,7 @@ export default function NavBar() {
         <div className="mb-16 cursor-pointer flex justify-center ">
           <Logo className="group-hover:animate-bounce" />
         </div>
-        <IconWrap icon={<HomeIcon className="w-8 homeIcon " />} />
+        <IconWrap icon={<HomeIcon className="nav-icon" />} />
         <IconWrap icon={<BoardIcon className="w-[30px] homeIcon " />} />
         <IconWrap icon={<ChatIcon className="w-8 homeIcon " />} />
         <IconWrap icon={<FriendsIcon className="w-8 homeIcon " />} />
