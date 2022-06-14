@@ -1,10 +1,12 @@
-import NavBar from "./navbar/NavBar";
-import Loading from "../Components/Loading"
+import NavBar from "./Navbar/NavBar";
+// import Loading from "../Components/Loading"
+
 const Dashboard = () => {
   return (
-    <div className="w-full h-full overflow-scroll bg-queenBlue flex">
+    <div className="w-full h-full bg-spaceCadet/50 flex">
       <NavBar />
-      <Loading />
+      {/* <Loading /> */}
+      <div className="h-full w-full flex justify-center flex-col"></div>
     </div>
   );
 };
