@@ -1,0 +1,22 @@
+@layer components {
+  /* nav bar styles  */
+  .homeIcon {
+    @apply fill-lotion/50 group-hover:fill-pictonBlue;
+  }
+
+  .activeIcon {
+    @apply fill-pictonBlue;
+  }
+
+  /* shining line basic style */
+  .gradientSpaceCadet {
+    @apply bg-gradient-to-b from-spaceCadet/95 via-spaceCadet to-spaceCadet/90 h-full w-[88px];
+  }
+
+  .shiningLine {
+    @apply w-[5px] h-4/6 bg-transparent group-hover:bg-pictonBlue rounded-2xl group-hover:shadow-pictonBlue shadow-sm;
+  }
+  .activeShiningLine {
+    @apply bg-pictonBlue;
+  }
+}

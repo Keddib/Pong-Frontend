@@ -1,0 +1,12 @@
+@import "tailwindcss/base";
+@import "./base.css";
+
+@import "tailwindcss/components";
+/* custom components here */
+@import "./global.css";
+@import "./home.css";
+@import "./login-pages.css";
+@import "./dashboard.css";
+
+@import "tailwindcss/utilities";
+/* utilities components here */
