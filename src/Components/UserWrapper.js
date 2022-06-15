@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
 export default function UserWrapper({ user }) {
   return (
@@ -8,9 +8,9 @@ export default function UserWrapper({ user }) {
         <span className={user.dot}></span>
       </div>
       <div className="group-hover:text-lotion/70">
-        <h4 >{user.name}</h4>
-        <p >{user.status}</p>
+        <h4>{user.name}</h4>
+        <p>{user.status}</p>
       </div>
-    </Link >
+    </Link>
   );
 }
