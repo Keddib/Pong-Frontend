@@ -16,9 +16,7 @@ export default function Home() {
             <div className="grow"></div>
             <div className="w-[120px]">
               <Link to="/signin">
-                <button className="button--2">
-                  Sign in
-                </button>
+                <button className="button--2">Sign in</button>
               </Link>
             </div>
           </header>
