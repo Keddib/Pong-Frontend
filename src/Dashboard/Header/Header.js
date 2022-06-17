@@ -1,4 +1,4 @@
-import Profile from "../../Components/User";
+import Profile from '/src/Components/User';
 import Bell from "../../../public/assets/icons/bell.svg";
 import Star from "../../../public/assets/icons/star.svg";
 
