@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Xmark from "../../../public/assets/icons/xmark.svg";
 import Bars from "../../../public/assets/icons/bars.svg";
@@ -13,29 +13,59 @@ import Logo from "../../Components/Logo";
 import IconWrap from "./components/Icon";
 
 export default function NavBar() {
+  const [tab, setTab] = useState("Home");
   const navRef = useRef(null);
-  const showNavBar = () => {
+  const showNavBar = (e) => {
     navRef.current.classList.toggle("show-nav");
+    let ref = e.currentTarget.href;
+    ref = ref.substring(ref.lastIndexOf("/") + 1);
+    setTab(ref);
   };
   const logOut = () => {
     console.log("logout");
   };
 
+  console.log(tab);
+  console.log(tab == "profile");
   return (
     <div className="navbar">
-      <Link to="/">
+      <Link to="/home">
         <Logo className="group-hover:animate-bounce" />
       </Link>
       <nav ref={navRef}>
-        <IconWrap page="/" icon={<HomeIcon className="nav-icon" />} />
         <IconWrap
-          page="leaderboard"
-          icon={<BoardIcon className=" nav-icon " />}
+          callBack={showNavBar}
+          active={tab == "" ? true : false}
+          page="/home"
+          icon={<HomeIcon className="nav-icon" />}
         />
-        <IconWrap page="messages" icon={<ChatIcon className="nav-icon " />} />
-        <IconWrap page="friends" icon={<FriendsIcon className="nav-icon " />} />
-        <IconWrap page="groups" icon={<GroupIcon className=" nav-icon " />} />
-        <IconWrap page="profile" icon={<ProfileIcon className="nav-icon " />} />
+        <IconWrap
+          callBack={showNavBar}
+          active={tab == "loaderboard" ? true : false}
+          page="/leaderboard"
+          icon={<BoardIcon className="nav-icon" />}
+        />
+        <IconWrap
+          callBack={showNavBar}
+          page="/messages"
+          icon={<ChatIcon className="nav-icon" />}
+        />
+        <IconWrap
+          callBack={showNavBar}
+          page="/friends"
+          icon={<FriendsIcon className="nav-icon" />}
+        />
+        <IconWrap
+          callBack={showNavBar}
+          page="/groups"
+          icon={<GroupIcon className="nav-icon" />}
+        />
+        <IconWrap
+          callBack={showNavBar}
+          active={tab == "profile" ? true : false}
+          page="/profile"
+          icon={<ProfileIcon className="nav-icon" />}
+        />
         <div className="sm:grow"></div>
         <button onClick={logOut} className="group mt-4">
           <Logout className="nav-icon  group-hover:fill-red/80 " />

@@ -2,7 +2,7 @@
   /* Player wrapper */
 
   .user-wrapper {
-    @apply w-[150px] flex items-center justify-between ease-in-out duration-500;
+    @apply grow flex items-center ease-in-out duration-500;
   }
   .user-img {
     @apply w-16 h-16 rounded-full;

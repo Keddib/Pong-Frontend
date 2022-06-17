@@ -93,7 +93,7 @@
   }
 
   .navbar .show-nav {
-    @apply transform-none;
+    @apply transform-none z-10;
   }
 
   .nav-btn {
@@ -129,14 +129,19 @@
 
   /* main page holder */
 
+  .Dash-main {
+    @apply h-full w-full p-2 sm:p-4 lg:p-6 xl:p-8 overflow-scroll  duration-500;
+  }
+
+  /* home main page */
+  .Dash-main-home {
+    @apply Dash-main flex flex-wrap xl:main-layout gap-4;
+  }
+
   .main-layout {
     display: grid;
     grid-template-columns: [firstC] auto [secondC] auto;
     grid-template-rows: [front] auto [firstR] auto [secondR] auto [back] auto;
-  }
-  .Dash-main {
-    @apply h-full w-full p-2 sm:p-4 lg:p-6 xl:p-8 overflow-scroll flex flex-wrap
-    xl:main-layout gap-4 duration-500;
   }
 
   .main-Grid {
@@ -169,7 +174,7 @@
   .game-mode {
     @apply w-full rounded-xl p-6
     md:p-14
-    flex justify-center items-center shadow-lg
+    flex justify-center items-center shadow-xl
     relative;
   }
 
@@ -197,4 +202,6 @@
   .bg-mode-three img {
     @apply absolute bottom-2 lg:right-20 xl:right-2 right-4 w-[216] h-[216];
   }
+
+  /* main friends page */
 }

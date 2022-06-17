@@ -1,4 +1,4 @@
-import Profile from "../../Components/UserWrapper";
+import Profile from "../../Components/User";
 import Bell from "../../../public/assets/icons/bell.svg";
 import Star from "../../../public/assets/icons/star.svg";
 
@@ -29,7 +29,7 @@ export default function Headers({ user }) {
     <div className="DashHeader w-full">
       <EX />
       <div className="md:grow"></div>
-      <div className="flex justify-between items-center w-full md:w-60">
+      <div className="flex justify-between items-center w-full md:w-60 lg:w-80">
         <Profile user={user} />
         <button className="group">
           <Bell className="iconBell" />
