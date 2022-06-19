@@ -1,7 +1,7 @@
 import UserImg from "/src/assets/images/user.jpg";
-import Bell from "/src/assets/icons/bell.svg";
 import UserCard from '/src/Components/UserCard';
 import UserStarXP from "./components/UserStarXP";
+import Notifications from "./components/Notifications";
 
 const userXP = {
   lvl: 12,
@@ -24,9 +24,7 @@ export default function Headers() {
       <div className="md:grow"></div>
       <div className="flex justify-between items-center w-full md:w-60 lg:w-80">
         <UserCard user={user1} />
-        <button className="group">
-          <Bell className="iconBell" />
-        </button>
+        <Notifications />
       </div>
     </div>
   );
