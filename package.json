@@ -10,6 +10,7 @@
     "lint": "eslint \"src/**/*.{js,jsx}\" --quiet",
     "clear": "rm -rf .parcel-cache dist",
     "clear:all": "rm -rf .parcel-cache dist node_modules",
+    "build": "npm install && npm run dev",
     "build:re": "npm run clear:all && npm install && npm run dev"
   },
   "keywords": [],
