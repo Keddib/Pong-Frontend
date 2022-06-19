@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export default function UserWrapper({ user }) {
+export default function UserCard({ user }) {
   return (
     <Link to={user.id} className="user-wrapper group">
       <div className="relative">

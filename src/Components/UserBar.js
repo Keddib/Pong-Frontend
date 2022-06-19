@@ -1,14 +1,46 @@
+import { useState } from "react";
 import User from "./UserCard";
 import Dots from "/src/assets/icons/ellipsis.svg";
+import Dropdown from "/src/Components/Dropdown";
 
-const UserBar = ({ user, settings }) => {
+
+const Options = (props) => {
+
+  let [show, setShow] = useState(false);
+
+  function hundleClick() {
+    setShow(!show);
+  }
+
   return (
-    <li className=" group flex rounded-l-2xl pr-6 py-1 items-center hover:border-pictonBlue hover:border w-full bg-queenBlue ">
-      <div className="h-4/6 w-1 rounded-2xl mr-6 group-hover:bg-pictonBlue"></div>
-      <User user={user} />
-      <button className="w-10 h-10 " settings={settings}>
-        <Dots className="fill-lotion/50 hover:fill-lotion" />
+    <div className="relative">
+      <button
+        className="w-8 h-8 "
+        onClick={hundleClick}
+        onBlur={() => { if (show) setShow(!show) }}
+      >
+        <Dots className="nav-icon" />
       </button>
+      {
+        show &&
+        <Dropdown className='top-6'>
+          {props.children}
+        </Dropdown>
+      }
+    </div>
+  );
+}
+
+
+const UserBar = (props) => {
+
+  return (
+    <li className="group userBar">
+      <div className="userBarLine"></div>
+      <User user={props.user} />
+      <Options >
+        <p>hello one</p>
+      </Options>
     </li>
   );
 };
