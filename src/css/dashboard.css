@@ -60,12 +60,18 @@
     @apply w-full mr-[5px] flex justify-center;
   }
   .nav-icon {
-    @apply w-[26px] h-[26px] fill-lotion/70 group-hover:fill-lotion
+    @apply inline-block w-[26px] h-[26px] fill-lotion/70 group-hover:fill-lotion
      transition ease-in-out delay-75;
   }
 
+  .bell-button {
+    @apply w-10 h-10 flex justify-center items-center rounded-full
+    bg-queenBlue/50 hover:bg-queenBlue transition ease-in-out delay-75
+    focus:bg-queenBlue;
+  }
+
   .iconBell {
-    @apply nav-icon group-hover:fill-pictonBlue;
+    @apply nav-icon group-hover:fill-lotion group-focus:fill-lotion;
   }
 
   /* navbar style */
@@ -173,4 +179,15 @@
   }
 
   /* main friends page */
+
+  .tabBar {
+    @apply bg-queenBlue  rounded-full py-1 flex justify-evenly items-center
+    w-full sm:w-[400px];
+  }
+  .tabLink {
+    @apply hover:text-lotion text-lotion/50 ease-in duration-300;
+  }
+  .tabLine {
+    @apply w-1 h-8 rounded-xl bg-pictonBlue;
+  }
 }

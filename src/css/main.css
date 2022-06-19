@@ -110,3 +110,9 @@
   animation-direction: alternate;
   animation-fill-mode: forwards;
 }
+
+/* active links */
+
+.active {
+  @apply text-lotion;
+}
