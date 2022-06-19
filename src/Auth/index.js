@@ -68,15 +68,16 @@ function RequireAuth({ children }) {
 
 function RedirectAuth({ children }) {
   let auth = useAuth();
+  let location = useLocation();
+  let from = location?.state?.from.pathname || '/app/';
 
   if (auth.user) {
-    // if they are loged in, Redirect them to the /home page.
+    // if they are loged in, Redirect them to the /app page.
     // replace : true, so we don't create another entry in the history stack
-    //for the login page.  This means that when they get to the protected page
+    //for the login page.  This means that when they get to the /app page
     // and click the back button, they won't end up back on the login page,
     // which is also really nice for the user experience.
-    // if (location.state?.from == null)
-    return <Navigate to="/app" replace={true} />;
+    return <Navigate to={from} replace={true} />;
   }
 
   return children;
