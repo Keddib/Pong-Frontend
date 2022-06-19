@@ -1,25 +1,42 @@
-import { lazy, Suspense } from "react";
-import { render } from "react-dom";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import React, { lazy, Suspense } from "react";
+import { Route, Routes } from "react-router-dom";
+import { AuthProvider, RequireAuth, RedirectAuth } from "./Auth";
+import Loading from "/src/Components/Loading";
 
-import Loading from "./Components/Loading";
-const Login = lazy(() => import("./Loging"));
-const Landing = lazy(() => import("./Home/Home"));
 const Dashboard = lazy(() => import("./Dashboard"));
+const Landing = lazy(() => import("/src/Home"));
+const Login = lazy(() => import("./Login"));
+
+
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <AuthProvider>
       <Suspense fallback={<Loading />}>
         <Routes>
-          <Route path="*" element={<Landing />} />
-          <Route path="/home" element={<Dashboard />} />
-          <Route path="/signin" element={<Login stage={true} />} />
-          <Route path="/signup" element={<Login />} />
+          <Route path="/" element={
+            <RedirectAuth>
+              <Landing />
+            </RedirectAuth>
+          } />
+          <Route path="/app/*"
+            element={
+              <RequireAuth>
+                <Dashboard />
+              </RequireAuth>
+            } />
+
+          <Route path="/access/:step"
+            element={
+              <RedirectAuth>
+                <Login />
+              </RedirectAuth>
+            } />
+          <Route path="*" element={<h1>Not found</h1>} />
         </Routes>
       </Suspense>
-    </BrowserRouter>
+    </AuthProvider>
   );
 };
 
-render(<App />, document.getElementById("root"));
+export default App;

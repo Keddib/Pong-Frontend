@@ -1,5 +1,5 @@
-import User from "./User";
-import Dots from "../../public/assets/icons/ellipsis.svg";
+import User from "./UserCard";
+import Dots from "/src/assets/icons/ellipsis.svg";
 
 const UserBar = ({ user, settings }) => {
   return (

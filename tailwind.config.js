@@ -3,7 +3,6 @@ module.exports = {
   content: ['./src/**/*.{html,js, jsx, ts}', './public/*.html'],
   theme: {
     colors: {
-      // Configure your color palette here
       transparent: 'transparent',
       current: 'currentColor',
       black: '#000000',
