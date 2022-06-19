@@ -22,7 +22,7 @@ const Dashboard = () => {
             <Routes>
               <Route index element={<Section page="home" />} />
               <Route path="leaderboard" element={<Section page="leaderboard" />} />
-              <Route path="friends" element={<Section page="friends" />} />
+              <Route path="friends/*" element={<Section page="friends" />} />
               <Route path="messages" element={<Section page="messages" />} />
               <Route path="rooms" element={<Section page="rooms" />} />
               <Route path="profile" element={<Section page="profile" />} />

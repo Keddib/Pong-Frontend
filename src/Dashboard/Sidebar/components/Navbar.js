@@ -22,7 +22,7 @@ const Navbar = (props) => {
       <IconLink page="/app/messages" showNav={props.showNav}>
         <ChatIcon className="nav-icon" />
       </IconLink>
-      <IconLink page="/app/friends" showNav={props.showNav}>
+      <IconLink page="/app/friends/" showNav={props.showNav}>
         <FriendsIcon className="nav-icon" />
       </IconLink>
       <IconLink page="/app/rooms" showNav={props.showNav}>
