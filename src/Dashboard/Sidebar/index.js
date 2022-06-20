@@ -1,6 +1,6 @@
 import { SM } from "/src/Components/Constants";
 import { useState } from "react";
-import useMedia from "/src/Components/Media";
+import useMedia from "/src/Hooks/useMedia";
 import Logo from "/src/Components/Logo";
 import Bars from "/src/assets/icons/bars.svg";
 import Navbar from "./components/Navbar";

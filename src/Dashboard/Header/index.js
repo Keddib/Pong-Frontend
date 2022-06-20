@@ -1,7 +1,9 @@
+import { SM } from "/src/Components/Constants";
 import UserImg from "/src/assets/images/user.jpg";
 import UserCard from '/src/Components/UserCard';
 import UserStarXP from "./components/UserStarXP";
 import Notifications from "./components/Notifications";
+import useMedia from "/src/Hooks/useMedia";
 
 const userXP = {
   lvl: 12,
@@ -18,14 +20,27 @@ var user1 = {
 
 
 export default function Headers() {
+
+  let sm = useMedia(SM);
+
   return (
     <div className="DashHeader w-full">
-      <UserStarXP user={userXP} />
-      <div className="md:grow"></div>
-      <div className="flex justify-between items-center w-full md:w-60 lg:w-80">
-        <UserCard user={user1} />
-        <Notifications />
-      </div>
+      {
+        sm ?
+          <>
+            <UserStarXP user={userXP} />
+            <div className="md:grow"></div>
+            <div className="flex justify-between items-center w-full md:w-60 lg:w-80">
+              <UserCard user={user1} />
+              <Notifications />
+            </div>
+          </>
+          :
+          <>
+            <h4>notifications</h4>
+            <Notifications />
+          </>
+      }
     </div>
   );
 }

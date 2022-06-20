@@ -1,6 +1,6 @@
 import { useParams, Navigate } from "react-router-dom";
 import { XL } from "/src/Components/Constants";
-import useMedia from "/src/Components/Media";
+import useMedia from "/src/Hooks/useMedia";
 import LoginImage from "./components/LoginImage";
 import SigninDialog from "./components/SigninDialog";
 import SignupDialog from "./components/SignupDialog";
