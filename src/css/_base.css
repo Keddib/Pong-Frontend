@@ -2,6 +2,18 @@
 
 /* base styles fonts and h1,h2.. */
 
+@layer utilities {
+  /* Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}
+
 @layer base {
   /* Fonts */
   /* Beaufort for LOL Light */

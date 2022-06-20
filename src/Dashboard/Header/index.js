@@ -24,7 +24,7 @@ export default function Headers() {
   let sm = useMedia(SM);
 
   return (
-    <div className="DashHeader w-full">
+    <header className="DashHeader w-full">
       {
         sm ?
           <>
@@ -41,6 +41,6 @@ export default function Headers() {
             <Notifications />
           </>
       }
-    </div>
+    </header>
   );
 }

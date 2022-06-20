@@ -5,9 +5,11 @@ import Mode from "./components/Mode";
 export default function Home() {
   return (
     <div className="home-layout">
-      <Mode modeName='Test' className='bg-mode-one' player={ModeImg} />
-      <Mode modeName='Test' className='bg-mode-two' player={ModeImg2} />
-      <Mode modeName='Test' className='bg-mode-three' player={ModeImg3} />
+      <Mode modeName='Test' className='bg-mode-one mt-8' player={ModeImg} />
+      <div className="flex flex-wrap justify-between gap-y-4">
+        <Mode modeName='Test' className='bg-mode-two' player={ModeImg2} />
+        <Mode modeName='Test' className='bg-mode-three' player={ModeImg3} />
+      </div>
     </div>
   );
 }

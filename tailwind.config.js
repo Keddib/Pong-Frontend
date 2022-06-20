@@ -43,14 +43,17 @@ module.exports = {
     }
   },
   variants: {},
-  plugins: [require("@tailwindcss/forms"), function ({ addComponents }) {
-    addComponents({
-      '.container': {
-        maxWidth: '100%',
-        '@screen xl': {
-          maxWidth: '1680px',
-        },
-      }
-    })
-  }]
+  plugins: [
+    require("@tailwindcss/forms"),
+    function ({ addComponents }) {
+      addComponents({
+        '.container': {
+          maxWidth: '100%',
+          '@screen xl': {
+            maxWidth: '1536px',
+          },
+        }
+      })
+    }
+  ]
 }

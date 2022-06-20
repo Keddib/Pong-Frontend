@@ -1,6 +1,7 @@
 import I42 from "/src/assets/images/42.svg";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "../../Auth";
+import { useAuth } from "/src/Auth";
+import Go from "/src/Auth/B42utton"
 
 const AuthButton = (props) => {
 
@@ -11,9 +12,12 @@ const AuthButton = (props) => {
   let from = location.state?.from?.pathname || "/";
 
   function loginAccess() {
-    authContext.signin('newUser', () => {
-      navigate(from, { replace: true });
-    });
+
+    Go();
+
+    // authContext.signin('newUser', () => {
+    //   navigate(from, { replace: true });
+    // });
   }
   return (
     <button

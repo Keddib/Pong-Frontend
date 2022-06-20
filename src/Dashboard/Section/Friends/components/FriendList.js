@@ -25,7 +25,7 @@ export default function FriendList() {
   }, 1000);
 
   return (
-    <ul className="flex flex-col gap-1 h-full overflow-scroll">
+    <ul className="flex flex-col gap-1 h-full overflow-auto no-scrollbar">
       {
         !done ? <Loading /> : friendList.map((friend) => {
           return (

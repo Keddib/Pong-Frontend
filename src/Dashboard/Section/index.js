@@ -28,7 +28,7 @@ const Section = (props) => {
 
   const Page = getPage(props.page);
   return (
-    <section className="border border-red Dash-main">
+    <section className="border border-red Dash-main container">
       {Page}
     </section>
   );

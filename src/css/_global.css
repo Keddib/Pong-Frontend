@@ -131,6 +131,6 @@
   .dropdown {
     @apply absolute rounded-2xl z-10 top-12 right-0 w-[250px] h-fit py-4 px-4
     bg-spaceCadet border border-lotion/50 hover:border-lotion flex
-    flex-col gap-2 max-h-96 overflow-scroll;
+    flex-col gap-2 max-h-96 overflow-auto no-scrollbar;
   }
 }
