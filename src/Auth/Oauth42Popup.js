@@ -1,5 +1,9 @@
 import { URL_42 as URL } from "/src/Components/Constants";
 
+//
+// open child windows that direct to 42 intra and get the code when user is
+// redirected to our redirection callback that's it;
+
 export default function oauthPopup(setCode) {
 
   var childPopup = window.open(

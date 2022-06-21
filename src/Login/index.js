@@ -4,7 +4,6 @@ import useMedia from "/src/Hooks/useMedia";
 import LoginImage from "./components/LoginImage";
 import SigninDialog from "./components/SigninDialog";
 import SignupDialog from "./components/SignupDialog";
-import { useEffect } from "react";
 
 const Login = () => {
 
@@ -12,10 +11,6 @@ const Login = () => {
   let xl = useMedia(XL); // custom hook for media queries
 
 
-  useEffect(() => {
-    console.log('mounted');
-    return () => console.log('unmounted');
-  }, []);
 
   let isSignin = step === 'signin';
 

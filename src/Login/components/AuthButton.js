@@ -17,6 +17,7 @@ const AuthButton = (props) => {
     if (code == 'error') {
       console.log('error from Oauth popup');
     } else {
+      console.log(code);
       authContext.signin('newUser', () => {
         navigate(from, { replace: true });
       });
