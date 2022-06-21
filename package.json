@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "parcel -p 8000 public/index.html",
+    "dev": "parcel -p 80 public/index.html",
     "format": "prettier --write \"src/**/*.{js,jsx}\"",
     "format:c": "prettier -c \"src/**/*.{js,jsx}\"",
     "lint": "eslint \"src/**/*.{js,jsx}\" --quiet",

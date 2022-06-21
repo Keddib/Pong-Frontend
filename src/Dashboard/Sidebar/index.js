@@ -24,13 +24,13 @@ const Nav = () => {
     showIt = true;
 
   return (
-    <side className="navbar ">
+    <aside className="navbar ">
       <Logo className={smDevice && "group-hover:animate-bounce"} />
       {showIt && <Navbar veiw={smDevice} showNav={hundleClick} />}
       <button onClick={hundleClick} className="group nav-btn">
         <Bars className="nav-icon" />
       </button>
-    </side>
+    </aside>
   );
 };
 
