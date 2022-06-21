@@ -4,6 +4,7 @@ import Leaderboard from "./Leaderboard";
 import Messages from "./Messages";
 import Rooms from "./Rooms";
 import Profile from "./Profile";
+import Game from "./Game";
 
 function getPage(page) {
   switch (page) {
@@ -19,6 +20,8 @@ function getPage(page) {
       return <Rooms />;
     case 'profile':
       return <Profile />;
+    case 'game':
+      return <Game />;
     default:
       return null;
   }

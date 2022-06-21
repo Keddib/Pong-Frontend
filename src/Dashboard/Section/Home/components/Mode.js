@@ -1,3 +1,5 @@
+import { Navigate } from "react-router-dom";
+
 const Mode = ({ modeName, className, player }) => {
   return (
     <div className={`${className}`}>
@@ -5,7 +7,7 @@ const Mode = ({ modeName, className, player }) => {
         <h2 className=" font-beaufort">{modeName}</h2>
         <h4 className="text-lotion/50">1 vs 1</h4>
         <button
-          // onClick={{}}
+          onClick={() => { Navigate('/app/game') }}
           className="uppercase button--2 mt-4  max-w-[200px]"
         >
           PLAY

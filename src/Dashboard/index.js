@@ -22,6 +22,7 @@ const Dashboard = () => {
           <Suspense fallback={<Loading />}>
             <Routes>
               <Route index element={<Section page="home" />} />
+              <Route path="game" element={<Section page="game" />} />
               <Route path="leaderboard" element={<Section page="leaderboard" />} />
               <Route path="friends/*" element={<Section page="friends" />} />
               <Route path="messages" element={<Section page="messages" />} />

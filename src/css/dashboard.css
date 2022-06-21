@@ -160,7 +160,7 @@
   /* dashboard home page */
 
   .home-layout {
-    @apply h-full overflow-auto no-scrollbar flex flex-col  gap-4 flex-1;
+    @apply h-full overflow-auto no-scrollbar relative;
   }
 
   /* game mode */
