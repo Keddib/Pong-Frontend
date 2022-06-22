@@ -8,7 +8,7 @@ export default function Leaderboard() {
   let md = useMedia(MD);
 
   return (
-    <div className="overfllow-scroll flex flex-col gap-4">
+    <div className="m-auto w-full h-full flex flex-col gap-4">
       <header className="bg-queenBlue/50 rounded-2xl p-4 relative md:h-[200px]">
         <div className="flex items-center gap-4">
           <Logo />

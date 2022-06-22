@@ -1,24 +1,37 @@
-import UserCard from "/src/Components/UserCard";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Play from "./components/Play";
+import Waiting from "./components/Waiting";
+import UserImg from "/src/assets/images/user.jpg";
 
-function LoadingPlayer() {
+
+var user1 = {
+  id: "123",
+  img: UserImg,
+  name: "AlaeOX7",
+  status: "Online",
+  dot: "green-dot"
+};
+
+export default function Game() {
+
+  let [player, setPlayer] = useState(false);
+  let [game, setGame] = useState('waiting');
+  let navigate = useNavigate();
+
+  setTimeout(() => { setPlayer(user1); setTimeout(() => setGame('play'), 1000) }, 2000);
+
+  let page = <Waiting opponent={player} setGame={setGame} />
+
+  if (game == 'play')
+    page = <Play players={[user1, user1]} />
+  else if (game == 'canceled') {
+    navigate('/app/', { replace: true });
+  }
   return (
-    <div className="w-44 flex items-center">
-      <div className="rounded-full w-16 h-16 bg-queenBlue/50 mr-2"></div>
-      <div className="grow flex flex-col gap-1">
-        <div className="rounded-3xl h-4 w-full bg-queenBlue"></div>
-        <div className="rounded-3xl h-3 w-2/3 bg-queenBlue"></div>
-      </div>
-    </div>
-  );
-}
-
-
-export default function Game(props) {
-
-  return (
-    <div className="game-layout boreder w-full h-full">
-      <LoadingPlayer />
-    </div>
+    <>
+      {page}
+    </>
   );
 
 }

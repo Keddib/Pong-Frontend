@@ -31,8 +31,10 @@ const Section = (props) => {
 
   const Page = getPage(props.page);
   return (
-    <section className="border border-red Dash-main container">
-      {Page}
+    <section className="Dash-main container">
+      <div className="dash-home-layout">
+        {Page}
+      </div>
     </section>
   );
 };
