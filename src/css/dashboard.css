@@ -196,12 +196,16 @@
 
   .tabBar {
     @apply bg-queenBlue  rounded-full py-1 flex justify-evenly items-center
-    w-full sm:w-[400px];
+    w-full sm:max-w-[400px];
   }
   .tabLink {
     @apply hover:text-lotion text-lotion/50 ease-in duration-300;
   }
   .tabLine {
     @apply w-1 h-8 rounded-xl bg-pictonBlue;
+  }
+
+  .mini-chat {
+    height: calc(100% - 80px);
   }
 }

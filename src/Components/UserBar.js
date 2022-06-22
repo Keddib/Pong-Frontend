@@ -13,7 +13,7 @@ const Options = (props) => {
   }
 
   return (
-    <div className="relative">
+    <div className="relative ml-auto">
       <button
         className="w-8 h-8 "
         onClick={hundleClick}
@@ -35,8 +35,9 @@ const Options = (props) => {
 const UserBar = (props) => {
 
   return (
-    <li className="group userBar">
+    <li className="group userBar gap-10">
       <div className="userBarLine"></div>
+      {props.children}
       <User user={props.user} />
       <Options >
         <p>hello one</p>

@@ -125,7 +125,7 @@
 
   .userBarLine {
     @apply w-[5px] h-12 rounded-xl bg-transparent group-hover:bg-pictonBlue
-    mr-6 ease-in duration-300;
+     ease-in duration-300;
   }
 
   .dropdown {
