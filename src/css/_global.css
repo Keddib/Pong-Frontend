@@ -2,7 +2,7 @@
   /* Player wrapper */
 
   .user-wrapper {
-    @apply grow flex items-center ease-in-out duration-500;
+    @apply w-fit flex items-center ease-in-out duration-500;
   }
   .user-img {
     @apply w-16 h-16 rounded-full;
@@ -33,7 +33,7 @@
   hover:text-red/80 hover:border-red/80;
   }
   .button--5 {
-    @apply button bg-queenBlue/50 text-lotion hover:bg-lotion
+    @apply button bg-queenBlue/50 border-queenBlue/50 text-lotion hover:bg-lotion
   hover:text-red/80 hover:border-red/80;
   }
 

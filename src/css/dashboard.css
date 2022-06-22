@@ -10,7 +10,7 @@
   }
   .dash-layout-grid {
     display: grid;
-    grid-template-columns: [firstC] 90px [secondC] auto [thirdC] 350px [end];
+    grid-template-columns: [firstC] 90px [secondC] auto [thirdC] 400px [end];
     grid-template-rows: [firstR] 98px [secondR] auto [end];
   }
 
@@ -98,7 +98,7 @@
     sm:w-[88px] sm:h-full sm:rounded-b-none sm:border-b-0
     sm:px-0 sm:py-10 sm:justify-start sm:flex-col
     border-lotion/50 sm:rounded-r-2xl sm:border-r-[1px] sm:navbar-grid
-    overflow-auto no-scrollbar;
+    overflow-auto no-scrollbar py-2;
   }
 
   .animate-bar {
@@ -159,8 +159,8 @@
 
   /* dashboard home page */
 
-  .home-layout {
-    @apply h-full overflow-auto no-scrollbar relative;
+  .dash-home-layout {
+    @apply h-full overflow-auto no-scrollbar flex justify-center items-center;
   }
 
   /* game mode */
