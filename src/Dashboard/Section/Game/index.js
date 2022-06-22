@@ -26,7 +26,7 @@ export default function Game() {
   if (game == 'play')
     page = <Play players={[user1, user1]} />
   else if (game == 'canceled') {
-    navigate('/app/', { replace: true });
+    navigate('/home/', { replace: true });
   }
   return (
     <>

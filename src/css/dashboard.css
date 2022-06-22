@@ -41,7 +41,7 @@
 
   .EX {
     /* EX star */
-    @apply w-[200px] h-[60px] hidden relative md:flex  justify-between;
+    @apply w-[200px] h-[60px] hidden relative lg:flex  justify-between;
   }
 
   /* icon box */

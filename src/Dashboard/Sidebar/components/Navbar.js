@@ -13,22 +13,22 @@ const Navbar = (props) => {
 
   return (
     <nav className="show-nav">
-      <IconLink page="/app/" showNav={props.showNav}>
+      <IconLink page="/home/" showNav={props.showNav}>
         <HomeIcon className="nav-icon" />
       </IconLink>
-      <IconLink page="/app/leaderboard" showNav={props.showNav}>
+      <IconLink page="/home/leaderboard" showNav={props.showNav}>
         <BoardIcon className="nav-icon" />
       </IconLink>
-      <IconLink page="/app/messages" showNav={props.showNav}>
+      <IconLink page="/home/messages" showNav={props.showNav}>
         <ChatIcon className="nav-icon" />
       </IconLink>
-      <IconLink page="/app/friends/" showNav={props.showNav}>
+      <IconLink page="/home/friends/" showNav={props.showNav}>
         <FriendsIcon className="nav-icon" />
       </IconLink>
-      <IconLink page="/app/rooms" showNav={props.showNav}>
+      <IconLink page="/home/rooms" showNav={props.showNav}>
         <GroupIcon className="nav-icon" />
       </IconLink>
-      <IconLink page="/app/profile" showNav={props.showNav}>
+      <IconLink page="/home/profile" showNav={props.showNav}>
         <ProfileIcon className="nav-icon" />
       </IconLink>
       <div className="sm:grow"> </div>

@@ -27,7 +27,7 @@ const App = () => {
               </RequireAuth>
             } />
 
-          <Route path="/access/:step"
+          <Route path="/access/*"
             element={
               <RedirectAuth>
                 <Login />

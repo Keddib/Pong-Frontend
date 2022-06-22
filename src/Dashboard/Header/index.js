@@ -29,8 +29,8 @@ export default function Headers() {
         sm ?
           <>
             <UserStarXP user={userXP} />
-            <div className="md:grow"></div>
-            <div className="flex justify-between items-center w-full md:w-60 lg:w-80">
+            <div className="lg:grow"></div>
+            <div className="flex justify-between items-center w-full  lg:w-80">
               <UserCard user={user1} />
               <Notifications />
             </div>

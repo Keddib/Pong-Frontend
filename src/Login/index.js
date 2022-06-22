@@ -1,34 +1,34 @@
-import { useParams, Navigate } from "react-router-dom";
+import { useState } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { useAuth } from "../Auth";
 import { XL } from "/src/Components/Constants";
 import useMedia from "/src/Hooks/useMedia";
 import LoginImage from "./components/LoginImage";
 import SigninDialog from "./components/SigninDialog";
 import SignupDialog from "./components/SignupDialog";
 
-const Login = () => {
+export default function Login() {
 
-  let { step } = useParams();
   let xl = useMedia(XL); // custom hook for media queries
+  let [page, setPage] = useState('');
+  let [authCode, setAuthCode] = useState('');
 
-
-
-  let isSignin = step === 'signin';
+  if (authCode && authCode != 'error') {
+    useAuth
+  }
 
   return (
-    <div className={`${isSignin ? "page-light" : "page-dark"}`}>
+    <div className={`${page == 'signin' ? "page-light" : "page-dark"}`}>
       <div className="signinDialogWrraper">
         <div className={`p-4 flex flex-col gap-y-8`}>
-          {
-            isSignin ? <SigninDialog />
-              : step === 'signup' ?
-                <SignupDialog />
-                : <Navigate to="/access/signin" />
-          }
+          <Routes>
+            <Route path="signin" element={<SigninDialog setPage={setPage} callBack={setAuthCode} error={authCode == 'error'} />} />
+            <Route path="signup" element={<SignupDialog setPage={setPage} callBack={setAuthCode} error={authCode == 'error'} />} />
+            <Route path="*" element={<Navigate to="/access/signin" />} />
+          </Routes>
         </div>
       </div>
-      {xl && <LoginImage isSignin={isSignin} />}
+      {xl && <LoginImage isSignin={page == 'signin'} />}
     </div>
   );
 };
-
-export default Login;
