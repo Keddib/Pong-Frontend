@@ -22,7 +22,7 @@ export default function Friends() {
       <TabBar links={links} />
       <Routes>
         <Route index element={<FriendList />} />
-        <Route path="/app/friends/requests" element={<FriendRequests />} />
+        <Route path="/home/friends/requests" element={<FriendRequests />} />
       </Routes>
     </div>
   );

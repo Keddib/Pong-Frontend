@@ -28,7 +28,7 @@ const Dashboard = () => {
               <Route path="messages" element={<Section page="messages" />} />
               <Route path="rooms" element={<Section page="rooms" />} />
               <Route path="profile" element={<Section page="profile" />} />
-              <Route path="*" element={<div className="w-full h-full"><h1>TA9ALWA 404</h1></div>} />
+              <Route path="*" element={< Section page="error" />} />
             </Routes>
           </Suspense>
           <ChatBar />

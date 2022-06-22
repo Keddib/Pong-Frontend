@@ -5,6 +5,8 @@ import Messages from "./Messages";
 import Rooms from "./Rooms";
 import Profile from "./Profile";
 import Game from "./Game";
+import Error404 from "/src/Components/404";
+
 
 function getPage(page) {
   switch (page) {
@@ -33,7 +35,7 @@ const Section = (props) => {
   return (
     <section className="Dash-main container">
       <div className="dash-home-layout">
-        {Page}
+        {Page ? Page : <Error404 />}
       </div>
     </section>
   );

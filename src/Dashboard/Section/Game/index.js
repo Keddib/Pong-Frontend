@@ -19,7 +19,7 @@ export default function Game() {
   let [game, setGame] = useState('waiting');
   let navigate = useNavigate();
 
-  setTimeout(() => { setPlayer(user1); setTimeout(() => setGame('play'), 1000) }, 2000);
+  setTimeout(() => { setPlayer(user1); setTimeout(() => setGame('play'), 1000) }, 20000);
 
   let page = <Waiting opponent={player} setGame={setGame} />
 

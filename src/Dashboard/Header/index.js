@@ -13,7 +13,7 @@ const userXP = {
 var user1 = {
   id: "123",
   img: UserImg,
-  name: "AlaeOX7",
+  name: "AlaeOX7sasasasasass",
   status: "Online",
   dot: "green-dot"
 };
