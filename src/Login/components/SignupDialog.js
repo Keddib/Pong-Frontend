@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Dialog from "./Dialog";
 import AuthButton from "./AuthButton";
+import SignupContinueDialog from "./SignupContinueDialog";
 
 
 
@@ -10,15 +11,16 @@ const SignupDialog = () => {
     secondary: "enjoy playing with your friends."
   };
   return (
-    <Dialog title={title}>
-      <AuthButton action="signup" />
-      <p className="description-l">
-        Do you have an account?
-        <Link to="/access/signin" className="click-p-l ml-2">
-          Sign in!
-        </Link>
-      </p>
-    </Dialog>
+    <SignupContinueDialog />
+    //   <Dialog title={title}>
+    //   <AuthButton action="signup" />
+    //   <p className="description-l">
+    //     Do you have an account?
+    //     <Link to="/access/signin" className="click-p-l ml-2">
+    //       Sign in!
+    //     </Link>
+    //   </p>
+    // </Dialog>
   );
 }
 
