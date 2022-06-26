@@ -1,6 +1,6 @@
 import React, { lazy, Suspense, useEffect } from "react";
 import { Route, Routes, useNavigate, useSearchParams } from "react-router-dom";
-import { AuthProvider, RequireAuth, RedirectAuth } from "./Auth";
+import { AuthProvider, RequireAuth } from "./Context/authProvider";
 import Loading from "/src/Components/Loading";
 import Error404 from "./Components/404";
 
@@ -16,9 +16,9 @@ const App = () => {
       <Suspense fallback={<Loading />}>
         <Routes>
           <Route path="/" element={
-            <RedirectAuth>
-              <Landing />
-            </RedirectAuth>
+            // <RedirectAuth>
+            <Landing />
+            // </RedirectAuth>
           } />
           <Route path="/home/*"
             element={
@@ -29,9 +29,9 @@ const App = () => {
 
           <Route path="/access/*"
             element={
-              <RedirectAuth>
-                <Login />
-              </RedirectAuth>
+              // <RedirectAuth>
+              <Login />
+              // </RedirectAuth>
             } />
 
           <Route path="/auth42/" element={<Auth42 />} />

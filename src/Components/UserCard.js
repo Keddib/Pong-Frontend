@@ -2,21 +2,22 @@ import { Link } from "react-router-dom";
 
 export default function UserCard({ user }) {
 
-  let name = user.name;
-  if (user.name.length > 18) {
-    name = user.name.substring(0, 17);
-    name += '.';
+  var displayName = user.username;
+
+  if (displayName?.length > 18) {
+    displayName = displayName.substring(0, 17);
+    displayName += '.';
   }
 
   return (
     <Link to={user.id} className="user-wrapper group">
       <div className="relative">
-        <img alt="user" src={user.img} className="user-img" />
+        <img alt="user" src={user.image_url} className="user-img" />
         <span className={user.statusColor}></span>
       </div>
       <div className="group-hover:text-lotion/70 ml-4">
-        <h4>{name}</h4>
-        <p>{user.status}</p>
+        <h4>{displayName}</h4>
+        <p>{user.username}</p>
       </div>
     </Link>
   );

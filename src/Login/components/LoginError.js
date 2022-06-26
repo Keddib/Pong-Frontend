@@ -1,7 +1,7 @@
-const Error = () => {
+const Error = ({ message }) => {
   return (
     <p className="text-center text-red/50">
-      something went wrong, please try agian
+      {`${message} ! please try agian`}
     </p>
   );
 }

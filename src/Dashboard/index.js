@@ -11,7 +11,7 @@ const Section = lazy(() => import("./Section"));
 
 const Dashboard = () => {
   return (
-    <div
+    <main
       className="page backGround-img"
       style={{ backgroundImage: `url(${BackImg})` }}
     >
@@ -34,7 +34,7 @@ const Dashboard = () => {
           <ChatBar />
         </div>
       </div>
-    </div >
+    </main >
   );
 };
 

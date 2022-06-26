@@ -1,25 +1,22 @@
 import { SM } from "/src/Components/Constants";
-import UserImg from "/src/assets/images/user.jpg";
 import UserCard from '/src/Components/UserCard';
 import UserStarXP from "./components/UserStarXP";
 import Notifications from "./components/Notifications";
 import useMedia from "/src/Hooks/useMedia";
+import useAuth from "/src/Hooks/useAuth";
 
 const userXP = {
   lvl: 12,
   ex: 1537,
 };
 
-var user1 = {
-  id: "123",
-  img: UserImg,
-  name: "AlaeOX7sasasasasass",
-  status: "Online",
-  dot: "green-dot"
-};
 
 
 export default function Headers() {
+
+  let { user } = useAuth();
+
+  console.log('from header  : ', user);
 
   let sm = useMedia(SM);
 
@@ -31,7 +28,7 @@ export default function Headers() {
             <UserStarXP user={userXP} />
             <div className="lg:grow"></div>
             <div className="flex justify-between items-center w-full  lg:w-80">
-              <UserCard user={user1} />
+              <UserCard user={user} />
               <Notifications />
             </div>
           </>
