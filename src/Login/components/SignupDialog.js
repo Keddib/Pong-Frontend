@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import Dialog from "./Dialog";
 import AuthButton from "./AuthButton";
 import Error from "./LoginError";
-import ContinueDialog from "./SignupContinueDialog";
+import ContinueDialog from "./ContinueDialog";
 import useMedia from "/src/Hooks/useMedia";
 import { XL } from "/src/Components/Constants";
 import LoginImage from "./LoginImage";

@@ -12,7 +12,9 @@ export default function UserCard({ user }) {
   return (
     <Link to={"/"} className="user-wrapper group">
       <div className="relative">
-        <img alt="user" src={user.image_url} className="user-img" />
+        <div className="w-fit rounded-full bg-queenBlue/50">
+          <img alt="user" src={user.image_url} className="user-img" />
+        </div>
         <span className={user.statusColor}></span>
       </div>
       <div className="group-hover:text-lotion/70 ml-4">
