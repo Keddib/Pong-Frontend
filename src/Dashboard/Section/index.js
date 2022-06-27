@@ -34,7 +34,7 @@ const Section = (props) => {
   const Page = getPage(props.page);
   return (
     <section className="Dash-main container">
-      <div className="dash-home-layout">
+      <div className="dash-home-layout border border-red">
         {Page ? Page : <Error404 />}
       </div>
     </section>

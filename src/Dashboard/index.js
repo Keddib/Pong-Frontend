@@ -1,13 +1,8 @@
-import { lazy, Suspense } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import BackImg from "/src/assets/images/Dashboard.jpg";
 import Sidebar from "./Sidebar"
 import Header from "./Header/";
 import ChatBar from "./ChatBar/";
-import Loading from "/src/Components/Loading";
-
-const Section = lazy(() => import("./Section"));
-
 
 const Dashboard = () => {
   return (
@@ -19,18 +14,7 @@ const Dashboard = () => {
         <div className="dash-layout">
           <Sidebar />
           <Header />
-          <Suspense fallback={<Loading />}>
-            <Routes>
-              <Route index element={<Section page="home" />} />
-              <Route path="game" element={<Section page="game" />} />
-              <Route path="leaderboard" element={<Section page="leaderboard" />} />
-              <Route path="friends/*" element={<Section page="friends" />} />
-              <Route path="messages" element={<Section page="messages" />} />
-              <Route path="rooms" element={<Section page="rooms" />} />
-              <Route path="profile" element={<Section page="profile" />} />
-              <Route path="*" element={< Section page="error" />} />
-            </Routes>
-          </Suspense>
+          <Outlet />
           <ChatBar />
         </div>
       </div>

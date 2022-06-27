@@ -8,31 +8,35 @@ import ProfileIcon from "/src/assets/icons/user-astronaut.svg";
 import IconLink from "/src/Components/Iconlink";
 import Logout from "/src/assets/icons/logout.svg";
 
+import useAuth from "/src/Hooks/useAuth";
+
 
 const Navbar = (props) => {
 
+  let { signout } = useAuth();
+
   return (
     <nav className="show-nav">
-      <IconLink page="/home/" showNav={props.showNav}>
+      <IconLink page="home" showNav={props.showNav}>
         <HomeIcon className="nav-icon" />
       </IconLink>
-      <IconLink page="/home/leaderboard" showNav={props.showNav}>
+      <IconLink page="leaderboard" showNav={props.showNav}>
         <BoardIcon className="nav-icon" />
       </IconLink>
-      <IconLink page="/home/messages" showNav={props.showNav}>
+      <IconLink page="messages" showNav={props.showNav}>
         <ChatIcon className="nav-icon" />
       </IconLink>
-      <IconLink page="/home/friends/" showNav={props.showNav}>
+      <IconLink page="friends" showNav={props.showNav}>
         <FriendsIcon className="nav-icon" />
       </IconLink>
-      <IconLink page="/home/rooms" showNav={props.showNav}>
+      <IconLink page="rooms" showNav={props.showNav}>
         <GroupIcon className="nav-icon" />
       </IconLink>
-      <IconLink page="/home/profile" showNav={props.showNav}>
+      <IconLink page="profile" showNav={props.showNav}>
         <ProfileIcon className="nav-icon" />
       </IconLink>
       <div className="sm:grow"> </div>
-      <button className="group mt-4">
+      <button className="group mt-4" onClick={signout}>
         <Logout className="nav-icon  group-hover:fill-red/80 " />
       </button>
       <button onClick={props.showNav} className="group nav-btn">

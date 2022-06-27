@@ -1,11 +1,11 @@
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
-
 import Dialog from "./Dialog";
 import AuthButton from "./AuthButton";
 import Error from "./LoginError";
-
-// import SignupContinueDialog from "./SignupContinueDialog";
+import ContinueDialog from "./SignupContinueDialog";
+import useMedia from "/src/Hooks/useMedia";
+import { XL } from "/src/Components/Constants";
+import LoginImage from "./LoginImage";
 
 
 const title = {
@@ -14,24 +14,36 @@ const title = {
 };
 
 
-const SignupDialog = (props) => {
+const SignupDialog = ({ isContinue, hundleSubmit, errorMsg }) => {
 
-  useEffect(() => {
-    props.setPage('signup');
-  }, [props]);
+  let xl = useMedia(XL);
 
   return (
-    // <SignupContinueDialog />
-    <Dialog title={title}>
-      <AuthButton action="signup" callBack={props.callBack} />
-      {props.error && <Error />}
-      <p className="description-l">
-        Do you have an account?
-        <Link to="/access/signin" className="click-p-l ml-2">
-          Sign in!
-        </Link>
-      </p>
-    </Dialog>
+
+    < main className="page-dark">
+      <div className="signinDialogWrraper">
+        <div className={`p-4 flex flex-col gap-y-8`}>
+          {
+            isContinue ?
+              <ContinueDialog />
+              :
+              <Dialog title={title}>
+                <form onSubmit={hundleSubmit}>
+                  <AuthButton action="signup" />
+                </form>
+                {errorMsg && <Error />}
+                <p className="description-l">
+                  Do you have an account?
+                  <Link to="/access/signin" className="click-p-l ml-2">
+                    Sign in!
+                  </Link>
+                </p>
+              </Dialog>
+          }
+        </div>
+      </div>
+      {xl && <LoginImage isSignin={false} />}
+    </main >
   );
 }
 

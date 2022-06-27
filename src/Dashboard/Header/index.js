@@ -15,9 +15,6 @@ const userXP = {
 export default function Headers() {
 
   let { user } = useAuth();
-
-  console.log('from header  : ', user);
-
   let sm = useMedia(SM);
 
   return (

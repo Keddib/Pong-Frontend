@@ -10,7 +10,7 @@ export default function UserCard({ user }) {
   }
 
   return (
-    <Link to={user.id} className="user-wrapper group">
+    <Link to={"/"} className="user-wrapper group">
       <div className="relative">
         <img alt="user" src={user.image_url} className="user-img" />
         <span className={user.statusColor}></span>
