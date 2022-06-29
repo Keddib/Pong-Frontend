@@ -16,7 +16,7 @@ const ExStar = (props) => {
 
 const ProfileHeader = () => {
   return (
-    <header className="bg-queenBlue/50 rounded-2xl p-4 md:px-8 md:py-12 relative flex">
+    <header className="bg-queenBlue/50 rounded-2xl p-2 md:px-8 md:py-12 relative flex">
       <div className="left-side flex items-center gap-4 md:gap-8">
         <div className="rounded-full bg-queenBlue/50 relative">
           <ExStar className="absolute  -right-2 bottom-0" />

@@ -5,7 +5,7 @@
     @apply w-fit flex items-center ease-in-out duration-500;
   }
   .user-img {
-    @apply w-16 h-16 rounded-full;
+    @apply w-10 h-10 md:w-16 md:h-16 rounded-full;
   }
 
   /* buttons */
