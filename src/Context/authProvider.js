@@ -13,9 +13,9 @@ export const AuthProvider = ({ children }) => {
   function signin(user) {
     setUser(user);
     setIsAuth(true);
-    console.log('signin is called')
   }
   function signout() {
+    // notify back end to delete refresh token
     setUser({});
     setIsAuth(false);
   }
@@ -29,15 +29,18 @@ export const AuthProvider = ({ children }) => {
   )
 }
 
-function RequireAuth() {
+function RequireAuth({ children }) {
   let { isUserAuth } = useContext(AuthContext);
   let location = useLocation();
 
+  console.log('check...');
   if (isUserAuth()) {
-    return <Outlet />;
+    console.log('yes true...');
+    console.log(location)
+    return children;
   }
 
-  console.log('user is not logged in')
+  console.log('no alse...');
 
   // if user comming to root '/' and not login redirect them to /welcome page
   if (location?.pathname == '/') {
@@ -55,7 +58,6 @@ function RequireAuth() {
 
 function RedirectAuth() {
   let { isUserAuth, user } = useContext(AuthContext);
-  console.log('auth user redirected....')
   if (isUserAuth() && !user.isNew) {
     // if they are loged in, Redirect them to the /home page.
     // replace : true, so we don't create another entry in the history stack

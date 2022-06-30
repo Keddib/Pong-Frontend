@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
-import useImage from "/src/Hooks/useFetchImage";
+import Image from "./Image";
 
 export default function UserCard({ user }) {
 
-  let image = useImage(user.image_url);
+
 
   var displayName = user.username;
 
@@ -15,8 +15,8 @@ export default function UserCard({ user }) {
   return (
     <Link to={"/"} className="user-wrapper group">
       <div className="relative">
-        <div className="w-fit rounded-full bg-queenBlue/50">
-          <img alt="user" src={image} className="user-img" />
+        <div className="rounded-full bg-queenBlue/50 w-10 h-10 md:w-16 md:h-16">
+          <Image imageUrl={user.image_url} alt="user" className="user-img" />
         </div>
         <span className={user.statusColor}></span>
       </div>

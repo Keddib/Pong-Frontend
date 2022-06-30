@@ -8,12 +8,13 @@ import ProfileIcon from "/src/assets/icons/user-astronaut.svg";
 import IconLink from "/src/Components/Iconlink";
 import Logout from "/src/assets/icons/logout.svg";
 
-import useAuth from "/src/Hooks/useAuth";
-
 
 const Navbar = (props) => {
 
-  let { signout } = useAuth();
+  const logout = () => {
+    console.log('logout clicked');
+    // show drop down for logout confirmation
+  }
 
   return (
     <nav className="show-nav">
@@ -36,7 +37,7 @@ const Navbar = (props) => {
         <ProfileIcon className="nav-icon" />
       </IconLink>
       <div className="sm:grow"> </div>
-      <button className="group mt-4" onClick={signout}>
+      <button className="group mt-4" onClick={logout}>
         <Logout className="nav-icon  group-hover:fill-red/80 " />
       </button>
       <button onClick={props.showNav} className="group nav-btn">
