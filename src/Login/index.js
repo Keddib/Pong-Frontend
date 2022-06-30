@@ -30,13 +30,13 @@ export default function Login() {
       let [data, status] = await authAPI(code, setErrorMsg);
       if (status != -1) {
         if (status == 201) {
-          console.log('new created user');
           data.isNew = true;
           setIsContinue(true);
           navigate("/access/signup", { replace: true });
         }
         signin(data);
         if (status == 200) {
+          console.log('signin', from);
           navigate(from, { replace: true });
         }
       }

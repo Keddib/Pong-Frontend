@@ -22,23 +22,26 @@ const App = () => {
             <Route path="/access/*" element={<Login />} />
           </Route>
 
-          <Route path="*" element={<Error404 />} />
 
-          <Route element={<RequireAuth />}>
-            <Route path="/*" element={<Dashboard />}>
-              <Route index element={<Navigate to="home" replace />} />
-              <Route path="home" element={<Section page='home' />} />
-              <Route path="game" element={<Section page='game' />} />
-              <Route path="leaderboard" element={<Section page='leaderboard' />} />
-              <Route path="messages" element={<Section page='messages' />} />
-              <Route path="friends/*" element={<Section page='friends' />} />
-              <Route path="rooms" element={<Section page='rooms' />} />
-              <Route path="profile" element={<Section page='profile' />} />
-            </Route>
-
+          <Route path="/*" element={
+            <RequireAuth>
+              <Dashboard />
+            </RequireAuth>
+          }>
+            <Route index element={<Navigate to="home" replace />} />
+            <Route path="home" element={<Section page='home' />} />
+            <Route path="game" element={<Section page='game' />} />
+            <Route path="leaderboard" element={<Section page='leaderboard' />} />
+            <Route path="messages" element={<Section page='messages' />} />
+            <Route path="friends/*" element={<Section page='friends' />} />
+            <Route path="rooms" element={<Section page='rooms' />} />
+            <Route path="profile" element={<Section page='profile' />} />
           </Route>
 
+          <Route path="*" element={<Error404 />} />
+
           <Route path="/auth42/" element={<Auth42 />} />
+
         </Routes>
       </Suspense>
     </AuthProvider>

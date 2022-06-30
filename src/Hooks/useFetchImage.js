@@ -1,24 +1,43 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
+import { axiosImage } from "/src/Services/api/axios";
+
 
 
 export default function App(imageUrl) {
+
   const [img, setImg] = useState();
 
   useEffect(() => {
+
+    if (!imageUrl) {
+      return null;
+    }
+
+    const controller = new AbortController();
     const fetchImage = async () => {
-      let imageBlob
+      let imageBlob;
       try {
-        imageBlob = (await axios.get(imageUrl, { responseType: 'blob' })).data;
+        imageBlob = await axiosImage.get("", {
+          responseType: "blob",
+          signal: controller.signal
+        }).then((res) => (res.data));
+
+        if (imageBlob) {
+          let imageObjectURL = URL.createObjectURL(imageBlob);
+          setImg(imageObjectURL);
+        }
       } catch (err) {
+        console.log(err.message);
         return null
       }
-      console.log(imageBlob);
-      let imageObjectURL = URL.createObjectURL(imageBlob);
-      console.log(imageObjectURL);
-      setImg(imageObjectURL);
     };
-    fetchImage();
+
+    setTimeout(fetchImage, 10000);
+
+    return (() => {
+      controller.abort();
+    });
+
   }, [imageUrl]);
 
   return img;

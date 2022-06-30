@@ -6,6 +6,10 @@ export default axios.create({
   baseURL: URL
 })
 
+export const axiosImage = axios.create({
+  baseURL: "http://localhost:3500/upload/d0c2f198012d0e25049a49eec79ad3db.jpg"
+})
+
 const axiosAuth = axios.create({
   baseURL: URL
 })
