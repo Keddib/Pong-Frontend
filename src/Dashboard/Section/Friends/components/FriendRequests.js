@@ -1,19 +1,30 @@
 import { useState, useEffect } from "react";
 import Loading from "/src/Components/Loading";
-import UserBar from "/src/Components/UserBar";
-import User from "/src/assets/images/user.jpg";
+import ElementBar from "/src/Components/ElementBar";
+import UserCard from "/src/Components/UserCard";
 
-var friendRequests = [];
 
-for (let i = 0; i < 10; i++) {
-  friendRequests[i] =
-  {
-    id: Math.floor(Math.random() * 10) + 1,
-    name: 'Alaex07',
-    status: 'online',
-    statusColor: 'online-dot',
-    img: User
-  }
+const userExample = {
+  username: 'AlaeZx07',
+  id: 121878,
+}
+
+
+
+
+function FriendListItems() {
+  return (
+    <ElementBar >
+      <div className="w-full flex justify-between items-center">
+        <UserCard user={userExample} />
+        <div className="flex items-center gap-8">
+          <button className="bg-red rounded-full" >a1</button>
+          <button className="bg-red rounded-full" >a2</button>
+        </div>
+      </div>
+
+    </ElementBar>
+  );
 }
 
 export default function FriendRequests() {
@@ -31,13 +42,7 @@ export default function FriendRequests() {
 
   return (
     <ul className="flex flex-col gap-1 h-full overflow-auto no-scrollbar">
-      {
-        !done ? <Loading /> : friendRequests.map((friend) => {
-          return (
-            <UserBar key={friend.id} user={friend} />
-          );
-        })
-      }
+      {done ? <FriendListItems /> : <Loading />}
     </ul>
   );
 }

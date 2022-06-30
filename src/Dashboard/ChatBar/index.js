@@ -1,16 +1,15 @@
 import { XL } from "/src/Components/Constants";
 import TabBar from "/src/Components/TabBar";
-import UserBar from "/src/Components/UserBar";
-import UserImg from "/src/assets/images/user.jpg"
+// import UserImg from "/src/assets/images/user.jpg"
 import useMedia from "/src/Hooks/useMedia";
 
-var user1 = {
-  id: "123",
-  img: UserImg,
-  name: "AlaeOX7",
-  status: "Online",
-  dot: "green-dot"
-};
+// var user1 = {
+//   id: "123",
+//   img: UserImg,
+//   name: "AlaeOX7",
+//   status: "Online",
+//   dot: "green-dot"
+// };
 
 
 const links = {
@@ -45,11 +44,6 @@ const ChatBar = () => {
           </div>
           <div className="mt-4 overflow-auto no-scrollbar mini-chat relative">
             <ul className="flex flex-col gap-2">
-              <UserBar user={user1} />
-              <UserBar user={user1} />
-              <UserBar user={user1} />
-              <UserBar user={user1} />
-              <UserBar user={user1} />
             </ul>
             <div className="absolute bottom-0 w-full h-16 flex justify-center items-center">
               <label htmlFor="chat input" className="w-fit">
