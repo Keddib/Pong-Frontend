@@ -5,6 +5,7 @@ import useMedia from "/src/Hooks/useMedia";
 import ElementBar from "/src/Components/ElementBar";
 import UserCard from "/src/Components/UserCard";
 import UserImg from "/src/assets/images/user.jpg"
+import Award from "/src/assets/icons/award.svg";
 
 var user1 = {
   id: "123",
@@ -40,8 +41,8 @@ export default function Leaderboard() {
         <div className="Rank">
           <ul className="flex flex-col gap-2">
             <li key={1 * 10}>
-              <ElementBar >
-                <span className="flex rounded-full w-6 h-6 justify-center items-center bg-crayola">1</span>
+              <ElementBar className="border-crayola hover:border-crayola" line="bg-crayola hover:bg-crayola">
+                <Award className="w-6 h-6 fill-crayola" />
                 <div className="flex justify-between items-center w-full">
                   <UserCard user={user1} />
                   <span className="sm:mr-8">LVL</span>
@@ -50,7 +51,7 @@ export default function Leaderboard() {
             </li>
             <li key={2 * 10}>
               <ElementBar >
-                <span className="flex rounded-full w-6 h-6 justify-center items-center bg-crayola">2</span>
+                <Award className="w-6 h-6 fill-[#D7D7D7]" />
                 <div className="flex justify-between items-center w-full">
                   <UserCard user={user1} />
                   <span className="sm:mr-8">LVL</span>
@@ -59,7 +60,7 @@ export default function Leaderboard() {
             </li>
             <li key={3 * 10}>
               <ElementBar >
-                <span className="flex rounded-full w-6 h-6 justify-center items-center bg-crayola">3</span>
+                <Award className="w-6 h-6 fill-[#AD8A56]" />
                 <div className="flex justify-between items-center w-full">
                   <UserCard user={user1} />
                   <span className="sm:mr-8">LVL</span>
