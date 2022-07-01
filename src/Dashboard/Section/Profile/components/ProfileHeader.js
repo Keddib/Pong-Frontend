@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom";
 import useAuth from "/src/Hooks/useAuth";
 import Star from "/src/assets/icons/star.svg";
 import Image from "/src/Components/Image";
@@ -22,7 +23,9 @@ const ProfileHeader = () => {
       <div className="left-side flex items-center gap-4 md:gap-8">
         <div className="rounded-full bg-queenBlue/50 relative">
           <ExStar className="absolute  -right-2 bottom-0" />
-          <Image imageUrl={user.image_url} alt="user profile" className="w-20 h-20 md:w-40 md:h-40 rounded-full" />
+          <div className="w-20 h-20 md:w-40 md:h-40 ">
+            <Image imageUrl={user.image_url} alt="user profile" className="rounded-full" />
+          </div>
         </div>
         <div>
           <h4 className="md:text-3xl">{user.username}</h4>
@@ -31,9 +34,9 @@ const ProfileHeader = () => {
       </div>
       <div className="grow"></div>
       <div className="right-side self-end">
-        <button className="button--3 px-4 text-sm md:px-8 md:text-xl">
+        <NavLink to="edit" className="button--3 px-4 text-sm md:px-8 md:text-xl">
           edit profile
-        </button>
+        </NavLink>
       </div>
     </header >
   );

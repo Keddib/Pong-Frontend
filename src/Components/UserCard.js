@@ -15,7 +15,7 @@ export default function UserCard({ user }) {
   return (
     <Link to={"/"} className="user-wrapper group">
       <div className="relative">
-        <div className="rounded-full bg-queenBlue/50 w-10 h-10 md:w-16 md:h-16">
+        <div className="rounded-full bg-queenBlue/50 w-10 h-10 sm:w-16 sm:h-16">
           <Image imageUrl={user.image_url} alt="user" className="user-img" />
         </div>
         <span className={user.statusColor}></span>

@@ -28,6 +28,11 @@
     @apply button bg-spaceCadet border-spaceCadet text-lotion hover:bg-lotion
   hover:text-spaceCadet hover:border-lotion;
   }
+
+  .button--3.active {
+    @apply bg-lotion text-spaceCadet border-lotion;
+  }
+
   .button--4 {
     @apply button bg-lotion/50 border-lotion/50 text-lotion hover:bg-lotion
   hover:text-red/80 hover:border-red/80;

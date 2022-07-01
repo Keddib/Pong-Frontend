@@ -7,7 +7,7 @@ function Image({ imageUrl, alt, className }) {
     image ?
       <img src={image} alt={alt} className={className} />
       :
-      <div className="h-full rounded-full bg-queenBlue/50 animate-pulse"></div>
+      <div className="h-full rounded-full bg-lotion/50 animate-pulse"></div>
   );
 }
 

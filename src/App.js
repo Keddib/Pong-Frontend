@@ -4,11 +4,11 @@ import { AuthProvider, RequireAuth, RedirectAuth } from "./Context/authProvider"
 import Loading from "/src/Components/Loading";
 import Error404 from "./Components/404";
 
+
 const Landing = lazy(() => import("/src/Landing"));
 const Login = lazy(() => import("./Login"));
 const Dashboard = lazy(() => import("./Dashboard"));
 const Section = lazy(() => import("./Dashboard/Section"));
-
 
 const App = () => {
 
@@ -35,11 +35,12 @@ const App = () => {
             <Route path="messages" element={<Section page='messages' />} />
             <Route path="friends/*" element={<Section page='friends' />} />
             <Route path="rooms" element={<Section page='rooms' />} />
-            <Route path="profile" element={<Section page='profile' />} />
+            <Route path="profile/*" element={<Section page='profile' />} />
           </Route>
 
           <Route path="*" element={<Error404 />} />
 
+          {/* path for Oauth 42 redirection */}
           <Route path="/auth42/" element={<Auth42 />} />
 
         </Routes>

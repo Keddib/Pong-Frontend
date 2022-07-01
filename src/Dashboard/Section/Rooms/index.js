@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import ElementBar from "/src/Components/ElementBar";
 import UserCard from "/src/Components/UserCard";
 import useAuth from "/src/Hooks/useAuth";
@@ -17,14 +16,12 @@ function Rooms() {
       <div className="bg-queenBlue/50 rounded-2xl py-4 pl-4 flex flex-col gap-4">
         <ul>
           <li>
-            <Link to="/rooms/five">
-              <ElementBar>
-                <div className="flex justify-between items-center w-full">
-                  <UserCard user={user} />
-                  <span className="w-2 h-2 rounded-full bg-pictonBlue flex justify-center items-center"></span>
-                </div>
-              </ElementBar>
-            </Link>
+            <ElementBar>
+              <div className="flex justify-between items-center w-full">
+                <UserCard user={user} />
+                <span className="w-2 h-2 rounded-full bg-pictonBlue flex justify-center items-center"></span>
+              </div>
+            </ElementBar>
           </li>
         </ul>
       </div>

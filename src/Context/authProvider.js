@@ -33,14 +33,10 @@ function RequireAuth({ children }) {
   let { isUserAuth } = useContext(AuthContext);
   let location = useLocation();
 
-  console.log('check...');
   if (isUserAuth()) {
-    console.log('yes true...');
-    console.log(location)
     return children;
   }
 
-  console.log('no alse...');
 
   // if user comming to root '/' and not login redirect them to /welcome page
   if (location?.pathname == '/') {
