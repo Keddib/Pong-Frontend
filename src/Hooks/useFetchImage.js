@@ -32,7 +32,7 @@ export default function App(imageUrl) {
       }
     };
 
-    setTimeout(fetchImage, 10000);
+    setTimeout(fetchImage, 500);
 
     return (() => {
       controller.abort();
