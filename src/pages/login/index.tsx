@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import useAuth from "hooks/useAuth";
-import {authenticateUser} from "services/axios";
+import { authenticateUser } from "services/axios";
 import oAuthPopup from "./services/oauthPopup";
 import SigninDialog from "./components/Signin";
 import SignupDialog from "./components/Signup";
@@ -27,13 +27,12 @@ export default function Login() {
       const user = await authenticateUser(code, setErrorMsg);
       console.log("data", user);
       if (user) {
-        if (user.isNew) {
-          setIsContinue(true);
-          navigate("/access/signup", { replace: true });
-        } else {
+        // validate user
+        if (user.id && user.Username && user.Avatar) {
           signin(user);
           navigate("/home", { replace: true });
         }
+        setErrorMsg("back response...");
       }
     };
     if (!called) {
