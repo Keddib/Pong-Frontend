@@ -4,6 +4,7 @@ import { User } from "types/user";
 
 const axiosAuth = axios.create({
   baseURL: api.users,
+  withCredentials: true,
 });
 
 const axiosPrivate = axios.create({
