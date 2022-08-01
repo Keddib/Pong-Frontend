@@ -14,7 +14,7 @@ type Props = {
 const Dialog: FunctionComponent<Props> = ({ title, children }) => {
   return (
     <>
-      <Logo className="group-hover:animate-bounce" />
+      <Logo className="group-hover:animate-bounce" link="/home" />
       <h2>
         {title.primary} <strong className="strong">Pong</strong>
       </h2>

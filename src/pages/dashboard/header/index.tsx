@@ -5,19 +5,7 @@ import Notifications from "./components/Notification";
 import useMedia from "hooks/useMedia";
 import useAuth from "hooks/useAuth";
 
-type IStatus = "online" | "offline" | "playing" | "spectating";
-
-var user1 = {
-  id: 12134,
-  Username: "AlaeOX7",
-  Nickname: "AlaeOX7",
-  Status: "online" as IStatus,
-  Avatar: "http://localhost:3500/upload/402e5238f17f06fc7b8d08617758bb8c.jpg",
-  Wins: 100,
-  Losses: 60,
-  XP: 439,
-  Level: 11,
-};
+import user1 from "config/user";
 
 export default function Headers() {
   const { user } = useAuth();

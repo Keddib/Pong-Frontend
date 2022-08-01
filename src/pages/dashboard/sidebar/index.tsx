@@ -20,7 +20,10 @@ const Nav = () => {
 
   return (
     <aside className="navbar ">
-      <Logo className={smDevice ? "group-hover:animate-bounce" : ""} />
+      <Logo
+        className={smDevice ? "group-hover:animate-bounce" : ""}
+        link="/home"
+      />
       {(showIt || smDevice) && <Navbar showNav={hundleClick} />}
       <button onClick={hundleClick} className="group nav-btn">
         <Bars className="nav-icon" />

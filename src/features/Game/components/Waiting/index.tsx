@@ -3,19 +3,7 @@ import Logo from "components/Logo";
 import { FunctionComponent } from "react";
 import { User } from "types/user";
 
-type IStatus = "online" | "offline" | "playing" | "spectating";
-
-var user1 = {
-  id: 12134,
-  Username: "AlaeOX7",
-  Nickname: "AlaeOX7",
-  Status: "online" as IStatus,
-  Avatar: "http://localhost:3500/upload/402e5238f17f06fc7b8d08617758bb8c.jpg",
-  Wins: 100,
-  Losses: 60,
-  XP: 439,
-  Level: 11,
-};
+import user1 from "config/user";
 
 function LoadingPlayer() {
   return (
@@ -46,7 +34,7 @@ type Props = {
 const Waiting: FunctionComponent<Props> = ({ opponent, setGameState }) => {
   return (
     <div className="m-auto w-full pt-8 flex flex-col items-center gap-10">
-      <Logo className="animate-bounce" />
+      <Logo link="" className="animate-bounce" />
       <p className="text-xl font-poppins">wating for opponent...</p>
       <div className="players flex flex-col gap-10 sm:flex-row items-center">
         <UserCard user={user1} />

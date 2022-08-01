@@ -1,10 +1,13 @@
 import { FunctionComponent } from "react";
 import { Link } from "react-router-dom";
 
-const Logo: FunctionComponent<{ className: string }> = ({ className }) => {
+const Logo: FunctionComponent<{ className: string; link: string }> = ({
+  className,
+  link,
+}) => {
   return (
     <Link
-      to="/app/"
+      to={link}
       className="group w-[40px] sm:w-[48px] cursor-pointer h-14 sm:h-16 bg-transparent flex flex-col justify-center items-center"
     >
       <span

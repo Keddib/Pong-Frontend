@@ -3,14 +3,6 @@ import TabBar from "components/TabBar";
 // import UserImg from "/src/assets/images/user.jpg"
 import useMedia from "hooks/useMedia";
 
-// var user1 = {
-//   id: "123",
-//   img: UserImg,
-//   name: "AlaeOX7",
-//   status: "Online",
-//   dot: "green-dot"
-// };
-
 const links = {
   first: {
     name: "game",

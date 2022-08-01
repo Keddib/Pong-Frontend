@@ -43,10 +43,12 @@ function setupInterceptorsTo(
       ) {
         prevReq.sent = true;
         const newAccessToken = await getNewAccessToken();
-        if (prevReq.headers) {
-          prevReq.headers.Authorization = `Bearer ${newAccessToken}`;
+        if (newAccessToken != "error") {
+          if (prevReq.headers) {
+            prevReq.headers.Authorization = `Bearer ${newAccessToken}`;
+          }
+          return axiosInstance(prevReq);
         }
-        return axiosInstance(prevReq);
       }
     }
     // console.error(`[response error] [${JSON.stringify(error)}]`);

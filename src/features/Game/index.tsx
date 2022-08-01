@@ -6,19 +6,8 @@ import io from "socket.io-client";
 import { User } from "types/user";
 import { Socket } from "socket.io-client";
 
-type IStatus = "online" | "offline" | "playing" | "spectating";
+import user1 from "config/user";
 
-var user1 = {
-  id: 12134,
-  Username: "AlaeOX7",
-  Nickname: "AlaeOX7",
-  Status: "online" as IStatus,
-  Avatar: "http://localhost:3500/upload/402e5238f17f06fc7b8d08617758bb8c.jpg",
-  Wins: 100,
-  Losses: 60,
-  XP: 439,
-  Level: 11,
-};
 interface LocationState {
   mode: string;
 }
