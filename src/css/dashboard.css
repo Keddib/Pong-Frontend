@@ -171,7 +171,7 @@
   }
 
   .game-mode img {
-    @apply hidden md:block;
+    @apply hidden md:block z-10;
   }
   .bg-mode-one {
     @apply game-mode bg-gradient-to-r from-[#144452] to-[#028F9E];
@@ -180,13 +180,13 @@
     @apply absolute bottom-0 lg:right-20 right-4 w-[204] h-[265];
   }
   .bg-mode-two {
-    @apply game-mode bg-gradient-to-r from-[#a88f01] to-[#EAC702] xl:w-[49%];
+    @apply game-mode bg-gradient-to-r from-[#a88f01] to-[#EAC702] 2xl:w-[49%];
   }
   .bg-mode-two img {
     @apply absolute bottom-0 lg:right-20 xl:right-2 right-4 w-[216] h-[216];
   }
   .bg-mode-three {
-    @apply game-mode bg-gradient-to-r from-[#c01111] to-[#a63e3e] xl:w-[49%];
+    @apply game-mode bg-gradient-to-r from-[#c01111] to-[#a63e3e] 2xl:w-[49%];
   }
   .bg-mode-three img {
     @apply absolute bottom-2 lg:right-20 xl:right-2 right-4 w-[216] h-[216];
@@ -207,5 +207,16 @@
 
   .mini-chat {
     height: calc(100% - 80px);
+  }
+
+  /* rooms */
+  .search-bar {
+    @apply m-auto w-full md:w-1/3;
+  }
+
+  .search-bar-input {
+    @apply block p-2 pl-10 w-full text-sm font-light placeholder:text-lotion/50
+    text-lotion bg-queenBlue/50 rounded-2xl
+    border border-lotion/50 focus:ring-lotion focus:border-transparent;
   }
 }

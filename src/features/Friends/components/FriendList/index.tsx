@@ -12,10 +12,10 @@ function FriendListItems() {
       <div className="w-full flex justify-between items-center">
         <UserCard user={user1} />
         <div className="flex items-center gap-4 sm:gap-8 sm:mr-8">
-          <button className="">
+          <button className="send game request">
             <GamePad className="w-6 h-6 sm:w-8 sm:h-8 fill-lotion/50 hover:fill-lotion ease-in duration-150" />
           </button>
-          <button className="">
+          <button className="start chating">
             <DmIcon className="w-6 h-4 sm:w-8 sm:h-6 fill-lotion/50 hover:fill-lotion ease-in duration-150" />
           </button>
         </div>
@@ -25,11 +25,12 @@ function FriendListItems() {
 }
 
 export default function FriendList() {
-  const [done, setDone] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // fetch freinds
     const TO = setTimeout(() => {
-      setDone(true);
+      setLoading(false);
     }, 1000);
 
     return () => clearTimeout(TO);
@@ -37,7 +38,7 @@ export default function FriendList() {
 
   return (
     <ul className="flex flex-col gap-1 h-full overflow-auto no-scrollbar">
-      {done ? <FriendListItems /> : <Loading />}
+      {!loading ? <FriendListItems /> : <Loading />}
     </ul>
   );
 }

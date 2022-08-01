@@ -12,7 +12,7 @@ const LeaderBoardList: FunctionComponent<Props> = ({ users }) => {
   return (
     <ul className="flex flex-col gap-2">
       {users.map((user, index) => (
-        <li className="station" key={user.id + index}>
+        <li key={user.id + index}>
           <ElementBar rank={index}>
             <>
               <Rank index={index} />
