@@ -3,7 +3,7 @@ import p5Types from "p5"; //Import this for typechecking and intellisense
 import React, { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import { useRef } from "react";
-import { GameState, GameWindowProps} from "./utils/Types";
+import { GameState, GameWindowProps, GoalKeeperConfig, DoublePaddleConfig} from "./utils/Types";
 
 // import AuthService , {LoginDto, RegisterDto} from "../../services/auth/auth.service"
 // import UserService from "../../services/auth/user.service";
@@ -61,25 +61,59 @@ const Pong: React.FC<GameWindowProps> = (props: GameWindowProps) => {
     p5.ellipse(
       getGameStateData().ballX * scalingRatio,
       getGameStateData().ballY * scalingRatio,
-      getGameStateData().ballRadius * scalingRatio,
-      getGameStateData().ballRadius * scalingRatio
+      getGameStateData().ballRadius * 2 * scalingRatio,
+      getGameStateData().ballRadius * 2 * scalingRatio
     );
   };
   const drawPaddleOne = (p5: p5Types) => {
+    let g = getGameStateData()
     p5.rect(
-      getGameStateData().paddleOneX * scalingRatio,
-      getGameStateData().paddleOneY * scalingRatio,
-      getGameStateData().paddleWidth * scalingRatio,
-      getGameStateData().paddleHeight * scalingRatio
+      g.paddleOneX * scalingRatio,
+      g.paddleOneY * scalingRatio,
+      g.paddleWidth * scalingRatio,
+      g.paddleHeight * scalingRatio
     );
+    if (g.mode.toLowerCase() === "doublepaddle" && g.gameModeConfig != null){
+      p5.rect(
+        (g.paddleOneX + (g.gameModeConfig as DoublePaddleConfig).paddleXOffset * g.width) * scalingRatio,
+        (g.paddleOneY + (g.gameModeConfig as DoublePaddleConfig).paddleYOffset * g.height)* scalingRatio,
+        g.paddleWidth * scalingRatio,
+        g.paddleHeight * scalingRatio
+      );
+    }
   };
   const drawPaddleTwo = (p5: p5Types) => {
-    p5.rect(
-      getGameStateData().paddleTwoX * scalingRatio,
-      getGameStateData().paddleTwoY * scalingRatio,
-      getGameStateData().paddleWidth * scalingRatio,
-      getGameStateData().paddleHeight * scalingRatio
-    );
+    let g = getGameStateData()
+    if(g.mode.toLowerCase() === "classic")
+      p5.rect(
+        g.paddleTwoX * scalingRatio,
+        g.paddleTwoY * scalingRatio,
+        g.paddleWidth * scalingRatio,
+        g.paddleHeight * scalingRatio
+      );
+    if (g.mode.toLowerCase() === "doublepaddle" && g.gameModeConfig != null){
+      p5.rect(
+        (g.paddleTwoX - (g.gameModeConfig as DoublePaddleConfig).paddleXOffset * g.width) * scalingRatio,
+        g.paddleTwoY * scalingRatio,
+        g.paddleWidth * scalingRatio,
+        g.paddleHeight * scalingRatio
+      );
+      p5.rect(
+        g.paddleTwoX  * scalingRatio,
+        (g.paddleTwoY + (g.gameModeConfig as DoublePaddleConfig).paddleYOffset * g.height) * scalingRatio,
+        g.paddleWidth * scalingRatio,
+        g.paddleHeight * scalingRatio
+      );
+    }
+    if (g.mode.toLowerCase() === "goalkeeper" && g.gameModeConfig != null){
+      p5.rect(
+        g.paddleTwoX * scalingRatio,
+        g.paddleTwoY * scalingRatio,
+        g.paddleWidth * scalingRatio,
+        g.paddleHeight * scalingRatio
+      );
+    }
+    
   };
   const drawBoundaries = (p5: p5Types)=>{
     p5.push();
@@ -92,12 +126,56 @@ const Pong: React.FC<GameWindowProps> = (props: GameWindowProps) => {
     for (let i = 0; i < relativeHeight; i+=r){
       p5.line(relativeWidth / 2, i, relativeWidth / 2, i + r*0.8);
     }
+    let g = getGameStateData()
+    if (g.mode.toLowerCase() === "goalkeeper" && g.gameModeConfig != null){
+      p5.noStroke()
+      p5.fill("#47649e")
+      p5.rect( // top
+        0,
+        0,
+        relativeWidth,
+        relativeHeight * (g.gameModeConfig as GoalKeeperConfig).borderSize
+      );
+      p5.rect( // bot
+        0,
+        relativeHeight * (1 - (g.gameModeConfig as GoalKeeperConfig).borderSize),
+        relativeWidth,
+        relativeHeight * (g.gameModeConfig as GoalKeeperConfig).borderSize
+      );
+      p5.rect( // top left
+        0,
+        0,
+        relativeHeight * (g.gameModeConfig as GoalKeeperConfig).borderSize,
+        relativeHeight * (0.5 - (g.gameModeConfig as GoalKeeperConfig).goalSize / 2)
+      );
+      p5.rect(//bot left
+        0,
+        relativeHeight * (0.5 + (g.gameModeConfig as GoalKeeperConfig).goalSize / 2),
+        relativeHeight * (g.gameModeConfig as GoalKeeperConfig).borderSize,
+        relativeHeight * (0.5 - (g.gameModeConfig as GoalKeeperConfig).goalSize / 2)
+      );
+      p5.rect(//top right
+        relativeWidth - relativeHeight * (g.gameModeConfig as GoalKeeperConfig).borderSize,
+        0,
+        relativeHeight * (g.gameModeConfig as GoalKeeperConfig).borderSize,
+        relativeHeight * (0.5 - (g.gameModeConfig as GoalKeeperConfig).goalSize / 2)
+      );
+      p5.rect(//top right
+        relativeWidth - relativeHeight * (g.gameModeConfig as GoalKeeperConfig).borderSize,
+        relativeHeight * (0.5 + (g.gameModeConfig as GoalKeeperConfig).goalSize / 2),
+        relativeHeight * (g.gameModeConfig as GoalKeeperConfig).borderSize,
+        relativeHeight * (0.5 - (g.gameModeConfig as GoalKeeperConfig).goalSize / 2)
+      );
+    }
     p5.pop();
   }
   const drawClickToStartText = (p5: p5Types) => {
     if (getGameStateData().state === 3) {
       p5.fill(0xffffff);
       p5.textSize(relativeWidth * 5 / 100);
+      if(getGameStateData().mode.toLowerCase() === "goalkeeper")
+        p5.textSize(relativeWidth * 5 / 100 * (1 - (getGameStateData().gameModeConfig as GoalKeeperConfig).borderSize));
+
       p5.textAlign(p5.CENTER)
       const scores = getGameStateData().scores;
       const scoresSum = scores[0] + scores[1];
@@ -178,12 +256,20 @@ const Pong: React.FC<GameWindowProps> = (props: GameWindowProps) => {
     p5.text(
       getGameStateData().scores[0],
       (relativeWidth / 16) * 7 ,
-      relativeHeight / 4
+      relativeHeight / 4 + 
+      (getGameStateData().mode.toLowerCase() === "goalkeeper" ? 
+          (getGameStateData().gameModeConfig as GoalKeeperConfig).borderSize * relativeHeight :
+          0
+        )
     );
     p5.text(
       getGameStateData().scores[1],
       (relativeWidth / 16) * 9,
-      relativeHeight / 4
+      relativeHeight / 4 + 
+      (getGameStateData().mode.toLowerCase() === "goalkeeper" ? 
+          (getGameStateData().gameModeConfig as GoalKeeperConfig).borderSize * relativeHeight :
+          0
+        )
     );
     p5.pop();
 
