@@ -1,7 +1,7 @@
 import { FunctionComponent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "src/context/authentication";
-import { User } from "types/user";
+import { User } from "types/app";
 import { Context } from "types/context";
 
 type Props = {

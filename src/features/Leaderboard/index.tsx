@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Header from "./components/Header";
 import LeaderBoardList from "./components/List";
-import { User } from "types/user";
+import { User } from "types/app";
 import Loading from "src/components/Loading";
 
 import user1 from "config/user";

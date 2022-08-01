@@ -2,7 +2,7 @@ import SendIcon from "assets/icons/dm.svg";
 
 const MessageInput = () => {
   return (
-    <div className="message-input">
+    <div className="message-bar">
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -15,19 +15,21 @@ const MessageInput = () => {
         >
           message
         </label>
-        <div className="relative flex items-center">
+        <div className="message-input-wrapper">
           <input
+            autoComplete="off"
             type="message"
             name="messageInput"
             id="default-message"
-            className="message-bar-input"
+            className="message-input"
             placeholder="message for players..."
             required
           />
-          <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-            <SendIcon className="fill-pictonBlue w-5 h-5" />
+          <div className="flex items-center pr-4">
+            <button type="submit">
+              <SendIcon className="fill-pictonBlue w-5 h-5" />
+            </button>
           </div>
-          <button type="submit"></button>
         </div>
       </form>
     </div>

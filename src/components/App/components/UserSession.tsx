@@ -11,9 +11,12 @@ const UserSession = () => {
 
   useEffect(() => {
     // check user session
+    const abortController = new AbortController();
     const verifyUserSession = async () => {
       try {
-        const res = await axiosPrivate.get("/user");
+        const res = await axiosPrivate.get("/user", {
+          signal: abortController.signal,
+        });
         const user = res.data;
         if (user) {
           // validate user before signin
@@ -27,6 +30,10 @@ const UserSession = () => {
       }
     };
     isUserAuth() ? setIsLoading(false) : verifyUserSession();
+
+    return function cleanup() {
+      abortController.abort();
+    };
   }, []);
 
   return <>{isLoading ? <Loading /> : <Outlet />}</>;

@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Play from "./components/Playing";
 import Waiting from "./components/Waiting";
 import io from "socket.io-client";
-import { User } from "types/user";
+import { User } from "types/app";
 import { Socket } from "socket.io-client";
 
 import user1 from "config/user";

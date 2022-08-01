@@ -2,7 +2,7 @@ import { FunctionComponent } from "react";
 import ElementBar from "components/ElementBar";
 import UserCard from "components/Usercard";
 import Rank from "./Rank";
-import { User } from "types/user";
+import { User } from "types/app";
 
 type Props = {
   users: User[];

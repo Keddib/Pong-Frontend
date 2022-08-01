@@ -42,7 +42,7 @@ const Section: FunctionComponent<{ setChatBar: (b: boolean) => void }> = ({
           />
           <Route path="friends/*" element={<Friends />} />
           <Route path="rooms/*" element={<Rooms />} />
-          <Route path="profile/*" element={<Profile />} />
+          <Route path="profile/:username/*" element={<Profile />} />
           <Route path="*" element={<Error404 />} />
         </Routes>
       </div>

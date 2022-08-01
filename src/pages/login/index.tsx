@@ -13,7 +13,7 @@ import SigninDialog from "./components/Signin";
 import SignupDialog from "./components/Signup";
 import useAuth from "hooks/useAuth";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
-import { User } from "types/user";
+import { User } from "types/app";
 
 export default function Login() {
   const [code, seCode] = useState("");

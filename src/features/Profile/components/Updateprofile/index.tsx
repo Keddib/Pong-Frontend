@@ -6,7 +6,7 @@ import Image from "components/Image";
 
 function EditProfile() {
   const { user } = useAuth();
-  const [image, setImage] = useState(user.Avatar);
+  const [image, setImage] = useState(user.avatar);
   const [error, setError] = useState("");
 
   return (
@@ -24,7 +24,9 @@ function EditProfile() {
             </div>
             <span className="sr-only">Choose profile photo</span>
             <input
-              onChange={() => {}}
+              onChange={() => {
+                /* set uploaded image to current image */
+              }}
               id="userImage"
               type="file"
               className="profile-picture-input"

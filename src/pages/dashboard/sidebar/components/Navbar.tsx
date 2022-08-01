@@ -9,6 +9,7 @@ import Logout from "assets/icons/logout.svg";
 import IconLink from "components/Iconlink";
 import { FunctionComponent } from "react";
 import useLogout from "~/src/hooks/useLogout";
+import useAuth from "~/src/hooks/useAuth";
 
 type Props = {
   showNav: () => void;
@@ -16,6 +17,7 @@ type Props = {
 
 const Navbar: FunctionComponent<Props> = (props) => {
   const logout = useLogout();
+  const { user } = useAuth();
 
   return (
     <nav className="show-nav">
@@ -34,7 +36,7 @@ const Navbar: FunctionComponent<Props> = (props) => {
       <IconLink page="rooms" showNav={props.showNav}>
         <GroupIcon className="nav-icon" />
       </IconLink>
-      <IconLink page="profile" showNav={props.showNav}>
+      <IconLink page={`profile/${user.username}`} showNav={props.showNav}>
         <ProfileIcon className="nav-icon" />
       </IconLink>
       <div className="sm:grow"> </div>

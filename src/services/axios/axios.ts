@@ -1,6 +1,6 @@
 import axios from "axios";
 import { api } from "config/index";
-import { User } from "types/user";
+import { User } from "types/app";
 
 const axiosAuth = axios.create({
   baseURL: api.users,

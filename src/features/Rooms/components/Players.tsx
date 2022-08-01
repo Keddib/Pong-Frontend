@@ -3,7 +3,7 @@ import Loading from "components/Loading";
 import ElementBar from "components/ElementBar";
 import UserCard from "components/Usercard";
 import SearchBar from "./SearchBar";
-import { User } from "types/user";
+import { User } from "types/app";
 import user1 from "config/user";
 
 const PlayersList: FunctionComponent<{ users: User[] }> = ({ users }) => {

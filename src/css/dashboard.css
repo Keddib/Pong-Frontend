@@ -226,9 +226,33 @@
   }
 
   .chat-section {
-    @apply border border-red grow flex flex-col gap-1;
+    @apply grow flex flex-col gap-2 overflow-auto no-scrollbar;
   }
   .chat-messages {
-    @apply grow border border-l-pictonBlue;
+    @apply grow p-2 overflow-auto no-scrollbar;
+  }
+  .message-wrapper {
+    @apply w-fit flex flex-col;
+  }
+  .message-sender {
+    @apply pl-2 font-semibold;
+  }
+
+  .message-data {
+    @apply bg-queenBlue rounded-2xl p-2;
+  }
+
+  .message-time {
+    @apply text-xs self-end;
+  }
+
+  .message-input-wrapper {
+    @apply flex items-center rounded-2xl bg-queenBlue/50 p-2 border
+    border-lotion/50 justify-between pl-4;
+  }
+  .message-input {
+    @apply block py-1 text-sm font-light placeholder:text-lotion/50
+    text-lotion bg-transparent border-transparent focus:ring-0
+    focus:ring-offset-0 focus:outline-none;
   }
 }

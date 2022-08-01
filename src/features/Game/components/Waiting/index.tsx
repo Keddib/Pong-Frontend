@@ -1,7 +1,7 @@
 import UserCard from "components/Usercard";
 import Logo from "components/Logo";
 import { FunctionComponent } from "react";
-import { User } from "types/user";
+import { User } from "types/app";
 
 import user1 from "config/user";
 
