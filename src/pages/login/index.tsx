@@ -1,20 +1,31 @@
 import React, { useState, useEffect } from "react";
-import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
-import useAuth from "hooks/useAuth";
-import { authenticateUser } from "services/axios";
+import {
+  Navigate,
+  Route,
+  Routes,
+  useNavigate,
+  useLocation,
+  Location,
+} from "react-router-dom";
+import { authenticateUser } from "services/axios/axios";
 import oAuthPopup from "./services/oauthPopup";
 import SigninDialog from "./components/Signin";
 import SignupDialog from "./components/Signup";
+import useAuth from "hooks/useAuth";
+import useAxiosPrivate from "hooks/useAxiosPrivate";
+import { User } from "types/user";
 
 export default function Login() {
   const [code, seCode] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [called, setCalled] = useState(false);
-  const [isContinue, setIsContinue] = useState(false);
-  const { signin } = useAuth();
   const navigate = useNavigate();
-  // const from = location.state;
-  // console.log("signin, fro : ", from);
+  const location: Location = useLocation();
+  const axiosPrivate = useAxiosPrivate();
+  const { signin, setAccessToken, getAccessToken } = useAuth();
+  const state = location.state as { from: string };
+  const from = state ? state.from : "/home";
+  console.log("user will be redirected to : ", from);
 
   const hundleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,17 +33,24 @@ export default function Login() {
   };
 
   useEffect(() => {
-    const getUserData = async () => {
-      //  getUser
-      const user = await authenticateUser(code, setErrorMsg);
-      console.log("data", user);
-      if (user) {
-        // validate user
-        if (user.id && user.Username && user.Avatar) {
-          signin(user);
-          navigate("/home", { replace: true });
+    const getUser = async () => {
+      //  get accesstoken
+      const token = await authenticateUser(code); // get accesstoken
+      if (token) {
+        setAccessToken(token);
+        console.log(token, getAccessToken());
+        try {
+          const res = await axiosPrivate.get<User>("/user", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          console.log("authenticated user../ ", res.data);
+          signin(res.data);
+          navigate(from, { replace: true });
+        } catch (error) {
+          console.log("error", error);
         }
-        setErrorMsg("back response...");
+      } else {
+        setErrorMsg("Authentication failed");
       }
     };
     if (!called) {
@@ -41,11 +59,11 @@ export default function Login() {
           setErrorMsg("Authentication failed");
         } else {
           setCalled(true);
-          getUserData();
+          getUser();
         }
       }
     }
-  }, [code, called, setErrorMsg, navigate, signin]);
+  }, [code, called]);
 
   return (
     <Routes>
@@ -58,11 +76,7 @@ export default function Login() {
       <Route
         path="signup"
         element={
-          <SignupDialog
-            isContinue={isContinue}
-            hundleSubmit={hundleSubmit}
-            errorMsg={errorMsg}
-          />
+          <SignupDialog hundleSubmit={hundleSubmit} errorMsg={errorMsg} />
         }
       />
       <Route path="*" element={<Navigate to="/access/signin" />} />

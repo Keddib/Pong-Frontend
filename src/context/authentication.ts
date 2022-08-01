@@ -1,14 +1,6 @@
 import { createContext } from "react";
-import { Context } from "~/src/types/context";
-import { User } from "~/src/types/user";
+import { Context } from "types/context";
 
-const AuthContext = createContext<Context>({
-  user: {} as User,
-  isUserAuth: () => false,
-  signin: (user: User) => {
-    console.log(user);
-  },
-  signout: () => {},
-});
+const AuthContext = createContext<Context>({} as Context);
 
 export default AuthContext;

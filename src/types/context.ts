@@ -5,4 +5,6 @@ export interface Context {
   isUserAuth: () => boolean;
   signin: (user: User) => void;
   signout: () => void;
+  getAccessToken: () => string;
+  setAccessToken: (token: string) => void;
 }

@@ -20,14 +20,14 @@ var user1 = {
   Level: 11,
 };
 interface LocationState {
-  mode : string
+  mode: string;
 }
 interface Loc extends Location {
-  state: LocationState
+  state: LocationState;
 }
 export default function Game() {
-  const location : Loc = useLocation()
-  console.log("game mode = ",location.state.mode)
+  const location: Loc = useLocation();
+  console.log("game mode = ", location.state.mode);
   const [player, setPlayer] = useState({} as User);
   const [gameState, setGameState] = useState("waiting");
 
@@ -41,12 +41,15 @@ export default function Game() {
       () => {
         console.log("socket created", socket.current);
         socket.current?.on("authenticated", () => {
-          socket.current?.emit("playerJoined", {mode : location.state.mode});
+          socket.current?.emit("playerJoined", { mode: location.state.mode });
         });
         socket.current?.on("gameState", (data) => {
-
-          if (gameState == "waiting" && location.state.mode.toLowerCase() === data.mode.toLowerCase()) setGameState("play");
-            gameStateData.current = data;
+          if (
+            gameState == "waiting" &&
+            location.state.mode.toLowerCase() === data.mode.toLowerCase()
+          )
+            setGameState("play");
+          gameStateData.current = data;
         });
       }
     );

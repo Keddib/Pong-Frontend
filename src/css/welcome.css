@@ -1,0 +1,5 @@
+@layer components {
+  .welcome-background {
+    @apply w-full h-full bg-no-repeat bg-center bg-cover;
+  }
+}

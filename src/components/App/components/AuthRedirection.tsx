@@ -1,4 +1,4 @@
-import { useLocation, Navigate, Outlet } from "react-router-dom";
+import { useLocation, Navigate, Outlet, Location } from "react-router-dom";
 import useAuth from "hooks/useAuth";
 import { FunctionComponent } from "react";
 
@@ -22,7 +22,9 @@ const RequireAuth: FunctionComponent<Props> = ({ children }) => {
   // trying to go to when they were redirected. This allows us to send them
   // along to that page after they login, which is a nicer user experience
   // than dropping them off on the home page.
-  return <Navigate to="/access/signin" state={{ from: location }} replace />;
+  return (
+    <Navigate to="/access/signin" state={{ from: location.pathname }} replace />
+  );
 };
 
 const RedirectAuth = () => {
@@ -37,6 +39,7 @@ const RedirectAuth = () => {
     return <Navigate to="/home" replace />;
   }
 
+  // console.log("is not auth...32");
   return <Outlet />;
 };
 

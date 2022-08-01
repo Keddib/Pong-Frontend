@@ -1,4 +1,4 @@
-import { endSession } from "services/axios";
+import { endSession } from "services/axios/axios";
 import useAuth from "./useAuth";
 
 function useLogout() {
