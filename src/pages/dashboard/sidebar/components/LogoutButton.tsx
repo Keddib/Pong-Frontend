@@ -9,34 +9,32 @@ const LogoutPopup: FunctionComponent<{
   const logout = useLogout();
 
   return (
-    <div className="modal ">
-      <div className="modal-content">
-        <h4 className="text-4xl text-center">Logout of Pong?</h4>
-        <p className="text-center text-black/50">
-          You can always log back in at any time.
-        </p>
-        <div className="w-[200px]">
-          <button
-            className="button--3"
-            onClick={() => {
-              logout();
-            }}
-          >
-            Logout
-          </button>
-        </div>
-        <div className="w-[200px]">
-          <button
-            className="button--5"
-            onClick={() => {
-              setShowModal(false);
-            }}
-          >
-            Cancel
-          </button>
-        </div>
+    <>
+      <h4 className="text-4xl text-center">Logout of Pong?</h4>
+      <p className="text-center text-black/50">
+        You can always log back in at any time.
+      </p>
+      <div className="w-[200px]">
+        <button
+          className="button--3"
+          onClick={() => {
+            logout();
+          }}
+        >
+          Logout
+        </button>
       </div>
-    </div>
+      <div className="w-[200px]">
+        <button
+          className="button--5"
+          onClick={() => {
+            setShowModal(false);
+          }}
+        >
+          Cancel
+        </button>
+      </div>
+    </>
   );
 };
 

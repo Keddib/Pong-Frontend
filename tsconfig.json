@@ -3,8 +3,7 @@
   "compilerOptions": {
     /* Language and Environment */
     "target": "es2021",
-    // "jsx": "preserve",
-    "jsx": "react-jsx",
+    "jsx": "preserve",
 
     /* Modules */
     "module": "commonjs",
