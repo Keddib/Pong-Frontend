@@ -5,10 +5,6 @@ import {
   AxiosResponse,
 } from "axios";
 
-interface AxiosRequestConfigExtended extends AxiosRequestConfig {
-  sent: boolean;
-}
-
 function setupInterceptorsTo(
   axiosInstance: AxiosInstance,
   accessToken: string,
@@ -35,7 +31,7 @@ function setupInterceptorsTo(
   };
 
   const onResponseError = async (error: AxiosError): Promise<any> => {
-    const prevReq = error?.config as AxiosRequestConfigExtended;
+    const prevReq = error?.config as AxiosRequestConfig & { sent: boolean };
     if (error.response) {
       if (
         (error.response.status === 403 || error.response.status === 401) &&
@@ -43,12 +39,10 @@ function setupInterceptorsTo(
       ) {
         prevReq.sent = true;
         const newAccessToken = await getNewAccessToken();
-        if (newAccessToken != "error") {
-          if (prevReq.headers) {
-            prevReq.headers.Authorization = `Bearer ${newAccessToken}`;
-          }
-          return axiosInstance(prevReq);
+        if (prevReq.headers) {
+          prevReq.headers.Authorization = `Bearer ${newAccessToken}`;
         }
+        return axiosInstance(prevReq);
       }
     }
     // console.error(`[response error] [${JSON.stringify(error)}]`);

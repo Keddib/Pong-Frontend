@@ -24,8 +24,8 @@ const links = {
 
 const Profile = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState({} as User);
-  const { getAccessToken } = useAuth();
+  const [currentUser, setCurrentUser] = useState({} as User);
+  const { getAccessToken, user } = useAuth();
   const { username } = useParams();
   const axiosPrivate = useAxiosPrivate();
 
@@ -43,7 +43,7 @@ const Profile = () => {
         });
         // check if payload is user
         console.log("user", res.data);
-        setUser(res.data);
+        setCurrentUser(res.data);
         setIsLoading(false);
       } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -54,7 +54,12 @@ const Profile = () => {
         }
       }
     }
-    getUserData();
+    if (user.username !== username) {
+      getUserData();
+    } else {
+      setCurrentUser(user);
+      setIsLoading(false);
+    }
     return function cleanup() {
       abortController.abort();
     };
@@ -64,14 +69,14 @@ const Profile = () => {
     <>
       {!isLoading && (
         <div className="m-auto w-full h-full flex flex-col gap-4">
-          <ProfileHeader user={user} />
+          <ProfileHeader user={currentUser} />
           <div className="bg-queenBlue/50 rounded-2xl md:p-2 py-4  flex flex-col gap-4">
             <TabBar links={links} />
             <Routes>
-              <Route index element={<OverView user={user} />} />
+              <Route index element={<OverView user={currentUser} />} />
               <Route
                 path="match-history"
-                element={<MatchHistory username={user.username} />}
+                element={<MatchHistory username={currentUser.username} />}
               />
               {user.rules == "me" && (
                 <Route path="edit" element={<EditProfile />} />

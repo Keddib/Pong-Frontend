@@ -5,18 +5,16 @@ import ChatIcon from "assets/icons/comment-dots.svg";
 import FriendsIcon from "assets/icons/user-group.svg";
 import GroupIcon from "assets/icons/users.svg";
 import ProfileIcon from "assets/icons/user-astronaut.svg";
-import Logout from "assets/icons/logout.svg";
 import IconLink from "components/Iconlink";
 import { FunctionComponent } from "react";
-import useLogout from "~/src/hooks/useLogout";
-import useAuth from "~/src/hooks/useAuth";
+import useAuth from "hooks/useAuth";
+import LogoutButton from "./LogoutButton";
 
 type Props = {
   showNav: () => void;
 };
 
 const Navbar: FunctionComponent<Props> = (props) => {
-  const logout = useLogout();
   const { user } = useAuth();
 
   return (
@@ -40,9 +38,7 @@ const Navbar: FunctionComponent<Props> = (props) => {
         <ProfileIcon className="nav-icon" />
       </IconLink>
       <div className="sm:grow"> </div>
-      <button className="group mt-4" onClick={logout}>
-        <Logout className="nav-icon  group-hover:fill-red/80 " />
-      </button>
+      <LogoutButton />
       <button onClick={props.showNav} className="group nav-btn">
         <Xmark className="nav-icon" />
       </button>
