@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Header from "./components/Header";
 import LeaderBoardList from "./components/List";
 import { User } from "types/app";
-import Loading from "src/components/Loading";
+import { Spinner } from "src/components/Loading";
 
 import user1 from "config/user";
 
@@ -30,7 +30,7 @@ export default function Leaderboard() {
           <span className="text-end ">XP</span>
         </div>
         <div className="Rank h-full">
-          {isLoading ? <Loading /> : <LeaderBoardList users={users} />}
+          {isLoading ? <Spinner /> : <LeaderBoardList users={users} />}
         </div>
       </div>
     </div>

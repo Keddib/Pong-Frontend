@@ -1,7 +1,7 @@
 import Check from "assets/icons/check.svg";
 import Xmark from "assets/icons/xmark.svg";
 import { useState, useEffect } from "react";
-import Loading from "components/Loading";
+import { Spinner } from "components/Loading";
 import ElementBar from "components/ElementBar";
 import UserCard from "components/Usercard";
 import user1 from "config/user";
@@ -39,7 +39,7 @@ export default function FriendRequests() {
 
   return (
     <ul className="flex flex-col gap-1 h-full overflow-auto no-scrollbar">
-      {done ? <FriendListItems /> : <Loading />}
+      {done ? <FriendListItems /> : <Spinner />}
     </ul>
   );
 }

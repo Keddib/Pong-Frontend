@@ -1,7 +1,7 @@
 import DmIcon from "assets/icons/dm.svg";
 import GamePad from "assets/icons/gamepad.svg";
 import { useState, useEffect } from "react";
-import Loading from "components/Loading";
+import { Spinner } from "components/Loading";
 import ElementBar from "components/ElementBar";
 import UserCard from "components/Usercard";
 import user1 from "config/user";
@@ -38,7 +38,7 @@ export default function FriendList() {
 
   return (
     <ul className="flex flex-col gap-1 h-full overflow-auto no-scrollbar">
-      {!loading ? <FriendListItems /> : <Loading />}
+      {!loading ? <FriendListItems /> : <Spinner />}
     </ul>
   );
 }

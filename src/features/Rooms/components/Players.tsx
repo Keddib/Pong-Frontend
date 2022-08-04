@@ -1,5 +1,5 @@
 import { FunctionComponent, useEffect, useState } from "react";
-import Loading from "components/Loading";
+import { Spinner } from "components/Loading";
 import ElementBar from "components/ElementBar";
 import UserCard from "components/Usercard";
 import SearchBar from "./SearchBar";
@@ -38,7 +38,7 @@ const Players = () => {
     <div className="w-full h-full flex flex-col gap-4">
       <SearchBar />
       <ul className="flex flex-col gap-1 h-full overflow-auto no-scrollbar">
-        {!loading ? <PlayersList users={users} /> : <Loading />}
+        {!loading ? <PlayersList users={users} /> : <Spinner />}
       </ul>
     </div>
   );
