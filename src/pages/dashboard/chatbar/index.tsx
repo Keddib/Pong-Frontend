@@ -29,7 +29,7 @@ const ChatBar = () => {
                 <span className="bg-pictonBlue w-1 h-8 rounded-xl"></span>
                 <div className="link link-active text-lotion/50">Game</div>
               </div>
-              <Messages />
+              <Messages messages={messages} />
               <MessageInput />
             </div>
           </div>

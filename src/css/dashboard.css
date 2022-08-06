@@ -229,21 +229,32 @@
     @apply grow flex flex-col gap-2 overflow-auto no-scrollbar;
   }
   .chat-messages {
-    @apply grow p-2 overflow-auto no-scrollbar;
+    @apply grow p-2 overflow-auto no-scrollbar flex flex-col gap-1;
   }
   .message-wrapper {
     @apply w-fit flex flex-col;
   }
-  .message-sender {
+  .message-wrapper a {
     @apply pl-2 font-semibold;
   }
-
-  .message-data {
+  .message-wrapper p {
     @apply bg-queenBlue rounded-2xl p-2;
   }
-
-  .message-time {
+  .message-wrapper span {
     @apply text-xs self-end;
+  }
+
+  .message-wrapper .own {
+    @apply w-fit flex flex-col self-end;
+  }
+  .message-wrapper .own a {
+    @apply pl-2 font-semibold self-end;
+  }
+  .message-wrapper .own p {
+    @apply bg-pictonBlue rounded-2xl p-2;
+  }
+  .message-wrapper .own span {
+    @apply text-xs self-start;
   }
 
   .message-input-wrapper {
