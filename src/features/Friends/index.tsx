@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import FriendList from "./components/FriendList";
+import Friends from "./components/Friends";
 import FriendRequests from "./components/FriendRequests";
 import TabBar from "components/TabBar";
 
@@ -19,7 +19,7 @@ export default function Friends() {
     <div className="w-full h-full flex flex-col gap-4 pt-4">
       <TabBar links={links} />
       <Routes>
-        <Route index element={<FriendList />} />
+        <Route index element={<Friends />} />
         <Route path="requests" element={<FriendRequests />} />
       </Routes>
     </div>

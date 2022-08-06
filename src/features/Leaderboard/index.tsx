@@ -4,19 +4,16 @@ import LeaderBoardList from "./components/List";
 import { User } from "types/app";
 import { Spinner } from "src/components/Loading";
 
-import user1 from "config/user";
-
 export default function Leaderboard() {
-  const [users, setUsers] = useState([] as User[]);
+  const [players, setPlayers] = useState([] as User[]);
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     // fetch data
     setTimeout(() => {
-      setUsers([user1, user1, user1, user1]);
       setLoading(false);
     }, 1000);
-  }, [users]);
+  }, [players]);
 
   return (
     <div className="m-auto w-full h-full flex flex-col gap-4">
@@ -30,7 +27,7 @@ export default function Leaderboard() {
           <span className="text-end ">XP</span>
         </div>
         <div className="Rank h-full">
-          {isLoading ? <Spinner /> : <LeaderBoardList users={users} />}
+          {isLoading ? <Spinner /> : <LeaderBoardList users={players} />}
         </div>
       </div>
     </div>

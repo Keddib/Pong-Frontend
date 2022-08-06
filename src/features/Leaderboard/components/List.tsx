@@ -9,22 +9,30 @@ type Props = {
 };
 
 const LeaderBoardList: FunctionComponent<Props> = ({ users }) => {
+  const list = users.map((user, index) => (
+    <li key={user.id + index}>
+      <ElementBar rank={index}>
+        <>
+          <Rank index={index} />
+          <div className="flex justify-between items-center w-full">
+            <UserCard user={user} />
+            <span className="sm:mr-8">LVL</span>
+          </div>
+        </>
+      </ElementBar>
+    </li>
+  ));
+
   return (
-    <ul className="flex flex-col gap-2">
-      {users.map((user, index) => (
-        <li key={user.id + index}>
-          <ElementBar rank={index}>
-            <>
-              <Rank index={index} />
-              <div className="flex justify-between items-center w-full">
-                <UserCard user={user} />
-                <span className="sm:mr-8">LVL</span>
-              </div>
-            </>
-          </ElementBar>
-        </li>
-      ))}
-    </ul>
+    <>
+      {list.length ? (
+        <ul className="flex flex-col gap-2">list</ul>
+      ) : (
+        <div className="w-full h-full flex justify-center items-center flex-col">
+          <p className="text-center">Leaderboard is empty</p>
+        </div>
+      )}
+    </>
   );
 };
 
