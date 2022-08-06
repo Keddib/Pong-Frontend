@@ -25,7 +25,7 @@ const OverView: FunctionComponent<{ user: User }> = ({ user }) => {
             </div>
             <div>
               <span className="font-beaufort font-bold text-3xl">
-                {user.wins + user.losses}
+                {user.wins + user.losses ? user.wins + user.losses : 0}
               </span>
               <p className="text-lotion/50">game played</p>
             </div>
@@ -36,7 +36,7 @@ const OverView: FunctionComponent<{ user: User }> = ({ user }) => {
             </div>
             <div>
               <span className="font-beaufort font-bold text-3xl">
-                {user.wins}
+                {user.wins ? user.wins : 0}
               </span>
               <p className="text-lotion/50">game wins</p>
             </div>
@@ -47,7 +47,7 @@ const OverView: FunctionComponent<{ user: User }> = ({ user }) => {
             </div>
             <div>
               <span className="font-beaufort font-bold text-3xl">
-                {user.losses}
+                {user.losses ? user.losses : 0}
               </span>
               <p className="text-lotion/50">game loses</p>
             </div>
@@ -56,8 +56,8 @@ const OverView: FunctionComponent<{ user: User }> = ({ user }) => {
       </div>
 
       <div className="rounded-2xl bg-spaceCadet p-2 md:p-4 flex flex-col gap-2">
-        <h2 className="capitalize mb-2 text-xl md:text-3xl">top game</h2>
-        <GameResult />
+        <h2 className="capitalize mb-2 text-xl md:text-3xl">recent game</h2>
+        {/* <GameResult /> user.RecentGame */}
       </div>
     </>
   );

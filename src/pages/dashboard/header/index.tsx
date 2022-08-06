@@ -5,8 +5,6 @@ import Notifications from "./components/Notification";
 import useMedia from "hooks/useMedia";
 import useAuth from "hooks/useAuth";
 
-import user1 from "config/user";
-
 export default function Headers() {
   const { user } = useAuth();
   const sm = useMedia(mediaQueries.sm);
@@ -15,7 +13,7 @@ export default function Headers() {
     <header className="DashHeader w-full">
       {sm ? (
         <>
-          <UserStarXP user={user1} />
+          <UserStarXP user={user} />
           <div className="lg:grow"></div>
           <div className="flex justify-between items-center w-full  lg:w-80">
             <UserCard user={user} />

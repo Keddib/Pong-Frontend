@@ -8,6 +8,7 @@ import Rooms from "features/Rooms";
 import Profile from "features/Profile";
 import Game from "features/Game";
 import Error404 from "components/Error404";
+import ErrorHandler from "./components/ErrorHandler";
 import { mediaQueries } from "config/index";
 import useMedia from "hooks/useMedia";
 
@@ -31,20 +32,22 @@ const Section: FunctionComponent<{ setChatBar: (b: boolean) => void }> = ({
       }`}
     >
       <div className="dash-home-layout">
-        <Routes>
-          <Route index element={<Navigate to="home" replace />} />
-          <Route path="home" element={<Home />} />
-          <Route path="game" element={<Game />} />
-          <Route path="leaderboard" element={<Leaderboard />} />
-          <Route
-            path="messages"
-            element={<Messages setIsMessages={setIsMessasges} />}
-          />
-          <Route path="friends/*" element={<Friends />} />
-          <Route path="rooms/*" element={<Rooms />} />
-          <Route path="profile/:username/*" element={<Profile />} />
-          <Route path="*" element={<Error404 />} />
-        </Routes>
+        <ErrorHandler>
+          <Routes>
+            <Route index element={<Navigate to="home" replace />} />
+            <Route path="home" element={<Home />} />
+            <Route path="game" element={<Game />} />
+            <Route path="leaderboard" element={<Leaderboard />} />
+            <Route
+              path="messages"
+              element={<Messages setIsMessages={setIsMessasges} />}
+            />
+            <Route path="friends/*" element={<Friends />} />
+            <Route path="rooms/*" element={<Rooms />} />
+            <Route path="profile/:username/*" element={<Profile />} />
+            <Route path="*" element={<Error404 />} />
+          </Routes>
+        </ErrorHandler>
       </div>
     </section>
   );

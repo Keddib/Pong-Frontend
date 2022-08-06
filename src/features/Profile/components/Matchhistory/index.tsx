@@ -3,7 +3,7 @@ import { Game } from "~/src/types/app";
 import GameResult from "../Gameresult";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import axios from "axios";
-import useAuth from "hooks/useAuth";
+import { Spinner } from "components/Loading";
 
 const MatchHistory: FunctionComponent<{ username: string }> = ({
   username,
@@ -11,7 +11,6 @@ const MatchHistory: FunctionComponent<{ username: string }> = ({
   const [loading, setLoading] = useState(true);
   const [gamesArray, setGamesArray] = useState([] as Game[]);
   const axiosPrivate = useAxiosPrivate();
-  const { getAccessToken } = useAuth();
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -19,9 +18,6 @@ const MatchHistory: FunctionComponent<{ username: string }> = ({
       try {
         // fetch game data
         const res = await axiosPrivate.get<Game[]>(`games/${username}`, {
-          headers: {
-            Authorization: `Bearer ${getAccessToken}`,
-          },
           signal: abortController.signal,
         });
         // check if payload is game
@@ -36,6 +32,7 @@ const MatchHistory: FunctionComponent<{ username: string }> = ({
           console.log(error);
         }
       }
+      setLoading(false);
     }
     getGamesData();
     return function cleanup() {
@@ -43,16 +40,21 @@ const MatchHistory: FunctionComponent<{ username: string }> = ({
     };
   }, []);
 
+  const games = (function getgames() {
+    if (gamesArray.length) {
+      return gamesArray.map((game) => (
+        <li key={game.id}>
+          <GameResult game={game} />
+        </li>
+      ));
+    }
+    return <p>no games found</p>;
+  })();
+
   return (
     <div className="rounded-2xl bg-spaceCadet p-2 md:p-4 flex flex-col gap-2">
       <h2 className="mb-2 capitalize text-xl md:text-3xl">match History</h2>
-      <ul className="flex flex-col gap-2">
-        {gamesArray.map((game) => (
-          <li key={game.id}>
-            <GameResult game={game} />
-          </li>
-        ))}
-      </ul>
+      <ul className="flex flex-col gap-2">{loading ? <Spinner /> : games}</ul>
     </div>
   );
 };

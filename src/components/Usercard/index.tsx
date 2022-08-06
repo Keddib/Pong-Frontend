@@ -4,13 +4,6 @@ import { User } from "types/app";
 import { FunctionComponent } from "react";
 
 const UserCard: FunctionComponent<{ user: User }> = ({ user }) => {
-  var displayName = user.username;
-
-  if (displayName?.length > 18) {
-    displayName = displayName.substring(0, 17);
-    displayName += ".";
-  }
-
   return (
     <Link to={"/"} className="user-wrapper group">
       <div className="relative">
@@ -20,7 +13,7 @@ const UserCard: FunctionComponent<{ user: User }> = ({ user }) => {
         <span className={user.status}></span>
       </div>
       <div className="group-hover:text-lotion/70 ml-4">
-        <h4 className="text-sm sm:text-lg">{displayName}</h4>
+        <h4 className="text-sm sm:text-lg">{user.nickname}</h4>
         <p className="hidden sm:block text-sm">{user.username}</p>
       </div>
     </Link>

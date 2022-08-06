@@ -1,15 +1,15 @@
 import Star from "assets/icons/star.svg";
-import { NavLink } from "react-router-dom";
 import Image from "components/Image";
 import { FunctionComponent } from "react";
 import { User } from "types/app";
+import ProfileOptions from "./ProfileOptions";
 
 const ExStar: FunctionComponent<{ className: string }> = (props) => {
   return (
     <div className={`w-fit ${props.className}`}>
       <Star className="fill-crayola w-10 md:w-14" />
       <p className=" font-beaufort font-semibold text-md md:text-2xl absolute top-[8px] left-[11px] md:top-[10px] md:left-[12px]">
-        14
+        10
       </p>
     </div>
   );
@@ -30,20 +30,13 @@ const ProfileHeader: FunctionComponent<{ user: User }> = ({ user }) => {
           </div>
         </div>
         <div>
-          <h4 className="md:text-3xl">{user.username}</h4>
+          <h4 className="md:text-3xl">{user.nickname}</h4>
           <p className="md:text-xl">{user.username}</p>
         </div>
       </div>
       <div className="grow"></div>
       <div className="right-side self-end">
-        {user.rules == "me" && (
-          <NavLink
-            to="edit"
-            className="button--3 px-4 text-sm md:px-8 md:text-xl"
-          >
-            edit profile
-          </NavLink>
-        )}
+        <ProfileOptions rules={user.rules} />
       </div>
     </header>
   );

@@ -10,6 +10,7 @@ import useAxiosPrivate from "hooks/useAxiosPrivate";
 import { User } from "types/app";
 import useAuth from "hooks/useAuth";
 import axios from "axios";
+import useErrorStatus from "hooks/useErrorStatus";
 
 const links = {
   first: {
@@ -25,20 +26,19 @@ const links = {
 const Profile = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState({} as User);
-  const { getAccessToken, user } = useAuth();
+  const { user } = useAuth();
   const { username } = useParams();
   const axiosPrivate = useAxiosPrivate();
+  const { setErrorStatusCode } = useErrorStatus();
 
   useEffect(() => {
     const abortController = new AbortController();
     console.log("profile of", username);
+    links.first.path = `/profile/${username}`;
     async function getUserData() {
       try {
         // fetch user data
         const res = await axiosPrivate.get<User>(`users/${username}`, {
-          headers: {
-            Authorization: `Bearer ${getAccessToken}`,
-          },
           signal: abortController.signal,
         });
         // check if payload is user
@@ -47,23 +47,25 @@ const Profile = () => {
         setIsLoading(false);
       } catch (error) {
         if (axios.isAxiosError(error)) {
-          console.log("axios error ", error.status);
+          console.log("axios error ", error.response?.status);
           // if forbiden check user state and sign in
         } else {
           console.log(error);
         }
+        setIsLoading(false);
       }
+      setErrorStatusCode(400);
     }
     if (user.username !== username) {
       getUserData();
     } else {
-      setCurrentUser(user);
+      setCurrentUser({ ...user, rules: "me" });
       setIsLoading(false);
     }
     return function cleanup() {
       abortController.abort();
     };
-  }, []);
+  }, [user, username, axiosPrivate, setErrorStatusCode]);
 
   return (
     <>
@@ -78,10 +80,8 @@ const Profile = () => {
                 path="match-history"
                 element={<MatchHistory username={currentUser.username} />}
               />
-              {user.rules == "me" && (
-                <Route path="edit" element={<EditProfile />} />
-              )}
-              <Route path="*" element={<Navigate to="error" />} />
+              <Route path="edit" element={<EditProfile />} />
+              <Route element={<ErrorPath />} />
             </Routes>
           </div>
         </div>
@@ -89,5 +89,13 @@ const Profile = () => {
     </>
   );
 };
+
+function ErrorPath() {
+  const { setErrorStatusCode } = useErrorStatus();
+  useEffect(() => {
+    setErrorStatusCode(400);
+  }, []);
+  return <></>;
+}
 
 export default Profile;

@@ -1,6 +1,6 @@
 import { User } from "./app";
 
-export interface Context {
+export interface UserContext {
   user: User;
   isUserAuth: () => boolean;
   signin: (user: User) => void;

@@ -9,6 +9,7 @@ const axiosAuth = axios.create({
 
 const axiosPrivate = axios.create({
   headers: { "Content-type": "application/json" },
+  withCredentials: true,
   baseURL: api.users,
 });
 
