@@ -4,41 +4,78 @@ import ElementBar from "components/ElementBar";
 import UserCard from "components/Usercard";
 import SearchBar from "./SearchBar";
 import { User } from "types/app";
-import user1 from "config/user";
+import axios from "axios";
+import useAxiosPrivate from "hooks/useAxiosPrivate";
 
 const PlayersList: FunctionComponent<{ users: User[] }> = ({ users }) => {
   return (
-    <ul className="flex flex-col gap-2">
-      {users.map((user) => (
-        <li key={user.id}>
-          <ElementBar rank={-1}>
-            <div className="w-full flex justify-between items-center">
-              <UserCard user={user} />
-              <div className="flex items-center gap-4 sm:gap-8 sm:mr-8">
-                actions will be taken based on user relationship
-              </div>
-            </div>
-          </ElementBar>
-        </li>
-      ))}
-    </ul>
+    <>
+      {users.length ? (
+        <ul className="flex flex-col gap-2">
+          {users.map((user) => (
+            <li key={user.id}>
+              <ElementBar rank={-1}>
+                <div className="w-full flex justify-between items-center">
+                  <UserCard user={user} />
+                  <div className="flex items-center gap-4 sm:gap-8 sm:mr-8">
+                    actions will be taken based on user relationship
+                  </div>
+                </div>
+              </ElementBar>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className="w-full h-full flex justify-center items-center">
+          <p>no players found</p>
+        </div>
+      )}
+    </>
   );
 };
 
 const Players = () => {
-  const [loading, setLoading] = useState(true);
-  const [users, setUsers] = useState([] as User[]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [players, setPlayers] = useState([] as User[]);
+  const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
-    setLoading(false);
-    setUsers([user1]);
+    // fetch freinds
+    const abortController = new AbortController();
+    async function getFriends() {
+      try {
+        // fetch user data
+        const res = await axiosPrivate.get<User[]>(``, {
+          signal: abortController.signal,
+        });
+        // check payload
+        console.log("user", res.data);
+        setPlayers(res.data);
+        setLoading(false);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.log("axios error ", error.response?.status);
+          // if forbiden check user state and sign in
+        } else {
+          console.log(error);
+        }
+        setLoading(false);
+        setError("somting went wrong! please try again");
+      }
+      // setErrorStatusCode(400);
+    }
+    getFriends();
+    return () => {
+      abortController.abort();
+    };
   }, []);
 
   return (
     <div className="w-full h-full flex flex-col gap-4">
       <SearchBar />
       <ul className="flex flex-col gap-1 h-full overflow-auto no-scrollbar">
-        {!loading ? <PlayersList users={users} /> : <Spinner />}
+        {!loading ? <PlayersList users={players} /> : <Spinner />}
       </ul>
     </div>
   );

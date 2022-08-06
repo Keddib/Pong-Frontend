@@ -1,11 +1,39 @@
 import Search from "assets/icons/search.svg";
-const SearchBar = () => {
+import { FunctionComponent, Dispatch, SetStateAction } from "react";
+import { User } from "types/app";
+import useAxiosPrivate from "hooks/useAxiosPrivate";
+
+const SearchBar: FunctionComponent<{
+  stePlayers: Dispatch<SetStateAction<User[]>>;
+}> = ({ stePlayers }) => {
+  const axiosPrivate = useAxiosPrivate();
+
+  function SearchResult(query: string) {
+    async function getPlayers() {
+      try {
+        //
+        const res = await axiosPrivate.get(``, {
+          params: {
+            search: query,
+          },
+        });
+        console.log(res.data);
+        stePlayers(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getPlayers();
+  }
+
   return (
     <div className="search-bar">
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          console.log(`search for ${e.target.searchInput.value}`);
+          const query = e.target.searchInput.value;
+          console.log(`search for ${query}`);
+          SearchResult(query);
         }}
       >
         <label
