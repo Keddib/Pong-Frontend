@@ -4,16 +4,10 @@ import { FunctionComponent } from "react";
 import { User } from "types/app";
 
 import user1 from "config/user";
+import useAuth from "~/src/hooks/useAuth";
 
 function LoadingPlayer() {
   return (
-    // <div className=" w-fit flex items-center">
-    //   <div className="rounded-full w-16 h-16 bg-queenBlue/50 mr-2"></div>
-    //   <div className="grow flex flex-col gap-1">
-    //     <div className="rounded-3xl h-4 w-20 bg-queenBlue"></div>
-    //     <div className="rounded-3xl h-3 w-16 bg-queenBlue"></div>
-    //   </div>
-    // </div>
     <div className="animate-pulse flex space-x-4">
       <div className="rounded-full w-16 h-16 bg-queenBlue/70"></div>
       <div className="flex-1 space-y-2 pt-2">
@@ -32,12 +26,14 @@ type Props = {
 };
 
 const Waiting: FunctionComponent<Props> = ({ opponent, setGameState }) => {
+  const { user } = useAuth();
+
   return (
     <div className="m-auto w-full pt-8 flex flex-col items-center gap-10">
       <Logo link="" className="animate-bounce" />
       <p className="text-xl font-poppins">wating for opponent...</p>
       <div className="players flex flex-col gap-10 sm:flex-row items-center">
-        <UserCard user={user1} />
+        <UserCard user={user} />
         <h3 className="text-crayola font-light">VS</h3>
         {opponent ? <UserCard user={opponent} /> : <LoadingPlayer />}
       </div>

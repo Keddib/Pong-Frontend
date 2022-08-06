@@ -4,8 +4,8 @@ import { User } from "types/app";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 
 const SearchBar: FunctionComponent<{
-  stePlayers: Dispatch<SetStateAction<User[]>>;
-}> = ({ stePlayers }) => {
+  setPlayers: Dispatch<SetStateAction<User[]>>;
+}> = ({ setPlayers }) => {
   const axiosPrivate = useAxiosPrivate();
 
   function SearchResult(query: string) {
@@ -18,7 +18,7 @@ const SearchBar: FunctionComponent<{
           },
         });
         console.log(res.data);
-        stePlayers(res.data);
+        setPlayers(res.data);
       } catch (error) {
         console.log(error);
       }
