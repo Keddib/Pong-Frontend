@@ -207,7 +207,7 @@
 
   /* rooms */
   .search-bar {
-    @apply m-auto w-full md:w-1/3;
+    @apply m-auto w-full;
   }
 
   .search-bar-input {

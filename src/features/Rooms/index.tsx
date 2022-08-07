@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import TabBar from "components/TabBar";
 import Players from "./components/Players";
-import ChatRooms from "./components/ChatRooms";
+import Rooms from "./components/Rooms";
 
 //  full screen on mobile version
 // import { FullScreen, useFullScreenHandle } from "react-full-screen";
@@ -11,7 +11,7 @@ import ChatRooms from "./components/ChatRooms";
 // const handle = useFullScreenHandle();
 /* <Route path="create" element={<EditProfile />} /> */
 
-function Rooms() {
+function RoomsPage() {
   const links = {
     first: {
       name: "Rooms",
@@ -28,7 +28,7 @@ function Rooms() {
       <div className=" rounded-2xl py-4 pl-4 flex flex-col gap-4 w-full h-full">
         <TabBar links={links} />
         <Routes>
-          <Route index element={<ChatRooms />} />
+          <Route index element={<Rooms />} />
           <Route path="players" element={<Players />} />
         </Routes>
       </div>
@@ -36,4 +36,4 @@ function Rooms() {
   );
 }
 
-export default Rooms;
+export default RoomsPage;

@@ -1,31 +1,9 @@
 import Search from "assets/icons/search.svg";
 import { FunctionComponent, Dispatch, SetStateAction } from "react";
-import { User } from "types/app";
-import useAxiosPrivate from "hooks/useAxiosPrivate";
 
 const SearchBar: FunctionComponent<{
-  setPlayers: Dispatch<SetStateAction<User[]>>;
-}> = ({ setPlayers }) => {
-  const axiosPrivate = useAxiosPrivate();
-
-  function SearchResult(query: string) {
-    async function getPlayers() {
-      try {
-        //
-        const res = await axiosPrivate.get(``, {
-          params: {
-            search: query,
-          },
-        });
-        console.log(res.data);
-        setPlayers(res.data);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    getPlayers();
-  }
-
+  setQuery: Dispatch<SetStateAction<string>>;
+}> = ({ setQuery }) => {
   return (
     <div className="search-bar">
       <form
@@ -33,7 +11,7 @@ const SearchBar: FunctionComponent<{
           e.preventDefault();
           const query = e.target.searchInput.value;
           console.log(`search for ${query}`);
-          SearchResult(query);
+          setQuery(query);
         }}
       >
         <label

@@ -37,6 +37,7 @@ const PlayersList: FunctionComponent<{ users: User[] }> = ({ users }) => {
 const Players = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [query, setQuery] = useState("");
   const [players, setPlayers] = useState([] as User[]);
   const axiosPrivate = useAxiosPrivate();
 
@@ -69,11 +70,11 @@ const Players = () => {
     return () => {
       abortController.abort();
     };
-  }, []);
+  }, [query]);
 
   return (
     <div className="w-full h-full flex flex-col gap-4">
-      <SearchBar setPlayers={setPlayers} />
+      <SearchBar setQuery={setQuery} />
       <ul className="flex flex-col gap-1 h-full overflow-auto no-scrollbar">
         {!loading ? <PlayersList users={players} /> : <Spinner />}
       </ul>
