@@ -44,7 +44,8 @@
     "react-dom": "^18.2.0",
     "react-p5": "^1.3.30",
     "react-router-dom": "^6.3.0",
-    "socket.io-client": "^4.5.1"
+    "socket.io-client": "^4.5.1",
+    "uid": "^2.0.0"
   },
   "alias": {
     "src": "./src",

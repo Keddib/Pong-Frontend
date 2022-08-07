@@ -26,7 +26,7 @@ const LeaderBoardList: FunctionComponent<Props> = ({ users }) => {
   return (
     <>
       {list.length ? (
-        <ul className="flex flex-col gap-2">list</ul>
+        <ul className="flex flex-col gap-2">{list}</ul>
       ) : (
         <div className="w-full h-full flex justify-center items-center flex-col">
           <p className="text-center">Leaderboard is empty</p>

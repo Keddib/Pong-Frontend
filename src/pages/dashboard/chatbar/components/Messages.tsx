@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, FunctionComponent } from "react";
 import { Link } from "react-router-dom";
-import TimeAgo from "javascript-time-ago";
+// import TimeAgo from "javascript-time-ago";
 import { uid } from "uid";
 import useAuth from "hooks/useAuth";
 
@@ -40,7 +40,7 @@ const Message: FunctionComponent<{ message: Message; own: boolean }> = ({
     <div className={own ? "message-wrapper own" : "message-wrapper"}>
       <Link to={`/profile/${message.sender}`}>{message.sender}</Link>
       <p>{message.text}</p>
-      <span>{TimeAgo.format(message.date)}</span>
+      <span>{message.date}</span>
     </div>
   );
 };
