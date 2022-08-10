@@ -91,7 +91,7 @@ const Profile = () => {
     // return function cleanup() {
     //   abortController.abort();
     // };
-  }, []);
+  }, [username]);
 
   return (
     <>

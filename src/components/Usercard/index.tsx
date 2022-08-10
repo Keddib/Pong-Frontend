@@ -5,7 +5,7 @@ import { FunctionComponent } from "react";
 
 const UserCard: FunctionComponent<{ user: User }> = ({ user }) => {
   return (
-    <Link to={"/"} className="user-wrapper group">
+    <Link to={"/profile/"+user.username} className="user-wrapper group">
       <div className="relative">
         <div className="rounded-full bg-queenBlue/50 w-10 h-10 sm:w-16 sm:h-16">
           <Image imageUrl={user.avatar} alt="user" className="user-img" />
