@@ -1,4 +1,4 @@
-import welcomeBg from "assets/images/home.gif";
+import welcomeBg from "assets/images/Home.gif";
 import LeftArrow from "assets/icons/caret-right.svg";
 import { Link } from "react-router-dom";
 import { FunctionComponent } from "react";

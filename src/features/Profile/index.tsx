@@ -41,6 +41,7 @@ const Profile = () => {
         const gameRes = await axiosPrivate.get(`game/history/${id}`, {
           signal: abortController.signal,
         });
+        console.log("games " , gameRes.data)
         setGames(gameRes.data);
       } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -54,37 +55,42 @@ const Profile = () => {
     async function getUserData() {
       try {
         // fetch user data
-        const res = await axiosPrivate.get<User>(`users/${username}`, {
+        const res = await axiosPrivate.get<User>(`user/${username}`, {
           signal: abortController.signal,
         });
         // check if payload is user
         console.log("user", res.data);
         setCurrentUser(res.data);
-        setIsLoading(false);
+        return res.data.uid
       } catch (error) {
         if (axios.isAxiosError(error)) {
-          console.log("axios error ", error.response?.status);
+          console.log("axios error ",error, error.response?.status);
           // if forbiden check user state and sign in
         } else {
           console.log(error);
         }
-        setIsLoading(false);
+        //setIsLoading(false);
       }
-      setErrorStatusCode(400);
+      return ""
+      
     }
-    if (user.username !== username) {
-      getUserData().then(() => {
-        getUserGames(currentUser.uid);
-      });
-    } else {
-      setCurrentUser({ ...user, rules: "me" });
-      getUserGames(user.uid);
+    // if (user.username !== username) {
+    //   getUserData().then(() => {
+    //     getUserGames(currentUser.uid);
+    //   });
+    // } else {
+    //   setCurrentUser({ ...user, rules: "me" });
+    //   getUserGames(user.uid);
+    //   setIsLoading(false);
+    // }
+    getUserData().then((uid) => {
+      getUserGames(uid);
       setIsLoading(false);
-    }
+    });
 
-    return function cleanup() {
-      abortController.abort();
-    };
+    // return function cleanup() {
+    //   abortController.abort();
+    // };
   }, []);
 
   return (
