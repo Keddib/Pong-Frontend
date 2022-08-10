@@ -229,32 +229,32 @@
     @apply grow flex flex-col gap-2 overflow-auto no-scrollbar;
   }
   .chat-messages {
-    @apply grow p-2 overflow-auto no-scrollbar flex flex-col gap-1;
+    @apply grow p-2 overflow-auto no-scrollbar flex flex-col gap-2;
   }
   .message-wrapper {
     @apply w-fit flex flex-col;
   }
   .message-wrapper a {
-    @apply pl-2 font-semibold;
+    @apply pl-2 font-light hover:font-medium transition;
   }
   .message-wrapper p {
     @apply bg-queenBlue rounded-2xl p-2;
   }
   .message-wrapper span {
-    @apply text-xs self-end;
+    @apply text-xs self-end font-light;
   }
 
-  .message-wrapper .own {
-    @apply w-fit flex flex-col self-end;
+  .message-wrapper.own {
+    @apply self-end;
   }
-  .message-wrapper .own a {
-    @apply pl-2 font-semibold self-end;
+  .message-wrapper.own a {
+    @apply self-end;
   }
-  .message-wrapper .own p {
-    @apply bg-pictonBlue rounded-2xl p-2;
+  .message-wrapper.own p {
+    @apply bg-pictonBlue;
   }
-  .message-wrapper .own span {
-    @apply text-xs self-start;
+  .message-wrapper.own span {
+    @apply self-start;
   }
 
   .message-input-wrapper {

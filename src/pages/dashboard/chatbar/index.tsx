@@ -4,9 +4,33 @@ import Messages from "./components/Messages";
 import MessageInput from "./components/MessageInput";
 import { useEffect, useState } from "react";
 
+type Message = {
+  sender: string;
+  text: string;
+  date: string;
+};
+
+const chats = [
+  {
+    sender: "keddib",
+    text: "wash a saat",
+    date: "10 min ago",
+  },
+  {
+    sender: "malaoui",
+    text: "wash a 3chiiri",
+    date: "10 min ago",
+  },
+  {
+    sender: "yahya",
+    text: "drari chno ba9i lina",
+    date: "11 min ago",
+  },
+];
+
 const ChatBar = () => {
   const xl = useMedia(mediaQueries.xl);
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([] as Message[]);
 
   useEffect(() => {
     // fetch messages

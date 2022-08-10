@@ -15,13 +15,19 @@ const ProfileOptions: FunctionComponent<{
       </NavLink>
     );
   } else if (rules == "friend") {
-    return <h1>friend</h1>;
+    return (
+      <button className="button--3 px-4 text-sm md:px-8 md:text-xl">
+        friend
+      </button>
+    );
   } else if (rules == "requested") {
     return <h1>request sent</h1>;
-  } else if (rules == "none") {
-    return <h1>add friend</h1>;
   }
-  return <></>;
+  return (
+    <button className="button--3 px-4 text-sm md:px-8 md:text-xl">
+      add friend
+    </button>
+  );
 };
 
 export default ProfileOptions;

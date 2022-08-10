@@ -1,5 +1,5 @@
 export interface User {
-  id: number;
+  uid: string;
   username: string;
   nickname: string;
   avatar: string;
@@ -13,8 +13,10 @@ export interface User {
 
 export interface Game {
   id: number;
-  mode: 1 | 2 | 3;
+  mode: string;
   status: "playing" | "done";
-  player: [User, User];
-  scores: [number, number];
+  playerOne: User;
+  playerTwo: User;
+  scoreOne: number;
+  scoreTwo: number;
 }

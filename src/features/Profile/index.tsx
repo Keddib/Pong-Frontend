@@ -7,7 +7,7 @@ import OverView from "./components/Overview";
 import MatchHistory from "./components/Matchhistory";
 import EditProfile from "./components/Updateprofile";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
-import { User } from "types/app";
+import { Game, User } from "types/app";
 import useAuth from "hooks/useAuth";
 import axios from "axios";
 import useErrorStatus from "hooks/useErrorStatus";
@@ -26,6 +26,7 @@ const links = {
 const Profile = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState({} as User);
+  const [games, setGames] = useState([] as Game[]);
   const { user } = useAuth();
   const { username } = useParams();
   const axiosPrivate = useAxiosPrivate();
@@ -35,6 +36,21 @@ const Profile = () => {
     const abortController = new AbortController();
     console.log("profile of", username);
     links.first.path = `/profile/${username}`;
+    async function getUserGames(id: string) {
+      try {
+        const gameRes = await axiosPrivate.get(`game/history/${id}`, {
+          signal: abortController.signal,
+        });
+        setGames(gameRes.data);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.log("axios error ", error.response?.status);
+          // if forbiden check user state and sign in
+        } else {
+          console.log(error);
+        }
+      }
+    }
     async function getUserData() {
       try {
         // fetch user data
@@ -57,15 +73,19 @@ const Profile = () => {
       setErrorStatusCode(400);
     }
     if (user.username !== username) {
-      getUserData();
+      getUserData().then(() => {
+        getUserGames(currentUser.uid);
+      });
     } else {
       setCurrentUser({ ...user, rules: "me" });
+      getUserGames(user.uid);
       setIsLoading(false);
     }
+
     return function cleanup() {
       abortController.abort();
     };
-  }, [user, username, axiosPrivate, setErrorStatusCode]);
+  }, []);
 
   return (
     <>
@@ -75,12 +95,17 @@ const Profile = () => {
           <div className="bg-queenBlue/50 rounded-2xl md:p-2 py-4  flex flex-col gap-4">
             <TabBar links={links} />
             <Routes>
-              <Route index element={<OverView user={currentUser} />} />
+              <Route
+                index
+                element={<OverView user={currentUser} game={games[0]} />}
+              />
               <Route
                 path="match-history"
-                element={<MatchHistory username={currentUser.username} />}
+                element={<MatchHistory games={games} />}
               />
-              <Route path="edit" element={<EditProfile />} />
+              {currentUser.rules == "me" && (
+                <Route path="edit" element={<EditProfile />} />
+              )}
               <Route element={<ErrorPath />} />
             </Routes>
           </div>

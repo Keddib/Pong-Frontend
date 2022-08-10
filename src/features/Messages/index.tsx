@@ -11,7 +11,7 @@ const links = {
   },
   second: {
     name: "rooms",
-    path: "",
+    path: "rooms",
   },
 };
 

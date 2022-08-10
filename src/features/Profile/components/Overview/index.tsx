@@ -3,9 +3,12 @@ import Star from "assets/icons/star.svg";
 import CircleX from "assets/icons/circle-xmark.svg";
 import GameResult from "features/Profile/components/Gameresult";
 import { FunctionComponent } from "react";
-import { User } from "types/app";
+import { User, Game } from "types/app";
 
-const OverView: FunctionComponent<{ user: User }> = ({ user }) => {
+const OverView: FunctionComponent<{ user: User; game: Game }> = ({
+  user,
+  game,
+}) => {
   return (
     <>
       <div className="rounded-2xl bg-spaceCadet p-4 flex flex-col gap-2 sm:gap-4 md:gap-8">
@@ -15,7 +18,10 @@ const OverView: FunctionComponent<{ user: User }> = ({ user }) => {
             <p>{`${user.xp} xp`}</p>
           </div>
           <div className="bg-lotion/30 rounded-2xl h-4">
-            <div className="rounded-2xl w-2/3 bg-crayola h-full"></div>
+            <div
+              className="rounded-2xl bg-crayola h-full"
+              style={{ width: ((user.xp / 100) * 100).toString() + "%" }}
+            ></div>
           </div>
         </div>
         <div className="flex flex-col gap-2 md:flex-row md:gap-4 justify-around">
@@ -25,7 +31,7 @@ const OverView: FunctionComponent<{ user: User }> = ({ user }) => {
             </div>
             <div>
               <span className="font-beaufort font-bold text-3xl">
-                {user.wins + user.losses ? user.wins + user.losses : 0}
+                {user.wins + user.losses}
               </span>
               <p className="text-lotion/50">game played</p>
             </div>
@@ -36,7 +42,7 @@ const OverView: FunctionComponent<{ user: User }> = ({ user }) => {
             </div>
             <div>
               <span className="font-beaufort font-bold text-3xl">
-                {user.wins ? user.wins : 0}
+                {user.wins}
               </span>
               <p className="text-lotion/50">game wins</p>
             </div>
@@ -47,7 +53,7 @@ const OverView: FunctionComponent<{ user: User }> = ({ user }) => {
             </div>
             <div>
               <span className="font-beaufort font-bold text-3xl">
-                {user.losses ? user.losses : 0}
+                {user.losses}
               </span>
               <p className="text-lotion/50">game loses</p>
             </div>
@@ -57,7 +63,7 @@ const OverView: FunctionComponent<{ user: User }> = ({ user }) => {
 
       <div className="rounded-2xl bg-spaceCadet p-2 md:p-4 flex flex-col gap-2">
         <h2 className="capitalize mb-2 text-xl md:text-3xl">recent game</h2>
-        {/* <GameResult /> user.RecentGame */}
+        {game ? <GameResult game={game} /> : <p> no game found</p>}
       </div>
     </>
   );

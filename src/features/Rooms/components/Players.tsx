@@ -74,7 +74,9 @@ const Players = () => {
 
   return (
     <div className="w-full h-full flex flex-col gap-4">
-      <SearchBar setQuery={setQuery} />
+      <div className="w-full md:w-1/2 m-auto">
+        <SearchBar setQuery={setQuery} />
+      </div>
       <ul className="flex flex-col gap-1 h-full overflow-auto no-scrollbar">
         {!loading ? <PlayersList users={players} /> : <Spinner />}
       </ul>

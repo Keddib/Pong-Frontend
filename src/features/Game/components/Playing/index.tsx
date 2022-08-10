@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef, FunctionComponent } from "react";
 import { mediaQueries } from "config/index";
 import useMedia from "hooks/useMedia";
 import UserCard from "components/Usercard";
-import { User } from "types/app";
+import { User } from "types/user";
 
 type Players = User[];
 
