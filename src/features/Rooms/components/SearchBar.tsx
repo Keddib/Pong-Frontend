@@ -1,15 +1,18 @@
 import Search from "assets/icons/search.svg";
-import { FunctionComponent, Dispatch, SetStateAction } from "react";
+import { FunctionComponent, Dispatch, SetStateAction, useEffect } from "react";
 
 const SearchBar: FunctionComponent<{
   setQuery: Dispatch<SetStateAction<string>>;
 }> = ({ setQuery }) => {
+  useEffect(()=>{
+    setQuery("");
+  },[])
   return (
     <div className="search-bar">
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          const query = e.target.searchInput.value;
+          const query = (e.target as any).searchInput.value;
           console.log(`search for ${query}`);
           setQuery(query);
         }}

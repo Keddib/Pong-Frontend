@@ -13,7 +13,7 @@ const PlayersList: FunctionComponent<{ users: User[] }> = ({ users }) => {
       {users.length ? (
         <ul className="flex flex-col gap-2">
           {users.map((user) => (
-            <li key={user.id}>
+            <li key={user.uid}>
               <ElementBar rank={-1}>
                 <div className="w-full flex justify-between items-center">
                   <UserCard user={user} />
@@ -37,7 +37,7 @@ const PlayersList: FunctionComponent<{ users: User[] }> = ({ users }) => {
 const Players = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState("@");
   const [players, setPlayers] = useState([] as User[]);
   const axiosPrivate = useAxiosPrivate();
 
@@ -47,7 +47,7 @@ const Players = () => {
     async function getFriends() {
       try {
         // fetch user data
-        const res = await axiosPrivate.get<User[]>(``, {
+        const res = await axiosPrivate.get<User[]>("user/search/"+query, {
           signal: abortController.signal,
         });
         // check payload
