@@ -1,3 +1,5 @@
+import DmIcon from "assets/icons/dm.svg";
+import GamePad from "assets/icons/gamepad.svg";
 import { FunctionComponent, useEffect, useState } from "react";
 import { Spinner } from "components/Loading";
 import ElementBar from "components/ElementBar";
@@ -18,7 +20,12 @@ const PlayersList: FunctionComponent<{ users: User[] }> = ({ users }) => {
                 <div className="w-full flex justify-between items-center">
                   <UserCard user={user} />
                   <div className="flex items-center gap-4 sm:gap-8 sm:mr-8">
-                    actions will be taken based on user relationship
+                    <button className="send game request">
+                      <GamePad className="w-6 h-6 sm:w-8 sm:h-8 fill-lotion/50 hover:fill-lotion ease-in duration-150" />
+                    </button>
+                    <button className="start chating">
+                      <DmIcon className="w-6 h-4 sm:w-8 sm:h-6 fill-lotion/50 hover:fill-lotion ease-in duration-150" />
+                    </button>
                   </div>
                 </div>
               </ElementBar>
@@ -36,7 +43,6 @@ const PlayersList: FunctionComponent<{ users: User[] }> = ({ users }) => {
 
 const Players = () => {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
   const [query, setQuery] = useState("");
   const [players, setPlayers] = useState([] as User[]);
   const axiosPrivate = useAxiosPrivate();
@@ -47,9 +53,12 @@ const Players = () => {
     async function getFriends() {
       try {
         // fetch user data
-        const res = await axiosPrivate.get<User[]>("user/search/" + query, {
-          signal: abortController.signal,
-        });
+        const res = await axiosPrivate.get<User[]>(
+          `user/search?query=` + query,
+          {
+            signal: abortController.signal,
+          }
+        );
         // check payload
         console.log("user", res.data);
         setPlayers(res.data);
@@ -62,7 +71,6 @@ const Players = () => {
           console.log(error);
         }
         setLoading(false);
-        setError("somting went wrong! please try again");
       }
       // setErrorStatusCode(400);
     }
