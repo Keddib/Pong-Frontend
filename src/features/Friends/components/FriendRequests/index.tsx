@@ -1,20 +1,42 @@
 import Check from "assets/icons/check.svg";
 import Xmark from "assets/icons/xmark.svg";
 import { FunctionComponent, useState } from "react";
-import { User } from "types/app";
+import { FriendRequest, User } from "types/app";
 import ElementBar from "components/ElementBar";
 import UserCard from "components/Usercard";
+import useAxiosPrivate from "~/src/hooks/useAxiosPrivate";
 
-function hundleAccepteRequest() {
-  return true;
-}
-
-function hundleCancelRequest() {
-  return true;
-}
-
-const RequestListItem: FunctionComponent<{ user: User }> = ({ user }) => {
+const RequestListItem: FunctionComponent<{ user: User; ReqUid: string }> = ({
+  user,
+  ReqUid,
+}) => {
   const [isDone, setDone] = useState(false);
+  const axiosPrivate = useAxiosPrivate();
+
+  function hundleAccepteRequest(ReqUid: string) {
+    console.log("req", ReqUid);
+    try {
+      axiosPrivate.post("/friends/accept", {
+        uid: ReqUid,
+        status: true,
+      });
+    } catch (err) {
+      return false;
+    }
+    return true;
+  }
+
+  function hundleCancelRequest(ReqUid: string) {
+    console.log("req", ReqUid);
+    try {
+      axiosPrivate.post("/friends/decline", {
+        uid: ReqUid,
+      });
+    } catch (err) {
+      return false;
+    }
+    return true;
+  }
 
   return (
     <ElementBar rank={-1}>
@@ -28,7 +50,7 @@ const RequestListItem: FunctionComponent<{ user: User }> = ({ user }) => {
               <button
                 className="rounded-full hover:bg-red/10 p-[2px]"
                 onClick={() => {
-                  setDone(hundleCancelRequest());
+                  setDone(hundleCancelRequest(ReqUid));
                 }}
               >
                 <Xmark className="w-6 h-6 sm:w-8 sm:h-8 fill-lotion/50 hover:fill-red ease-in duration-150" />
@@ -36,7 +58,7 @@ const RequestListItem: FunctionComponent<{ user: User }> = ({ user }) => {
               <button
                 className="rounded-full hover:bg-electricGreen/10 p-[2px]"
                 onClick={() => {
-                  setDone(hundleAccepteRequest());
+                  setDone(hundleAccepteRequest(ReqUid));
                 }}
               >
                 <Check className="w-6 h-6 sm:w-8 sm:h-8 fill-lotion/50 hover:fill-electricGreen ease-in duration-150" />
@@ -49,10 +71,12 @@ const RequestListItem: FunctionComponent<{ user: User }> = ({ user }) => {
   );
 };
 
-const RequestList: FunctionComponent<{ requests: User[] }> = ({ requests }) => {
+const RequestList: FunctionComponent<{ requests: FriendRequest[] }> = ({
+  requests,
+}) => {
   const requestsArray = requests.map((request) => (
     <li key={request.uid}>
-      <RequestListItem user={request} />
+      <RequestListItem user={request.sender} ReqUid={request.uid} />
     </li>
   ));
 

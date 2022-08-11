@@ -5,7 +5,7 @@ import FriendsList from "./components/Friends";
 import FriendRequests from "./components/FriendRequests";
 import TabBar from "components/TabBar";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
-import { User } from "types/app";
+import { User, FriendRequest } from "types/app";
 import { Spinner } from "~/src/components/Loading";
 
 const links = {
@@ -23,7 +23,7 @@ export default function Friends() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [friends, setFriends] = useState([] as User[]);
-  const [friendRequests, setFriendRequests] = useState([] as User[]);
+  const [friendRequests, setFriendRequests] = useState([] as FriendRequest[]);
   const axiosPrivate = useAxiosPrivate();
 
   // error should be checked
@@ -35,7 +35,7 @@ export default function Friends() {
     async function getFriends() {
       try {
         // fetch user data
-        const res = await axiosPrivate.get<User[]>("/friendsList", {
+        const res = await axiosPrivate.get<User[]>("/friends/all", {
           signal: abortController.signal,
         });
         // check payload
@@ -67,11 +67,15 @@ export default function Friends() {
     async function getFriendRequests() {
       try {
         // fetch user data
-        const res = await axiosPrivate.get<User[]>("/friendRequests", {
-          signal: abortController.signal,
-        });
+        const res = await axiosPrivate.get<FriendRequest[]>(
+          "/friends/requests",
+          {
+            signal: abortController.signal,
+          }
+        );
         // check payload
         console.log("user", res.data);
+
         setFriendRequests(res.data);
       } catch (error) {
         if (axios.isAxiosError(error)) {

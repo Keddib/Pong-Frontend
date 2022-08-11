@@ -8,7 +8,7 @@ export interface User {
   losses: number;
   xp: number;
   level: number;
-  rules: "me" | "friend" | "requested" | "none";
+  rule: "me" | "friend" | "requested" | "none";
 }
 
 export interface Game {
@@ -19,4 +19,10 @@ export interface Game {
   playerTwo: User;
   scoreOne: number;
   scoreTwo: number;
+}
+
+export interface FriendRequest {
+  uid: string;
+  status: boolean;
+  sender: User;
 }

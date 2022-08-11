@@ -27,7 +27,7 @@ const Profile = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState({} as User);
   const [games, setGames] = useState([] as Game[]);
-  const { user } = useAuth();
+  const { user, signin } = useAuth();
   const { username } = useParams();
   const axiosPrivate = useAxiosPrivate();
   const { setErrorStatusCode } = useErrorStatus();
@@ -41,7 +41,7 @@ const Profile = () => {
         const gameRes = await axiosPrivate.get(`game/history/${id}`, {
           signal: abortController.signal,
         });
-        console.log("games " , gameRes.data)
+        console.log("games ", gameRes.data);
         setGames(gameRes.data);
       } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -60,19 +60,22 @@ const Profile = () => {
         });
         // check if payload is user
         console.log("user", res.data);
+        if (res.data.uid == user.uid) {
+          signin(res.data);
+        }
         setCurrentUser(res.data);
-        return res.data.uid
+        return res.data.uid;
       } catch (error) {
         if (axios.isAxiosError(error)) {
-          console.log("axios error ",error, error.response?.status);
+          console.log("axios error ", error, error.response?.status);
           // if forbiden check user state and sign in
         } else {
           console.log(error);
         }
-        //setIsLoading(false);
+        setErrorStatusCode(404);
+        setIsLoading(false);
       }
-      return ""
-      
+      return "";
     }
     // if (user.username !== username) {
     //   getUserData().then(() => {
@@ -109,7 +112,7 @@ const Profile = () => {
                 path="match-history"
                 element={<MatchHistory games={games} />}
               />
-              {currentUser.rules == "me" && (
+              {currentUser.rule == "me" && (
                 <Route path="edit" element={<EditProfile />} />
               )}
               <Route element={<ErrorPath />} />
