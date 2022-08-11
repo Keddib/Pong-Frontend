@@ -37,7 +37,7 @@ const PlayersList: FunctionComponent<{ users: User[] }> = ({ users }) => {
 const Players = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [query, setQuery] = useState("@");
+  const [query, setQuery] = useState("");
   const [players, setPlayers] = useState([] as User[]);
   const axiosPrivate = useAxiosPrivate();
 
@@ -47,7 +47,7 @@ const Players = () => {
     async function getFriends() {
       try {
         // fetch user data
-        const res = await axiosPrivate.get<User[]>("user/search/"+query, {
+        const res = await axiosPrivate.get<User[]>("user/search/" + query, {
           signal: abortController.signal,
         });
         // check payload

@@ -1,50 +1,48 @@
-import { useState, useEffect } from "react";
-import { Spinner } from "components/Loading";
+import DmIcon from "assets/icons/dm.svg";
+import GamePad from "assets/icons/gamepad.svg";
+import { FunctionComponent } from "react";
+import ElementBar from "~/src/components/ElementBar";
+import UserCard from "~/src/components/Usercard";
+import { Link } from "react-router-dom";
 import { User } from "types/app";
-import axios from "axios";
-import FriendList from "./FriendList";
-import useAxiosPrivate from "~/src/hooks/useAxiosPrivate";
 
-export default function Friends() {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [friends, setFriends] = useState([] as User[]);
-  const axiosPrivate = useAxiosPrivate();
+const FriendListItems: FunctionComponent<{ user: User }> = ({ user }) => {
+  return (
+    <ElementBar rank={-1}>
+      <div className="w-full flex justify-between items-center">
+        <UserCard user={user} />
+        <div className="flex items-center gap-4 sm:gap-8 sm:mr-8">
+          <button className="send game request">
+            <GamePad className="w-6 h-6 sm:w-8 sm:h-8 fill-lotion/50 hover:fill-lotion ease-in duration-150" />
+          </button>
+          <button className="start chating">
+            <DmIcon className="w-6 h-4 sm:w-8 sm:h-6 fill-lotion/50 hover:fill-lotion ease-in duration-150" />
+          </button>
+        </div>
+      </div>
+    </ElementBar>
+  );
+};
 
-  useEffect(() => {
-    // fetch freinds
-    const abortController = new AbortController();
-    async function getFriends() {
-      try {
-        // fetch user data
-        const res = await axiosPrivate.get<User[]>(``, {
-          signal: abortController.signal,
-        });
-        // check payload
-        console.log("user", res.data);
-        setFriends(res.data);
-        setLoading(false);
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          console.log("axios error ", error.response?.status);
-          // if forbiden check user state and sign in
-        } else {
-          console.log(error);
-        }
-        setLoading(false);
-        setError("somting went wrong! please try again");
-      }
-      // setErrorStatusCode(400);
-    }
-    getFriends();
-    return () => {
-      abortController.abort();
-    };
-  }, []);
+const FriendList: FunctionComponent<{ friends: User[] }> = ({ friends }) => {
+  const friendsArray = friends.map((friend) => (
+    <li key={friend.uid}>
+      <FriendListItems user={friend} />
+    </li>
+  ));
 
   return (
     <ul className="flex flex-col gap-1 h-full overflow-auto no-scrollbar">
-      {loading ? <Spinner /> : <FriendList friends={friends} />}
+      {friendsArray.length ? (
+        <>{friendsArray}</>
+      ) : (
+        <div className="w-full h-full flex justify-center items-center flex-col gap-4">
+          <p>search for friens</p>
+          <Link to="/rooms/players">serach page</Link>
+        </div>
+      )}
     </ul>
   );
-}
+};
+
+export default FriendList;
