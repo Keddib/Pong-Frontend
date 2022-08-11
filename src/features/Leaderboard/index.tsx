@@ -18,12 +18,13 @@ export default function Leaderboard() {
     async function getFriends() {
       try {
         // fetch user data
-        const res = await axiosPrivate.get<User[]>(``, {
+        const res = await axiosPrivate.get<User[]>(`game/leaderboard`, {
           signal: abortController.signal,
         });
         // check payload
         console.log("user", res.data);
-        setPlayers(res.data);
+        if(res.data)
+          setPlayers(res.data);
         setLoading(false);
       } catch (error) {
         if (axios.isAxiosError(error)) {
