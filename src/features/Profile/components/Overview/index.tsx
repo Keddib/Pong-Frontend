@@ -9,18 +9,19 @@ const OverView: FunctionComponent<{ user: User; game: Game }> = ({
   user,
   game,
 }) => {
+  const lvlFactor = 40;
   return (
     <>
       <div className="rounded-2xl bg-spaceCadet p-4 flex flex-col gap-2 sm:gap-4 md:gap-8">
         <div>
           <div className="flex justify-between items-center px-2">
             <p>{`Lvl. ${user.level}`}</p>
-            <p>{`${user.xp} xp`}</p>
+            <p>{`${user.xp} xp / ${user.level * lvlFactor} xp `}</p>
           </div>
           <div className="bg-lotion/30 rounded-2xl h-4">
             <div
               className="rounded-2xl bg-crayola h-full"
-              style={{ width: ((user.xp / 100) * 100).toString() + "%" }}
+              style={{ width: ((user.xp / (user.level * lvlFactor)) * 100).toString() + "%" }}
             ></div>
           </div>
         </div>
