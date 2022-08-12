@@ -9,19 +9,6 @@ import useAuth from "~/src/hooks/useAuth";
 import { GameState } from "./components/Pong/utils/Types";
 import { axiosUsers, checkUserSession } from "~/src/services/axios";
 
-type IStatus = "online" | "offline" | "playing" | "spectating";
-
-var user1 = {
-  id: 12134,
-  Username: "AlaeOX7",
-  Nickname: "AlaeOX7",
-  Status: "online" as IStatus,
-  Avatar: "http://localhost:3500/upload/402e5238f17f06fc7b8d08617758bb8c.jpg",
-  Wins: 100,
-  Losses: 60,
-  XP: 439,
-  Level: 11,
-};
 interface LocationState {
   mode: string;
 }
@@ -42,7 +29,7 @@ export default function Game() {
   const socket = useRef(null as null | Socket);
   let once = false;
   useEffect(() => {
-    socket.current = io("ws://localhost:3001", {
+    socket.current = io("ws://10.11.4.2:3001", {
       withCredentials: true,
       extraHeaders: { Authorization: "Bearer " + getAccessToken() },
     }).on("connect", () => {

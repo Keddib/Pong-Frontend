@@ -77,23 +77,14 @@ const Profile = () => {
       }
       return "";
     }
-    // if (user.username !== username) {
-    //   getUserData().then(() => {
-    //     getUserGames(currentUser.uid);
-    //   });
-    // } else {
-    //   setCurrentUser({ ...user, rules: "me" });
-    //   getUserGames(user.uid);
-    //   setIsLoading(false);
-    // }
     getUserData().then((uid) => {
       getUserGames(uid);
       setIsLoading(false);
     });
 
-    // return function cleanup() {
-    //   abortController.abort();
-    // };
+    return function cleanup() {
+      abortController.abort();
+    };
   }, [username]);
 
   return (
