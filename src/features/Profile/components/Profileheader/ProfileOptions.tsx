@@ -3,10 +3,10 @@ import { NavLink } from "react-router-dom";
 import useAuth from "~/src/hooks/useAuth";
 import useAxiosPrivate from "~/src/hooks/useAxiosPrivate";
 const ProfileOptions: FunctionComponent<{
-  rules: "me" | "friend" | "requested" | "none";
+  rule: string;
   uid: string;
-}> = ({ rules, uid }) => {
-  if (rules == "me") {
+}> = ({ rule, uid }) => {
+  if (rule == "me") {
     return (
       <NavLink
         to="edit"
@@ -16,13 +16,13 @@ const ProfileOptions: FunctionComponent<{
         edit profile
       </NavLink>
     );
-  } else if (rules == "friend") {
+  } else if (rule == "friends") {
     return (
       <button className="button--3 px-4 text-sm md:px-8 md:text-xl">
         friend
       </button>
     );
-  } else if (rules == "requested") {
+  } else if (rule == "requested") {
     return <h1>request sent</h1>;
   }
   return <AddFriend uid={uid} />;
@@ -37,27 +37,26 @@ const AddFriend: FunctionComponent<{ uid: string }> = ({ uid }) => {
 
   function handleAddFriend() {
     async function addFriend() {
-      const res = axiosPrivate.post("/friends/add", {
-        receiver: uid,
-        sender: user.uid,
-      });
-    }
-
-    try {
-      addFriend().then(() => {
+      try {
+        await axiosPrivate.post("/friends/add", {
+          receiver: uid,
+          sender: user.uid,
+        });
         setDone(true);
-      });
-    } catch (error) {
-      console.log(error);
+      } catch (error) {
+        console.log(error);
+      }
     }
+    addFriend();
   }
 
   return (
     <button
       className="button--3 px-4 text-sm md:px-8 md:text-xl"
       onClick={handleAddFriend}
+      disabled={isDone}
     >
-      {isDone ? "added" : "add friend"}
+      addFriend
     </button>
   );
 };

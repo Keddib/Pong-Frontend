@@ -21,7 +21,11 @@ const OverView: FunctionComponent<{ user: User; game: Game }> = ({
           <div className="bg-lotion/30 rounded-2xl h-4">
             <div
               className="rounded-2xl bg-crayola h-full"
-              style={{ width: ((user.xp / (user.level * lvlFactor)) * 100).toString() + "%" }}
+              style={{
+                width:
+                  (((user.xp / (user.level * lvlFactor)) * 100).toString() ||
+                    "0") + "%",
+              }}
             ></div>
           </div>
         </div>

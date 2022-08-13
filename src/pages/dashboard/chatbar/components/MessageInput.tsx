@@ -1,12 +1,17 @@
 import SendIcon from "assets/icons/dm.svg";
+import { FunctionComponent } from "react";
 
-const MessageInput = () => {
+const MessageInput: FunctionComponent<{ setMsg: (msg: string) => void }> = ({
+  setMsg,
+}) => {
   return (
     <div className="message-bar">
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          console.log(`message for ${e.target.messageInput.value}`);
+          const msg = e.target.messageInput.value;
+          console.log(`message for ${msg}`);
+          setMsg(msg);
         }}
       >
         <label

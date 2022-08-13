@@ -31,12 +31,23 @@ const chats = [
 const ChatBar = () => {
   const xl = useMedia(mediaQueries.xl);
   const [messages, setMessages] = useState([] as Message[]);
+  const [inputMessage, setInputMessage] = useState("");
 
   useEffect(() => {
+    // init sockets
     // fetch messages
-    // messegses
-    // setMessahes(...messages, );
+    // setMessages( messages)
   }, []);
+
+  useEffect(() => {
+    // messegses
+    // setMessahes([...messages, newMessage]);
+  }, [messages]);
+
+  useEffect(() => {
+    // send message
+    // setMessahes([...messages, newMessage]);
+  }, [inputMessage]);
 
   return (
     <>
@@ -54,7 +65,7 @@ const ChatBar = () => {
                 <div className="link link-active text-lotion/50">Game</div>
               </div>
               <Messages messages={messages} />
-              <MessageInput />
+              <MessageInput setMsg={setInputMessage} />
             </div>
           </div>
         </aside>

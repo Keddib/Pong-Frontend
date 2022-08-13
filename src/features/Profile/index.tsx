@@ -66,12 +66,6 @@ const Profile = () => {
         setCurrentUser(res.data);
         return res.data.uid;
       } catch (error) {
-        if (axios.isAxiosError(error)) {
-          console.log("axios error ", error, error.response?.status);
-          // if forbiden check user state and sign in
-        } else {
-          console.log(error);
-        }
         setErrorStatusCode(404);
         setIsLoading(false);
       }
@@ -81,10 +75,10 @@ const Profile = () => {
       getUserGames(uid);
       setIsLoading(false);
     });
-
-    return function cleanup() {
-      abortController.abort();
-    };
+    // uncommented on production
+    // return function cleanup() {
+    //   abortController.abort();
+    // };
   }, [username]);
 
   return (
@@ -106,7 +100,7 @@ const Profile = () => {
               {currentUser.rule == "me" && (
                 <Route path="edit" element={<EditProfile />} />
               )}
-              <Route element={<ErrorPath />} />
+              <Route path="*" element={<ErrorPath />} />
             </Routes>
           </div>
         </div>

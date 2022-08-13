@@ -8,7 +8,7 @@ export interface User {
   losses: number;
   xp: number;
   level: number;
-  rule: "me" | "friend" | "requested" | "none";
+  rule: "me" | "friend" | "receiver" | "sender" | "none";
 }
 
 export interface Game {

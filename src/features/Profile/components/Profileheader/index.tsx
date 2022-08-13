@@ -38,7 +38,7 @@ const ProfileHeader: FunctionComponent<{ user: User }> = ({ user }) => {
       </div>
       <div className="grow"></div>
       <div className="right-side self-end">
-        <ProfileOptions rules={user.rule} uid={user.uid} />
+        <ProfileOptions rule={user.rule} uid={user.uid} />
       </div>
     </header>
   );
