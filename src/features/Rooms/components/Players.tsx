@@ -8,6 +8,7 @@ import SearchBar from "./SearchBar";
 import { User } from "types/app";
 import axios from "axios";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
+import FriendListItem from "features/Friends/components/Friends/FriendListItem";
 
 const PlayersList: FunctionComponent<{ users: User[] }> = ({ users }) => {
   return (
@@ -16,19 +17,7 @@ const PlayersList: FunctionComponent<{ users: User[] }> = ({ users }) => {
         <ul className="flex flex-col gap-2">
           {users.map((user) => (
             <li key={user.uid}>
-              <ElementBar rank={-1}>
-                <div className="w-full flex justify-between items-center">
-                  <UserCard user={user} />
-                  <div className="flex items-center gap-4 sm:gap-8 sm:mr-8">
-                    <button className="send game request">
-                      <GamePad className="w-6 h-6 sm:w-8 sm:h-8 fill-lotion/50 hover:fill-lotion ease-in duration-150" />
-                    </button>
-                    <button className="start chating">
-                      <DmIcon className="w-6 h-4 sm:w-8 sm:h-6 fill-lotion/50 hover:fill-lotion ease-in duration-150" />
-                    </button>
-                  </div>
-                </div>
-              </ElementBar>
+              <FriendListItem user={user} />
             </li>
           ))}
         </ul>
@@ -56,7 +45,7 @@ const Players = () => {
         const res = await axiosPrivate.get<User[]>(
           `user/search?query=` + query,
           {
-            signal: abortController.signal,
+            signal: abortController.signal
           }
         );
         // check payload

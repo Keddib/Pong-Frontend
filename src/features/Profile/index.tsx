@@ -83,7 +83,7 @@ const Profile = () => {
     });
 
     return function cleanup() {
-      abortController.abort();
+      //abortController.abort();
     };
   }, [username]);
 
