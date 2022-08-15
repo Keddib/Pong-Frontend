@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import Play from "./components/Playing";
 import Waiting from "./components/Waiting";
 import io from "socket.io-client";
@@ -21,7 +21,7 @@ interface Loc extends Location {
 export default function Game() {
   const location: Loc = useLocation();
   const { signin } = useAuth();
-  console.log("game mode = ", location?.state?.mode);
+  const [searchParams] = useSearchParams();  console.log("game mode = ", location?.state?.mode);
   const { user, getAccessToken } = useAuth();
   const [opponent, setOpponent] = useState(null as null | User);
 
@@ -31,16 +31,18 @@ export default function Game() {
   const gameStateData = useRef(null as null | GameState);
   const socket = useRef(null as null | Socket);
   let once = false;
+  const invitation = searchParams.get("invitation");
   useEffect(() => {
     socket.current = io("ws://localhost:3001", {
       withCredentials: true,
       extraHeaders: { Authorization: "Bearer " + getAccessToken() }
     }).on("connect", () => {
       console.log("socket created", socket.current);
-      socket.current?.on("authenticated", () => {
+        if (!location.state) location.state = {mode : "classic"}
+        socket.current?.on("authenticated", () => {
         socket.current?.emit("playerJoined", {
           mode: location.state.mode,
-          custom: location.state.custom
+          custom: invitation ? {invitation} : location.state.custom 
         });
       });
       socket.current?.on("gameState", (data: GameState) => {
