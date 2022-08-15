@@ -45,6 +45,7 @@ export default function Game() {
           custom: invitation ? {invitation} : location.state.custom 
         });
       });
+      //onGameState
       socket.current?.on("gameState", (data: GameState) => {
         if (
           gameState == "waiting" &&
@@ -70,6 +71,10 @@ export default function Game() {
         }
 
         gameStateData.current = data;
+      });
+      socket.current?.on("invalidInvitation",()=>{
+        socket.current?.close();
+        navigate("/");
       });
     });
 
