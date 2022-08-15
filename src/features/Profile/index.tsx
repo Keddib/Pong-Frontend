@@ -75,10 +75,16 @@ const Profile = () => {
       getUserGames(uid);
       setIsLoading(false);
     });
+
     // uncommented on production
     // return function cleanup() {
     //   abortController.abort();
     // };
+
+
+    return function cleanup() {
+      //abortController.abort();
+    };
   }, [username]);
 
   return (

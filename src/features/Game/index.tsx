@@ -8,9 +8,12 @@ import { Socket } from "socket.io-client";
 import useAuth from "~/src/hooks/useAuth";
 import { GameState } from "./components/Pong/utils/Types";
 import { axiosUsers, checkUserSession } from "~/src/services/axios";
-
+interface CustomGamePayload {
+  opponent: string;
+}
 interface LocationState {
   mode: string;
+  custom?: CustomGamePayload;
 }
 interface Loc extends Location {
   state: LocationState;
@@ -29,13 +32,16 @@ export default function Game() {
   const socket = useRef(null as null | Socket);
   let once = false;
   useEffect(() => {
-    socket.current = io("ws://10.11.4.2:3001", {
+    socket.current = io("ws://localhost:3001", {
       withCredentials: true,
-      extraHeaders: { Authorization: "Bearer " + getAccessToken() },
+      extraHeaders: { Authorization: "Bearer " + getAccessToken() }
     }).on("connect", () => {
       console.log("socket created", socket.current);
       socket.current?.on("authenticated", () => {
-        socket.current?.emit("playerJoined", { mode: location.state.mode });
+        socket.current?.emit("playerJoined", {
+          mode: location.state.mode,
+          custom: location.state.custom
+        });
       });
       socket.current?.on("gameState", (data: GameState) => {
         if (
