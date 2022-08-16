@@ -1,62 +1,133 @@
-import { FunctionComponent, useEffect, useState } from "react";
+import { useActor } from "@xstate/react";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import useProfileState from "../../hooks/useProfileState";
 import useAuth from "~/src/hooks/useAuth";
-import useAxiosPrivate from "~/src/hooks/useAxiosPrivate";
-const ProfileOptions: FunctionComponent<{
-  rule: string;
-  uid: string;
-}> = ({ rule, uid }) => {
-  if (rule == "me") {
+
+const ProfileOptions = () => {
+  const profileService = useProfileState();
+  const [state] = useActor(profileService);
+
+  if (state.matches("player.me")) {
     return (
       <NavLink
-        to="edit"
+        to="settings"
         className="button--3 px-4 text-sm md:px-8 md:text-xl"
         end
       >
-        edit profile
+        settings
       </NavLink>
     );
-  } else if (rule == "friends") {
-    return (
-      <button className="button--3 px-4 text-sm md:px-8 md:text-xl">
-        friend
-      </button>
-    );
-  } else if (rule == "requested") {
-    return <h1>request sent</h1>;
+  } else if (state.matches("player.receiver")) {
+    return <ReceiverButton />;
+  } else if (state.matches("player.blocked")) {
+    return <BlockedButton />;
+  } else if (state.matches("player.friend")) {
+    return <FriendButton />;
   }
-  return <AddFriend uid={uid} />;
+  return <NoneButton />;
 };
 
 export default ProfileOptions;
 
-const AddFriend: FunctionComponent<{ uid: string }> = ({ uid }) => {
-  const [isDone, setDone] = useState(false);
-  const axiosPrivate = useAxiosPrivate();
-  const { user } = useAuth();
+const FriendButton = () => {
+  const [hover, setHover] = useState(false);
+  const send = useProfileState().send;
 
-  function handleAddFriend() {
-    async function addFriend() {
-      try {
-        await axiosPrivate.post("/friends/add", {
-          receiver: uid,
-          sender: user.uid,
-        });
-        setDone(true);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    addFriend();
-  }
+  const hundleOnClick = () => {
+    send({ type: "UNFRIEND" });
+  };
+  const hundleMouseIn = () => {
+    setHover(true);
+  };
+  const hundleMouseOut = () => {
+    setHover(false);
+  };
 
   return (
     <button
       className="button--3 px-4 text-sm md:px-8 md:text-xl"
-      onClick={handleAddFriend}
-      disabled={isDone}
+      onClick={hundleOnClick}
+      onMouseOver={hundleMouseIn}
+      onMouseOut={hundleMouseOut}
+      onFocus={() => {}}
+      onBlur={() => {}}
     >
-      addFriend
+      {hover ? "unfriend" : "friend"}
+    </button>
+  );
+};
+
+const ReceiverButton = () => {
+  const [hover, setHover] = useState(false);
+  const send = useProfileState().send;
+
+  const hundleOnClick = () => {
+    send({ type: "CANCEL" });
+  };
+  const hundleMouseIn = () => {
+    setHover(true);
+  };
+  const hundleMouseOut = () => {
+    setHover(false);
+  };
+
+  return (
+    <button
+      className="button--3 px-4 text-sm md:px-8 md:text-xl"
+      onClick={hundleOnClick}
+      onMouseOver={hundleMouseIn}
+      onMouseOut={hundleMouseOut}
+      onFocus={() => {}}
+      onBlur={() => {}}
+    >
+      {hover ? "cancel" : "requested"}
+    </button>
+  );
+};
+
+const NoneButton = () => {
+  const send = useProfileState().send;
+  const { user } = useAuth();
+
+  const hundleOnClick = () => {
+    send({ type: "ADDFRIEND", uid: user.uid });
+  };
+
+  return (
+    <button
+      className="button--3 px-4 text-sm md:px-8 md:text-xl"
+      onClick={hundleOnClick}
+    >
+      add friend
+    </button>
+  );
+};
+
+const BlockedButton = () => {
+  const [hover, setHover] = useState(false);
+  const send = useProfileState().send;
+
+  const hundleOnClick = () => {
+    send({ type: "UNBLOCK" });
+  };
+  const hundleMouseIn = () => {
+    setHover(true);
+  };
+  const hundleMouseOut = () => {
+    setHover(false);
+  };
+
+  return (
+    <button
+      className="button--3 px-4 text-sm md:px-8 md:text-xl"
+      onClick={hundleOnClick}
+      onMouseOver={hundleMouseIn}
+      onMouseOut={hundleMouseOut}
+      onFocus={() => {}}
+      onBlur={() => {}}
+    >
+      {hover ? "unblock" : "blocked"}
     </button>
   );
 };

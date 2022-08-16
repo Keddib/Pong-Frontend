@@ -1,8 +1,12 @@
 import Star from "assets/icons/star.svg";
+import Ellipsis from "assets/icons/ellipsis.svg";
+import Xmark from "assets/icons/xmark.svg";
 import Image from "components/Image";
-import { FunctionComponent } from "react";
-import { User } from "types/app";
+import { FunctionComponent, useState } from "react";
+import { useActor } from "@xstate/react";
+import useProfileState from "../../hooks/useProfileState";
 import ProfileOptions from "./ProfileOptions";
+import Dropdown from "~/src/components/Dropdown";
 
 const ExStar: FunctionComponent<{ lvl: number }> = (props) => {
   return (
@@ -17,7 +21,11 @@ const ExStar: FunctionComponent<{ lvl: number }> = (props) => {
   );
 };
 
-const ProfileHeader: FunctionComponent<{ user: User }> = ({ user }) => {
+const ProfileHeader = () => {
+  const profileService = useProfileState();
+  const [state] = useActor(profileService);
+  const user = state.context;
+
   return (
     <header className="bg-queenBlue/50 rounded-2xl p-2 md:px-8 md:py-12 relative flex">
       <div className="left-side flex items-center gap-4 md:gap-8">
@@ -37,10 +45,43 @@ const ProfileHeader: FunctionComponent<{ user: User }> = ({ user }) => {
         </div>
       </div>
       <div className="grow"></div>
-      <div className="right-side self-end">
-        <ProfileOptions rule={user.rule} uid={user.uid} />
+      <div className="right-side self-end flex items-center gap-2">
+        <ProfileOptions />
+        {user.rule != "me" && <Actions />}
       </div>
     </header>
+  );
+};
+
+const Actions = () => {
+  const [show, setShow] = useState(false);
+
+  function showDropDown() {
+    setShow(!show);
+  }
+
+  return (
+    <div className="relative">
+      <button className="group bell-button" onClick={showDropDown}>
+        <Ellipsis className="iconBell" />
+      </button>
+      {show && (
+        <Dropdown className="w-fit">
+          <>
+            <div className=" flex justify-end">
+              <button onClick={showDropDown}>
+                <Xmark className="w-5 h-5 fill-lotion/50 hover:fill-lotion" />
+              </button>
+            </div>
+            <>
+              <p>option lklsdjfhdlskjfhd</p>
+              <p>option lklsdjfhdlskjfhd</p>
+              <p>option lklsdjfhdlskjfhd</p>
+            </>
+          </>
+        </Dropdown>
+      )}
+    </div>
   );
 };
 

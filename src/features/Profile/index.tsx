@@ -1,51 +1,49 @@
-import { useMachine } from "@xstate/react";
+import { useActor, useInterpret } from "@xstate/react";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
-// import { Game, User } from "types/app";
-import Profile from "./Profile";
-import { Spinner } from "components/Loading";
-import { profileMachine } from "./ProfileMachine";
+import Profile from "./components/Profile";
+import Loading from "components/Loading";
 import useErrorStatus from "hooks/useErrorStatus";
-import { useGetUser, useGetGames } from "./hooks/useUserData";
+import { useGetUser } from "./hooks/useUserData";
+import profileMachine from "./services/profileMachine";
+import ProfileStateContext from "features/Profile/context/ProfileState";
 
-const ProfileProvider = () => {
+const ProfileWrapper = () => {
   const { setErrorStatusCode } = useErrorStatus();
   const [user, userError] = useGetUser();
-
-  const [state, send] = useMachine(profileMachine, {
-    actions: {},
-  });
+  const profileService = useInterpret(profileMachine);
+  const { send } = profileService;
+  const [state] = useActor(profileService);
 
   useEffect(() => {
     if (state.matches("error")) {
+      console.log("error state");
       setErrorStatusCode(400);
       return;
     }
-    send({
-      type: "DATA_CHANGED",
-      data: user
-        ? {
-            user: user,
-            games: [],
-          }
-        : undefined,
-      error: userError,
-    });
-    // uncommented on production
-    // return function cleanup() {
-    //   abortController.abort();
-    // };
-  }, [username]);
+    if (user || userError) {
+      console.log("user", user);
+      console.log("userError", userError);
+      send({
+        type: "DATA_CHANGED",
+        data: user,
+        error: userError,
+      });
+    }
+  }, [user, userError]);
+
+  if (state.matches("loading")) {
+    return <Loading />;
+  }
 
   return (
     <>
-      {state.matches("loading") ? (
-        <Spinner />
-      ) : (
-        <Profile user={state.context.user} games={} />
+      {state.matches("player") && (
+        <ProfileStateContext.Provider value={profileService}>
+          <Profile />
+        </ProfileStateContext.Provider>
       )}
     </>
   );
 };
 
-export default ProfileProvider;
+export default ProfileWrapper;
