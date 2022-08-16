@@ -9,6 +9,8 @@ export interface User {
   xp: number;
   level: number;
   rule: "me" | "friend" | "receiver" | "sender" | "blocked" | "none";
+  tfaEnabled: boolean;
+  tfaSecret?: string;
 }
 
 export interface Game {
