@@ -11,7 +11,7 @@ var user1 = {
   losses: 60,
   xp: 439,
   level: 11,
-  rules: "me" as "me" | "friend" | "requested" | "none",
+  rules: "me",
 };
 
 export default user1;

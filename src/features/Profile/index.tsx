@@ -1,120 +1,47 @@
-import { useEffect, useState } from "react";
-import { Route, Routes, Navigate, useParams } from "react-router-dom";
-import {} from "react-router-dom";
-import TabBar from "components/TabBar";
-import ProfileHeader from "./components/Profileheader";
-import OverView from "./components/Overview";
-import MatchHistory from "./components/Matchhistory";
-import EditProfile from "./components/Updateprofile";
-import useAxiosPrivate from "hooks/useAxiosPrivate";
-import { Game, User } from "types/app";
-import useAuth from "hooks/useAuth";
-import axios from "axios";
+import { useMachine } from "@xstate/react";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+// import { Game, User } from "types/app";
+import Profile from "./Profile";
+import { Spinner } from "components/Loading";
+import { profileMachine } from "./ProfileMachine";
 import useErrorStatus from "hooks/useErrorStatus";
+import { useGetUser, useGetGames } from "./hooks/useUserData";
 
-const links = {
-  first: {
-    name: "Overview",
-    path: "/profile",
-  },
-  second: {
-    name: "Match History",
-    path: "match-history",
-  },
-};
-
-const Profile = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [currentUser, setCurrentUser] = useState({} as User);
-  const [games, setGames] = useState([] as Game[]);
-  const { user, signin } = useAuth();
-  const { username } = useParams();
-  const axiosPrivate = useAxiosPrivate();
+const ProfileProvider = () => {
   const { setErrorStatusCode } = useErrorStatus();
+  const [user, userError] = useGetUser();
+
+  const [state, send] = useMachine(profileMachine, {
+    actions: {},
+  });
 
   useEffect(() => {
-    const abortController = new AbortController();
-    console.log("profile of", username);
-    links.first.path = `/profile/${username}`;
-    async function getUserGames(id: string) {
-      try {
-        const gameRes = await axiosPrivate.get(`game/history/${id}`, {
-          signal: abortController.signal,
-        });
-        console.log("games ", gameRes.data);
-        setGames(gameRes.data);
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          console.log("axios error ", error.response?.status);
-          // if forbiden check user state and sign in
-        } else {
-          console.log(error);
-        }
-      }
+    if (state.matches("error")) {
+      setErrorStatusCode(400);
+      return;
     }
-    async function getUserData() {
-      try {
-        // fetch user data
-        const res = await axiosPrivate.get<User>(`user/${username}`, {
-          signal: abortController.signal,
-        });
-        // check if payload is user
-        console.log("user", res.data);
-        if (res.data.uid == user.uid) {
-          signin(res.data);
-        }
-        setCurrentUser(res.data);
-        return res.data.uid;
-      } catch (error) {
-        setErrorStatusCode(404);
-        setIsLoading(false);
-      }
-      return "";
-    }
-    getUserData().then((uid) => {
-      getUserGames(uid);
-      setIsLoading(false);
+    send({
+      type: "DATA_CHANGED",
+      data: user
+        ? {
+            user: user,
+            games: [],
+          }
+        : undefined,
+      error: userError,
     });
-    // uncommented on production
-    // return function cleanup() {
-    //   abortController.abort();
-    // };
-  }, [username]);
+  }, [user, userError, state]);
 
   return (
     <>
-      {!isLoading && (
-        <div className="m-auto w-full h-full flex flex-col gap-4">
-          <ProfileHeader user={currentUser} />
-          <div className="bg-queenBlue/50 rounded-2xl md:p-2 py-4  flex flex-col gap-4">
-            <TabBar links={links} />
-            <Routes>
-              <Route
-                index
-                element={<OverView user={currentUser} game={games[0]} />}
-              />
-              <Route
-                path="match-history"
-                element={<MatchHistory games={games} />}
-              />
-              {currentUser.rule == "me" && (
-                <Route path="edit" element={<EditProfile />} />
-              )}
-              <Route path="*" element={<ErrorPath />} />
-            </Routes>
-          </div>
-        </div>
+      {state.matches("loading") ? (
+        <Spinner />
+      ) : (
+        <Profile user={state.context.user} games={} />
       )}
     </>
   );
 };
 
-function ErrorPath() {
-  const { setErrorStatusCode } = useErrorStatus();
-  useEffect(() => {
-    setErrorStatusCode(400);
-  }, []);
-  return <></>;
-}
-
-export default Profile;
+export default ProfileProvider;
