@@ -151,7 +151,7 @@
     flex justify-center items-center p-4;
   }
   .modal-content {
-    @apply bg-lotion w-full max-w-[400px] rounded-xl flex flex-col
+    @apply bg-lotion w-full max-w-[600px] rounded-xl flex flex-col
     justify-center items-center gap-4 p-2 py-10;
   }
 }
