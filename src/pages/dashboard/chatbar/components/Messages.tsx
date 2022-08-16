@@ -16,7 +16,6 @@ const Messages: FunctionComponent<{ messages: Message[] }> = ({ messages }) => {
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    console.log("scrolled");
   }, []);
 
   return (

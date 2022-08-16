@@ -2,6 +2,7 @@ import React, { FunctionComponent } from "react";
 import ErrorStatusContext from "src/context/errorStatus";
 import Error404 from "components/Error404";
 import { useLocation } from "react-router-dom";
+
 // The top level component that will wrap our app's core features
 const ErrorHandler: FunctionComponent<{ children: JSX.Element }> = ({
   children,
@@ -25,7 +26,6 @@ const ErrorHandler: FunctionComponent<{ children: JSX.Element }> = ({
   // an error page. If there is no error status, then it will render
   // the children as normal
   const renderContent = () => {
-    console.log("errorhundler", errorStatusCode);
     if (errorStatusCode != 0) {
       return <Error404 />;
     }
