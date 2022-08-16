@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import Play from "./components/Playing";
 import Waiting from "./components/Waiting";
 import io from "socket.io-client";
@@ -8,9 +8,12 @@ import { Socket } from "socket.io-client";
 import useAuth from "~/src/hooks/useAuth";
 import { GameState } from "./components/Pong/utils/Types";
 import { axiosUsers, checkUserSession } from "~/src/services/axios";
-
+interface CustomGamePayload {
+  opponent: string;
+}
 interface LocationState {
   mode: string;
+  custom?: CustomGamePayload;
 }
 interface Loc extends Location {
   state: LocationState;
@@ -18,7 +21,7 @@ interface Loc extends Location {
 export default function Game() {
   const location: Loc = useLocation();
   const { signin } = useAuth();
-  console.log("game mode = ", location?.state?.mode);
+  const [searchParams] = useSearchParams();  console.log("game mode = ", location?.state?.mode);
   const { user, getAccessToken } = useAuth();
   const [opponent, setOpponent] = useState(null as null | User);
 
@@ -28,15 +31,21 @@ export default function Game() {
   const gameStateData = useRef(null as null | GameState);
   const socket = useRef(null as null | Socket);
   let once = false;
+  const invitation = searchParams.get("invitation");
   useEffect(() => {
-    socket.current = io("ws://10.11.4.2:3001", {
+    socket.current = io("ws://localhost:3001", {
       withCredentials: true,
-      extraHeaders: { Authorization: "Bearer " + getAccessToken() },
+      extraHeaders: { Authorization: "Bearer " + getAccessToken() }
     }).on("connect", () => {
       console.log("socket created", socket.current);
-      socket.current?.on("authenticated", () => {
-        socket.current?.emit("playerJoined", { mode: location.state.mode });
+        if (!location.state) location.state = {mode : "classic"}
+        socket.current?.on("authenticated", () => {
+        socket.current?.emit("playerJoined", {
+          mode: location.state.mode,
+          custom: invitation ? {invitation} : location.state.custom 
+        });
       });
+      //onGameState
       socket.current?.on("gameState", (data: GameState) => {
         if (
           gameState == "waiting" &&
@@ -62,6 +71,10 @@ export default function Game() {
         }
 
         gameStateData.current = data;
+      });
+      socket.current?.on("invalidInvitation",()=>{
+        socket.current?.close();
+        navigate("/");
       });
     });
 

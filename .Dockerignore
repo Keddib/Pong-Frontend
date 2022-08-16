@@ -1,5 +1,5 @@
 src
-./parcel-cache
+.parcel-cache
 dist
 node_modules
 .*

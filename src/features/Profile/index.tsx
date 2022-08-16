@@ -31,7 +31,11 @@ const ProfileProvider = () => {
         : undefined,
       error: userError,
     });
-  }, [user, userError, state]);
+    // uncommented on production
+    // return function cleanup() {
+    //   abortController.abort();
+    // };
+  }, [username]);
 
   return (
     <>
