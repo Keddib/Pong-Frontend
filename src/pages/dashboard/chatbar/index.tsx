@@ -3,7 +3,10 @@ import useMedia from "hooks/useMedia";
 import Messages from "./components/Messages";
 import MessageInput from "./components/MessageInput";
 import { useEffect, useState } from "react";
+import useAuth from "~/src/hooks/useAuth";
+import GameInvites from "./GameInvites";
 
+//
 type Message = {
   sender: string;
   text: string;
@@ -14,25 +17,25 @@ const chats = [
   {
     sender: "keddib",
     text: "wash a saat",
-    date: "10 min ago",
+    date: "10 min ago"
   },
   {
     sender: "malaoui",
     text: "wash a 3chiiri",
-    date: "10 min ago",
+    date: "10 min ago"
   },
   {
     sender: "yahya",
     text: "drari chno ba9i lina",
-    date: "11 min ago",
-  },
+    date: "11 min ago"
+  }
 ];
 
 const ChatBar = () => {
   const xl = useMedia(mediaQueries.xl);
   const [messages, setMessages] = useState([] as Message[]);
   const [inputMessage, setInputMessage] = useState("");
-
+  const { user } = useAuth();
   useEffect(() => {
     // init sockets
     // fetch messages
@@ -54,10 +57,7 @@ const ChatBar = () => {
       {xl && (
         <aside className="chat-bar">
           <div className="h-full flex flex-col gap-2">
-            <div className="game-activity">
-              <h4>Game Invitatios</h4>
-              <div className="h-24"></div>
-            </div>
+            <GameInvites />
             <div className="chat-section">
               <div className="Links flex items-center justify-evenly rounded-3xl bg-queenBlue/50 p-1">
                 <div className="link link-active cursor-pointer">Public</div>
