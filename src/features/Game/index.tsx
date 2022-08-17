@@ -88,7 +88,7 @@ export default function Game() {
     return () => {
       socket.current?.close();
     };
-  }, []);
+  }, [invitation]);
 
   const navigate = useNavigate();
 
