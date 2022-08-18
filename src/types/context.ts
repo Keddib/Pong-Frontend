@@ -7,4 +7,5 @@ export interface UserContext {
   signout: () => void;
   getAccessToken: () => string;
   setAccessToken: (token: string) => void;
+  updateUser: (user: User) => void;
 }

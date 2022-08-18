@@ -1,6 +1,5 @@
 import axios from "axios";
 import { api } from "config/index";
-import { User } from "types/app";
 
 const axiosAuth = axios.create({
   baseURL: api.users,
@@ -13,27 +12,16 @@ const axiosPrivate = axios.create({
   baseURL: api.users,
 });
 
-async function updateUser(data: FormData): Promise<User> {
-  // send response to update user
-  const res = await axiosAuth.put<User>(`/users/`, data, {
-    withCredentials: true,
-  });
-  var user: User = res.data;
-  return user;
-}
-
 const authenticateUser = async (code: string) => {
-  try {
-    var res = await axiosAuth.get<{ access_token: string }>("/auth", {
-      params: { code: code },
-    });
-    const accessToken = res.data.access_token;
-    console.log("accessToken :", accessToken);
-    return accessToken;
-  } catch (error) {
-    console.log(error);
+  var res = await axiosAuth.get<{ access_token: string }>("/auth", {
+    params: { code: code },
+  });
+  if (res.status == 201) {
+    return "TFA";
   }
-  return "";
+  const accessToken = res.data.access_token;
+  console.log("accessToken :", accessToken);
+  return accessToken;
 };
 
 async function endSession() {
@@ -48,4 +36,4 @@ async function endSession() {
   }
 }
 
-export { updateUser, authenticateUser, endSession, axiosPrivate, axiosAuth };
+export { authenticateUser, endSession, axiosPrivate, axiosAuth };

@@ -16,6 +16,9 @@ const AuthProvider: FunctionComponent<Props> = ({ children }) => {
 
   let Auth: UserContext = {
     user,
+    updateUser: (user: User) => {
+      setUser(user);
+    },
     setAccessToken,
     getAccessToken: () => {
       return accessToken;
