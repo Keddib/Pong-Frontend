@@ -31,7 +31,11 @@ const App = () => {
                   path="/*"
                   element={
                     <RequireAuth>
+<<<<<<< HEAD
                     <Dashboard />
+=======
+                      <Dashboard />
+>>>>>>> 0fa410d59488c7a15a5c3124c9fa4d8a8087355f
                     </RequireAuth>
                   }
                 />
