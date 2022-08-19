@@ -31,7 +31,7 @@ const Dashboard = () => {
       }
     }
     getUserData();
-  }, [axiosPrivate, navigate, updateUser, signout]);
+  }, []);
 
   return (
     <main

@@ -38,6 +38,8 @@ export default function Game() {
   const socket = useRef(null as null | Socket);
   let once = false;
   const invitation = searchParams.get("invitation");
+  const spectate = searchParams.get("spectate");
+  const [players, setPlayers] = useState([] as User[]);
   useEffect(() => {
     socket.current = io("ws://localhost:3001", {
       withCredentials: true,
@@ -45,13 +47,18 @@ export default function Game() {
     }).on("connect", () => {
       console.log("socket created", socket.current);
       if (!location.state) location.state = { mode: "classic" };
-      socket.current?.emit("initGame");
-      socket.current?.on("authenticated", () => {
-        socket.current?.emit("playerJoined", {
-          mode: location.state.mode,
-          custom: invitation ? { invitation } : location.state.custom
+
+      if (spectate) {
+        socket.current?.emit("spectate", { gameId: spectate });
+      } else {
+        socket.current?.emit("initGame");
+        socket.current?.on("authenticated", () => {
+          socket.current?.emit("playerJoined", {
+            mode: location.state.mode,
+            custom: invitation ? { invitation } : location.state.custom
+          });
         });
-      });
+      }
       //onGameState
       socket.current?.on("gameState", (data: GameState) => {
         if (
@@ -60,24 +67,40 @@ export default function Game() {
           !opponent &&
           !once
         ) {
-          console.log(
-            "oponent",
-            JSON.parse(data.playerData)[
-              (data.players.indexOf(socket.current.id) + 1) % 2
-            ]
-          );
+          // if (!spectate) {
+          //   setOpponent(
+          //     JSON.parse(data.playerData)[
+          //       (data.players.indexOf(socket.current?.id) + 1) % 2
+          //     ]
+          //   );
+          //   setPlayers([
+          //     user,
+          //     JSON.parse(data.playerData)[
+          //       (data.players.indexOf(socket.current?.id) + 1) % 2
+          //     ]
+          //   ]);
+          // } else {
           setOpponent(
             JSON.parse(data.playerData)[
-              (data.players.indexOf(socket.current.id) + 1) % 2
+              (data.players.indexOf(socket.current?.id) + 1) % 2
             ]
           );
+          setPlayers(JSON.parse(data.playerData));
+
           once = true;
-          setTimeout(() => {
-            setGameState("play");
-          }, 2000);
+          setTimeout(
+            () => {
+              setGameState("play");
+            },
+            spectate ? 0 : 2000
+          );
         }
 
         gameStateData.current = data;
+      });
+      socket.current?.on("invalidSpectate", () => {
+        socket.current?.close();
+        navigate("/");
       });
       socket.current?.on("invalidInvitation", () => {
         socket.current?.close();
@@ -93,16 +116,16 @@ export default function Game() {
   const navigate = useNavigate();
 
   let page = (
-    <Waiting user={user} opponent={opponent} setGameState={setGameState} />
+    <Waiting
+      user={players[0] || user}
+      opponent={players[1]}
+      setGameState={setGameState}
+    />
   );
 
   if (gameState == "play")
     page = (
-      <Play
-        players={[user, opponent as User]}
-        gameStateData={gameStateData}
-        socket={socket}
-      />
+      <Play players={players} gameStateData={gameStateData} socket={socket} />
     );
   else if (gameState == "canceled") {
     navigate("/home", { replace: true });
