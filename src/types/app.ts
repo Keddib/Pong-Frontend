@@ -1,4 +1,4 @@
-export interface User {
+interface User {
   uid: string;
   username: string;
   nickname: string;
@@ -13,7 +13,7 @@ export interface User {
   tfaSecret?: string;
 }
 
-export interface Game {
+interface Game {
   id: number;
   mode: string;
   status: "playing" | "done";
@@ -23,8 +23,22 @@ export interface Game {
   scoreTwo: number;
 }
 
-export interface FriendRequest {
+interface FriendRequest {
   uid: string;
   status: boolean;
   sender: User;
 }
+
+type Notification = {
+  type: "request" | "accept";
+  sender: string; // username
+};
+
+type GameNotify = {
+  // name of sinder
+  name: string; // username
+  // behavior of accepting a request
+  accept: () => void;
+};
+
+export { User, Game, FriendRequest, Notification, GameNotify };
