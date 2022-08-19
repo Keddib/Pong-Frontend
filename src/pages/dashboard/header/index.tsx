@@ -1,7 +1,7 @@
 import { mediaQueries } from "config/index";
 import UserCard from "components/Usercard";
 import UserStarXP from "./components/StarXP";
-import Notifications from "./components/Notification";
+import NotificationsCenter from "components/Notifications";
 import useMedia from "hooks/useMedia";
 import useAuth from "hooks/useAuth";
 
@@ -17,13 +17,13 @@ export default function Headers() {
           <div className="lg:grow"></div>
           <div className="flex justify-between items-center w-full  lg:w-80">
             <UserCard user={user} />
-            <Notifications />
+            <NotificationsCenter />
           </div>
         </>
       ) : (
         <>
           <h4>notifications</h4>
-          <Notifications />
+          <NotificationsCenter />
         </>
       )}
     </header>
