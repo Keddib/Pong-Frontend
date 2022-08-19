@@ -14,37 +14,33 @@ const Dashboard = lazy(() => import("pages/dashboard"));
 
 const App = () => {
   return (
-    // <StrictMode>
-      <BrowserRouter>
-        <AuthProvider>
-          <Suspense fallback={<Loading />}>
-            <Routes>
-              <Route element={<UserSession />}>
-                <Route element={<RedirectAuth />}>
-                  <Route path="/welcome" element={<Welcome />} />
-                  <Route path="/access/*" element={<Login />} />
-                </Route>
-
-                <Route path="/auth42/" element={<AuthRedirection />} />
-
-                <Route
-                  path="/*"
-                  element={
-                    <RequireAuth>
-<<<<<<< HEAD
-                    <Dashboard />
-=======
-                      <Dashboard />
->>>>>>> 0fa410d59488c7a15a5c3124c9fa4d8a8087355f
-                    </RequireAuth>
-                  }
-                />
+    //<StrictMode>
+    <BrowserRouter>
+      <AuthProvider>
+        <Suspense fallback={<Loading />}>
+          <Routes>
+            <Route element={<UserSession />}>
+              <Route element={<RedirectAuth />}>
+                <Route path="/welcome" element={<Welcome />} />
+                <Route path="/access/*" element={<Login />} />
               </Route>
-              <Route path="*" element={<Error404 />} />
-            </Routes>
-          </Suspense>
-        </AuthProvider>
-      </BrowserRouter>
+
+              <Route path="/auth42/" element={<AuthRedirection />} />
+
+              <Route
+                path="/*"
+                element={
+                  <RequireAuth>
+                    <Dashboard />
+                  </RequireAuth>
+                }
+              />
+            </Route>
+            <Route path="*" element={<Error404 />} />
+          </Routes>
+        </Suspense>
+      </AuthProvider>
+    </BrowserRouter>
     // </StrictMode>
   );
 };

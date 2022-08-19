@@ -11,7 +11,7 @@ type Props = {
 const AuthProvider: FunctionComponent<Props> = ({ children }) => {
   const [user, setUser] = useState({} as User);
   const [isAuth, setIsAuth] = useState(false);
-  const [accessToken, setAccessToken] = useState("");
+  const [accessToken, setAT] = useState("");
   const navigate = useNavigate();
 
   let Auth: UserContext = {
@@ -19,7 +19,10 @@ const AuthProvider: FunctionComponent<Props> = ({ children }) => {
     updateUser: (user: User) => {
       setUser(user);
     },
-    setAccessToken,
+    setAccessToken: (token: string) => {
+      localStorage.setItem("accessToken", token);
+      setAT(token);
+    },
     getAccessToken: () => {
       return accessToken;
     },

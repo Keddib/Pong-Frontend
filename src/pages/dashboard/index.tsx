@@ -1,14 +1,14 @@
 import BackImg from "assets/images/Dashboard.jpg";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { User } from "types/app";
 import Sidebar from "./sidebar";
 import Header from "./header";
 import ChatBar from "./chatbar";
 import Main from "./main";
-import useAxiosPrivate from "~/src/hooks/useAxiosPrivate";
-import { User } from "~/src/types/app";
-import useAuth from "~/src/hooks/useAuth";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import useAxiosPrivate from "hooks/useAxiosPrivate";
+import useAuth from "hooks/useAuth";
 
 const Dashboard = () => {
   const [chatBar, setChatBar] = useState(true);
@@ -24,10 +24,10 @@ const Dashboard = () => {
       } catch (error) {
         if (axios.isAxiosError(error)) {
           if (error.response?.status == 401) {
-            signout();
+            // signout();
           }
         }
-        navigate("/access/login", { replace: true });
+        // navigate("/access/login", { replace: true });
       }
     }
     getUserData();
