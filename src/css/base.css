@@ -1,6 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap");
 
 /* base styles fonts and h1,h2.. */
+:root {
+  --toastify-color-progress-light: #ffb027;
+}
 
 @layer utilities {
   /* Chrome, Safari and Opera */
@@ -11,6 +14,13 @@
   .no-scrollbar {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
+  }
+  .game-invite-notification {
+    /* top: 8.5rem !important; */
+    background: #47649e !important;
+  }
+  .fancy-progress-bar {
+    background: #ffb027 !important;
   }
 }
 
