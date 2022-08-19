@@ -12,6 +12,7 @@ const MessageInput: FunctionComponent<{ setMsg: (msg: string) => void }> = ({
           const msg = e.target.messageInput.value;
           console.log(`message for ${msg}`);
           setMsg(msg);
+          e.target.messageInput.value = "";
         }}
       >
         <label

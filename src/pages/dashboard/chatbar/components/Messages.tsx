@@ -5,26 +5,58 @@ import { uid } from "uid";
 import useAuth from "hooks/useAuth";
 
 type Message = {
-  sender: string;
+  username: string;
   text: string;
-  date: string;
+  date: Date;
+  userId: string;
 };
+
+function padTo2Digits(num: number) {
+  return num.toString().padStart(2, '0');
+}
+
+// 👇️ format as "MM-DD hh:mm:ss"
+// You can tweak formatting easily
+function formatDate(date: Date) {
+  return (
+    [
+      padTo2Digits(date.getMonth() + 1),
+      padTo2Digits(date.getDate()),
+    ].join('-') +
+    ' ' +
+    [
+      padTo2Digits(date.getHours()),
+      padTo2Digits(date.getMinutes()),
+    ].join(':')
+  );
+}
+
 
 const Messages: FunctionComponent<{ messages: Message[] }> = ({ messages }) => {
   const messagesEndRef = useRef<HTMLHeadingElement>(null);
   const { user } = useAuth();
 
+
+  // const scrollToBottom = () => {
+  //   messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  // }
+
+  // useEffect(scrollToBottom, [messages]);
+
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, []);
+
+
+    messagesEndRef.current?.scrollTo(0, 100000);
+    console.log('cheking messages ',messages);
+  }, [messages]);
 
   return (
-    <div className="chat-messages">
+    <div className="chat-messages" ref={messagesEndRef}>
       {messages.map((message) => (
         <Message
           key={uid()}
           message={message}
-          own={message.sender == user.username}
+          own={message.userId == user.uid}
         />
       ))}
     </div>
@@ -37,9 +69,9 @@ const Message: FunctionComponent<{ message: Message; own: boolean }> = ({
 }) => {
   return (
     <div className={own ? "message-wrapper own" : "message-wrapper"}>
-      <Link to={`/profile/${message.sender}`}>{message.sender}</Link>
+      <Link to={`/profile/${message.username}`}>{message.username}</Link>
       <p>{message.text}</p>
-      <span>{message.date}</span>
+      <span>{formatDate(new Date(message.date))}</span>
     </div>
   );
 };

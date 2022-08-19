@@ -5,51 +5,91 @@ import MessageInput from "./components/MessageInput";
 import { useEffect, useState } from "react";
 import useAuth from "~/src/hooks/useAuth";
 import GameInvites from "./GameInvites";
+import { io } from "socket.io-client";
+import useAxiosPrivate from "~/src/hooks/useAxiosPrivate";
 
 //
 type Message = {
-  sender: string;
   text: string;
-  date: string;
+  date: Date;
+  username: string;
+  userId: string;
 };
 
-const chats = [
-  {
-    sender: "keddib",
-    text: "wash a saat",
-    date: "10 min ago"
-  },
-  {
-    sender: "malaoui",
-    text: "wash a 3chiiri",
-    date: "10 min ago"
-  },
-  {
-    sender: "yahya",
-    text: "drari chno ba9i lina",
-    date: "11 min ago"
-  }
-];
+
+const socket = io('http://localhost:3500/', {
+  withCredentials: true,
+});
 
 const ChatBar = () => {
   const xl = useMedia(mediaQueries.xl);
-  const [messages, setMessages] = useState([] as Message[]);
+  let [messages, setMessages] = useState([]  as Message[]);
+  const [msgFromsrv, setmsgFromsrv] = useState({} as Message);
   const [inputMessage, setInputMessage] = useState("");
   const { user } = useAuth();
+  const axiosPrivate = useAxiosPrivate();
+  const [isConnected, setIsConnected] = useState(socket.connected);
+  const [lastPong, setLastPong] = useState(null);
+
+
+
+
   useEffect(() => {
-    // init sockets
-    // fetch messages
-    // setMessages( messages)
+      console.log("init listener")
+      socket.emit('joinRoomToServer', "public");
+
+    socket.on('msgToClient', (msg) => {
+
+      let newMessage  : Message = { userId: msg['userId'] ,username: msg['username'], text: msg['text'], date: new Date()} ;
+      console.log("received new msg from srv",newMessage, messages)
+      console.log(" user id " , user.uid, ' meg user id ', msg['userId'] )
+      if (user.uid !== msg['userId']) {console.log('received msg call stet ')
+        setmsgFromsrv(newMessage)
+      }
+    });
+
+    const getData = async () => {
+
+      const msgs = await axiosPrivate.get('http://localhost:3500/chat/messages/public');
+
+      console.log(msgs.data);
+
+
+      setMessages(msgs.data);
+
+    }
+    getData();
+
+
   }, []);
 
-  useEffect(() => {
-    // messegses
-    // setMessahes([...messages, newMessage]);
-  }, [messages]);
-
+    
   useEffect(() => {
     // send message
     // setMessahes([...messages, newMessage]);
+    // console.log('current user ', user)
+    if (!msgFromsrv.text) return
+    
+
+    setMessages([...messages, msgFromsrv]);
+  }, [msgFromsrv]);
+
+
+  // useEffect(() => {
+  //   // messegses
+  //   // setMessahes([...messages, newMessage]);
+  // }, [messages]);
+  
+  useEffect(() => {
+    // send message
+    // setMessahes([...messages, newMessage]);
+    // console.log('current user ', user)
+    if (!inputMessage.length) return
+    socket.emit('msgToServer', { room: "public", message: inputMessage});
+    let newMessage  : Message = { userId: user.uid, username: user.username, text: inputMessage, date: new Date()} ;
+    
+
+    setMessages([...messages, newMessage]);
   }, [inputMessage]);
 
   return (
@@ -57,7 +97,7 @@ const ChatBar = () => {
       {xl && (
         <aside className="chat-bar">
           <div className="h-full flex flex-col gap-2">
-            <GameInvites />
+            {/* <GameInvites /> */}
             <div className="chat-section">
               <div className="Links flex items-center justify-evenly rounded-3xl bg-queenBlue/50 p-1">
                 <div className="link link-active cursor-pointer">Public</div>

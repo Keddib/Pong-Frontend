@@ -14,7 +14,7 @@ const Dashboard = lazy(() => import("pages/dashboard"));
 
 const App = () => {
   return (
-    <StrictMode>
+    // <StrictMode>
       <BrowserRouter>
         <AuthProvider>
           <Suspense fallback={<Loading />}>
@@ -30,9 +30,9 @@ const App = () => {
                 <Route
                   path="/*"
                   element={
-                    // <RequireAuth>
+                    <RequireAuth>
                     <Dashboard />
-                    // </RequireAuth>
+                    </RequireAuth>
                   }
                 />
               </Route>
@@ -41,7 +41,7 @@ const App = () => {
           </Suspense>
         </AuthProvider>
       </BrowserRouter>
-    </StrictMode>
+    // </StrictMode>
   );
 };
 

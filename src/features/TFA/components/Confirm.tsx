@@ -18,7 +18,7 @@ const Confirm = () => {
     const code = e.currentTarget.elements.code.value;
 
     try {
-      const res = await axiosPrivate.post("auth/enable-tfa3", {
+      const res = await axiosPrivate.post("auth/enable-tfa", {
         code: code,
         secret: state.context.secret,
       });
