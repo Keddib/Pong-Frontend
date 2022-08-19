@@ -21,8 +21,8 @@ const GameInvites: FunctionComponent<{}> = ({}) => {
       extraHeaders: { Authorization: "Bearer " + getAccessToken() }
     }).on("connect", () => {
       console.log("socket created", socket.current);
-      socket.current.emit("subscribeGameInvites");
-      socket.current.on("gameInvitesUpdate", async (data) => {
+      socket.current?.emit("subscribeGameInvites");
+      socket.current?.on("gameInvitesUpdate", async (data) => {
         console.log("onGameInvitesUpdate");
         console.log(data);
         let invs = await Promise.all(
