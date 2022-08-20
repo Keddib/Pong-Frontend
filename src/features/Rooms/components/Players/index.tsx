@@ -4,7 +4,7 @@ import { FunctionComponent, useEffect, useState } from "react";
 import { Spinner } from "components/Loading";
 import ElementBar from "components/ElementBar";
 import UserCard from "components/Usercard";
-import SearchBar from "./SearchBar";
+import SearchBar from "../SearchBar";
 import { User } from "types/app";
 import axios from "axios";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
@@ -45,7 +45,7 @@ const Players = () => {
         const res = await axiosPrivate.get<User[]>(
           `user/search?query=` + query,
           {
-            signal: abortController.signal
+            signal: abortController.signal,
           }
         );
         // check payload

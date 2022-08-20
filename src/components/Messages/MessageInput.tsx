@@ -4,17 +4,20 @@ import { FunctionComponent } from "react";
 const MessageInput: FunctionComponent<{ setMsg: (msg: string) => void }> = ({
   setMsg,
 }) => {
+  function hundleSubmit(e: React.SyntheticEvent) {
+    e.preventDefault();
+    const target = e.target as typeof e.target & {
+      messageInput: { value: string };
+    };
+    const msg = target.messageInput.value;
+    console.log(`message for ${msg}`);
+    setMsg(msg);
+    target.messageInput.value = "";
+  }
+
   return (
     <div className="message-bar">
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          const msg = e.target.messageInput.value;
-          console.log(`message for ${msg}`);
-          setMsg(msg);
-          e.target.messageInput.value = "";
-        }}
-      >
+      <form onSubmit={hundleSubmit}>
         <label
           htmlFor="send-message"
           className="mb-2 text-sm font-medium text-lotion/50 sr-only"

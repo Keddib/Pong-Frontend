@@ -5,6 +5,7 @@ import Dropdown from "components/Dropdown";
 import { Link } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
 import { Notification } from "types/app";
+import Loading from "../Loading";
 
 const UsersSocket = io("ws://localhost:3500", {
   withCredentials: true,
@@ -15,7 +16,8 @@ const UsersSocket = io("ws://localhost:3500", {
 
 export default function Notifications() {
   const [show, setShow] = useState(false);
-  const [news, setNews] = useState(true);
+  const [news, setNews] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [notifications, setNotifications] = useState([] as Notification[]);
 
   function showDropDown() {
@@ -26,32 +28,44 @@ export default function Notifications() {
     // notify();
   }
   useEffect(() => {
-    // on connect
-    UsersSocket.on("connect", () => {
-      console.log("socket connected...", UsersSocket);
-    });
-    if (UsersSocket.connected) {
-      console.log("game socket is conntect.. emit");
-      UsersSocket.emit("notifications");
+    setLoading(true);
+    // fetch notifications
+    if (loading) {
+      setTimeout(() => {
+        setLoading(false);
+        // if there is some notifications
+      }, 2000);
     }
-    UsersSocket.on("notification", async (data) => {
-      console.log("data notification", data);
-      // add notification to notification states
-      // setNotifications((notifs) => [...notifs, data]);
-    });
-    // on error try to reconnect after a delay
-    UsersSocket.on("connect_error", () => {
-      console.log("erro form socket");
-      UsersSocket.close();
-      // setTimeout(() => {
-      // UsersSocket.connect();
-      // }, 1000);
-    });
 
-    return () => {
-      UsersSocket.disconnect();
-    };
-  }, []);
+    // on connect
+    if (!Loading) {
+      UsersSocket.on("connect", () => {
+        console.log("socket connected...", UsersSocket);
+      });
+      if (UsersSocket.connected) {
+        console.log("game socket is conntect.. emit");
+        UsersSocket.emit("notifications");
+      }
+      UsersSocket.on("notification", async (data) => {
+        console.log("data notification", data);
+        // add notification to notification states
+        // setNotifications((notifs) => [...notifs, data]);
+        // setNews(true);
+      });
+      // on error try to reconnect after a delay
+      UsersSocket.on("connect_error", () => {
+        console.log("erro form socket");
+        UsersSocket.close();
+        // setTimeout(() => {
+        // UsersSocket.connect();
+        // }, 1000);
+      });
+
+      return () => {
+        UsersSocket.disconnect();
+      };
+    }
+  }, [loading]);
 
   return (
     <div className="notifications">
@@ -96,7 +110,7 @@ const NotificationList: FunctionComponent<{
               className="rounded-xl bg-queenBlue flex flex-col p-4"
               to={
                 n.type == "request"
-                  ? "/friends/requests/"
+                  ? "/friends/requests"
                   : `/profile/${n.sender}`
               }
             >

@@ -24,10 +24,10 @@ const Dashboard = () => {
       } catch (error) {
         if (axios.isAxiosError(error)) {
           if (error.response?.status == 401) {
-            // signout();
+            signout();
           }
         }
-        // navigate("/access/login", { replace: true });
+        navigate("/access/login", { replace: true });
       }
     }
     getUserData();

@@ -1,10 +1,11 @@
-import { FunctionComponent, useEffect } from "react";
+import React, { FunctionComponent, useEffect } from "react";
 import { mediaQueries } from "config/index";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer, toast, CloseButtonProps } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { io, Socket } from "socket.io-client";
 import useMedia from "hooks/useMedia";
 import { GameNotify } from "types/app";
+import { useNavigate } from "react-router-dom";
 
 const GameSocket = io("ws://localhost:3001", {
   withCredentials: true,
@@ -15,6 +16,7 @@ const GameSocket = io("ws://localhost:3001", {
 
 export default function Notifications() {
   const xl = useMedia(mediaQueries.xl);
+  const navigate = useNavigate();
 
   // when recieving a notification call this function with anvitation object
   /*
@@ -29,21 +31,32 @@ export default function Notifications() {
     toast(<GameInviteNotif invitation={invite} />, {
       position: toast.POSITION.TOP_RIGHT,
       className: "game-invite-notification",
+      onClose: () => {
+        console.log("on close....");
+        GameSocket.emit("declineInvitation", { invitation: invite.invitation });
+      },
     });
   };
 
   useEffect(() => {
     // on connect
     GameSocket.on("connect", () => {
-      console.log("socket connected...", GameSocket);
+      console.log("socket created", GameSocket);
     });
-    if (GameSocket.connected) {
-      console.log("game socket is conntect.. emit");
-      GameSocket.emit("subscribeGameInvites");
-    }
+    GameSocket.emit("subscribeGameInvites");
+
     GameSocket.on("gameInvitesUpdate", async (data) => {
-      console.log("game invites update", data);
+      console.log("game invites update..", data);
+      const acceptGameReq = () => {
+        navigate("/game?invitation=" + data.invitation);
+      };
+      notify({
+        username: data.userId,
+        accept: acceptGameReq,
+        invitation: data.invitation,
+      });
     });
+
     // on error try to reconnect after a delay
     GameSocket.on("connect_error", () => {
       console.log("erro form socket");
@@ -74,9 +87,10 @@ const GameInviteNotif: FunctionComponent<{ invitation: GameNotify }> = ({
   <div className="w-full flex flex-col gap-1">
     <div className="title">
       <p className="text-lotion">
-        <strong>{invitation.name}</strong> wants to play
+        <strong>{invitation.username}</strong> wants to play
       </p>
     </div>
+
     <button
       className="self-end text-lotion bg-pictonBlue rounded-2xl px-3"
       onClick={invitation.accept}

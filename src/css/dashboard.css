@@ -232,7 +232,7 @@
     @apply grow p-2 overflow-auto no-scrollbar flex flex-col gap-2;
   }
   .message-wrapper {
-    @apply w-fit flex flex-col;
+    @apply w-fit flex flex-col max-w-full break-words;
   }
   .message-wrapper a {
     @apply pl-2 font-light hover:font-medium transition;

@@ -3,7 +3,7 @@ import useAuth from "hooks/useAuth";
 import Image from "components/Image";
 import TwoFA from "features/TFA";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
-import { Spinner } from "~/src/components/Loading";
+import { Spinner } from "components/Loading";
 
 function EditProfile() {
   const { user } = useAuth();
@@ -20,13 +20,24 @@ function EditProfile() {
     }
   }
 
-  async function submit(e: FormEvent) {
+  async function submit(e: React.SyntheticEvent) {
     e.preventDefault();
-    subButtonRef.current.disabled = true;
+    if (subButtonRef.current) {
+      const currentButton = subButtonRef.current as typeof subButtonRef & {
+        disabled: boolean;
+      };
+      currentButton.disabled = true;
+    }
     setLoading(true);
     // setError("");
-    const nickname = e.target.elements.nickname.value;
-    const avatar = e.target.elements.avatar.files[0];
+    const target = e.target as typeof e.target & {
+      elements: {
+        nickname: { value: string };
+        avatar: { files: File[] };
+      };
+    };
+    const nickname = target.elements.nickname.value;
+    const avatar = target.elements.avatar.files[0];
     // get data to send wiith respone
     const data = new FormData();
     if (nickname || avatar) {
@@ -39,7 +50,12 @@ function EditProfile() {
     } else {
       setError("one failed is required");
       setLoading(false);
-      subButtonRef.current.disabled = false;
+      if (subButtonRef.current) {
+        const currentButton = subButtonRef.current as typeof subButtonRef & {
+          disabled: boolean;
+        };
+        currentButton.disabled = false;
+      }
       return;
     }
     // send response to update user
@@ -51,7 +67,12 @@ function EditProfile() {
       setError("upload filed! please try again");
     }
     setLoading(false);
-    subButtonRef.current.disabled = false;
+    if (subButtonRef.current) {
+      const currentButton = subButtonRef.current as typeof subButtonRef & {
+        disabled: boolean;
+      };
+      currentButton.disabled = false;
+    }
   }
 
   return (

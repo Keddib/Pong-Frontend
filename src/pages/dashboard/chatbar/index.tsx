@@ -1,12 +1,11 @@
 import { mediaQueries } from "config/index";
 import useMedia from "hooks/useMedia";
-import Messages from "./components/Messages";
-import MessageInput from "./components/MessageInput";
+import Messages from "components/Messages/Messages";
+import MessageInput from "components/Messages/MessageInput";
 import { FunctionComponent, useEffect, useState } from "react";
-import useAuth from "~/src/hooks/useAuth";
-import GameInvites from "./GameInvites";
+import useAuth from "hooks/useAuth";
 import { io } from "socket.io-client";
-import useAxiosPrivate from "~/src/hooks/useAxiosPrivate";
+import useAxiosPrivate from "hooks/useAxiosPrivate";
 
 //
 type Message = {
@@ -17,7 +16,7 @@ type Message = {
 };
 
 const socket = io("http://localhost:3500/", {
-  withCredentials: true
+  withCredentials: true,
 });
 const ChatBarTabs: FunctionComponent<{
   rooms: string[];
@@ -40,6 +39,7 @@ const ChatBarTabs: FunctionComponent<{
           ) : (
             <>
               <div
+                key={i}
                 onClick={() => setCurrentRoom(r)}
                 className="link link-active text-lotion/50"
               >
@@ -71,34 +71,33 @@ const ChatBar = () => {
   const rooms = ["public", "game", "test"];
 
   useEffect(() => {
-    console.log("init listener");
     socket.emit("joinRoomToServer", currentRoom);
-
-    socket.on("msgToClient", (msg) => {
-      let newMessage: Message = {
-        userId: msg["userId"],
-        username: msg["username"],
-        text: msg["text"],
-        date: new Date()
-      };
-      console.log("received new msg from srv", newMessage, messages);
-      console.log(" user id ", user.uid, " meg user id ", msg["userId"]);
-      if (user.uid !== msg["userId"]) {
-        console.log("received msg call stet ");
-        setmsgFromsrv(newMessage);
-      }
-    });
 
     const getData = async () => {
       const msgs = await axiosPrivate.get(
         "http://localhost:3500/chat/messages/" + currentRoom
       );
-
       console.log(msgs.data);
-
       setMessages(msgs.data);
     };
-    getData();
+    getData().then(() => {
+      console.log("init listener");
+
+      socket.on("msgToClient", (msg) => {
+        let newMessage: Message = {
+          userId: msg["userId"],
+          username: msg["username"],
+          text: msg["text"],
+          date: new Date(),
+        };
+        console.log("received new msg from srv", newMessage, messages);
+        console.log(" user id ", user.uid, " meg user id ", msg["userId"]);
+        if (user.uid !== msg["userId"]) {
+          console.log("received msg call stet ");
+          setmsgFromsrv(newMessage);
+        }
+      });
+    });
   }, [currentRoom]);
 
   useEffect(() => {
@@ -125,7 +124,7 @@ const ChatBar = () => {
       userId: user.uid,
       username: user.username,
       text: inputMessage,
-      date: new Date()
+      date: new Date(),
     };
 
     setMessages([...messages, newMessage]);
@@ -136,7 +135,10 @@ const ChatBar = () => {
       {xl && (
         <aside className="chat-bar">
           <div className="h-full flex flex-col gap-2">
-            <GameInvites />
+            <div className="game-activity">
+              <h4>Game Invitations</h4>
+              <div className="h-28 overflow-auto"></div>
+            </div>
             <div className="chat-section">
               <ChatBarTabs
                 rooms={rooms}

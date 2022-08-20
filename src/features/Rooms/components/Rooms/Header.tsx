@@ -2,6 +2,7 @@ import Connect from "assets/images/rooms.png";
 import useMedia from "hooks/useMedia";
 import { mediaQueries } from "config/index";
 import SearchBar from "../SearchBar";
+import RoomForm from "./RoomForm";
 import { useEffect, useState } from "react";
 
 const Header = () => {
@@ -21,7 +22,7 @@ const Header = () => {
           <SearchBar setQuery={setQuery} />
         </div>
         <div className="w-1/2 md:w-1/4 self-end">
-          <button className="button--2">create one</button>
+          <RoomForm />
         </div>
       </div>
     </header>

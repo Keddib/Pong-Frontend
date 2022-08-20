@@ -36,9 +36,17 @@ type Notification = {
 
 type GameNotify = {
   // name of sinder
-  name: string; // username
+  username: string; // username
+  invitation: string;
   // behavior of accepting a request
   accept: () => void;
 };
 
-export { User, Game, FriendRequest, Notification, GameNotify };
+type Message = {
+  username: string;
+  text: string;
+  date: Date;
+  userId: string;
+};
+
+export { User, Game, FriendRequest, Notification, GameNotify, Message };

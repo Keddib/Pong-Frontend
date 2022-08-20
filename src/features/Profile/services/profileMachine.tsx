@@ -1,6 +1,7 @@
 import { AnyEventObject, assign, createMachine } from "xstate";
 import { User } from "types/app";
 import { axiosAuth } from "services/axios/axios";
+import { raise } from "xstate/lib/actions";
 
 const profileMachine = createMachine(
   {
@@ -58,8 +59,10 @@ const profileMachine = createMachine(
           none: {
             on: {
               ADDFRIEND: {
-                target: "receiver",
                 actions: ["addFriend"],
+              },
+              ADDED: {
+                target: "receiver",
               },
             },
           },
@@ -110,6 +113,7 @@ const profileMachine = createMachine(
           receiver: context.uid,
           sender: event.uid,
         });
+        raise({ type: "ADDED" });
       },
       unFriend: () => {
         console.log("unFriend");

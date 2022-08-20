@@ -91,6 +91,7 @@ const NoneButton = () => {
   const { user } = useAuth();
 
   const hundleOnClick = () => {
+    console.log("add frien clicked..");
     send({ type: "ADDFRIEND", uid: user.uid });
   };
 
