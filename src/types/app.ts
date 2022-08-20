@@ -49,4 +49,11 @@ type Message = {
   userId: string;
 };
 
-export { User, Game, FriendRequest, Notification, GameNotify, Message };
+type Room = {
+  name: string;
+  id: string;
+  status?: string;
+  avatar?: string;
+};
+
+export { User, Game, FriendRequest, Notification, GameNotify, Message, Room };
