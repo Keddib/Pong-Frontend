@@ -47,7 +47,7 @@ const ProfileHeader = () => {
       <div className="grow"></div>
       <div className="right-side self-end flex items-center gap-2">
         <ProfileOptions />
-        {user.rule != "me" && <Actions />}
+        {user.rule.rule != "me" && <Actions />}
       </div>
     </header>
   );

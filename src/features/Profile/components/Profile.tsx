@@ -27,8 +27,10 @@ const Profile: FunctionComponent = () => {
   const [state] = useActor(profileService);
   const [games] = useGetGames(state.context.uid);
   const user = state.context;
+  console.log("context", state.context);
 
   useEffect(() => {
+    console.log("user from profile", user);
     links.first.path = `/profile/${user.username}`;
   }, [user]);
 
@@ -44,7 +46,7 @@ const Profile: FunctionComponent = () => {
               path="match-history"
               element={<MatchHistory games={games} />}
             />
-            {user.rule == "me" && (
+            {user.rule.rule == "me" && (
               <Route path="settings" element={<EditProfile />} />
             )}
             <Route path="*" element={<SetError />} />

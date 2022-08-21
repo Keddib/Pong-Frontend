@@ -35,7 +35,7 @@ const FriendButton = () => {
   const send = useProfileState().send;
 
   const hundleOnClick = () => {
-    send({ type: "UNFRIEND" });
+    send({ type: "CANCELREQUEST" });
   };
   const hundleMouseIn = () => {
     setHover(true);
@@ -63,7 +63,7 @@ const ReceiverButton = () => {
   const send = useProfileState().send;
 
   const hundleOnClick = () => {
-    send({ type: "CANCEL" });
+    send({ type: "CANCELREQUEST" });
   };
   const hundleMouseIn = () => {
     setHover(true);

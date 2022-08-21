@@ -1,7 +1,6 @@
-import { AnyEventObject, assign, createMachine } from "xstate";
+import { createMachine } from "xstate";
 import { User } from "types/app";
-import { axiosAuth } from "services/axios/axios";
-import { raise } from "xstate/lib/actions";
+import profileActions from "./actions";
 
 const profileMachine = createMachine(
   {
@@ -19,19 +18,25 @@ const profileMachine = createMachine(
         states: {
           define: {
             always: [
-              { cond: (ctx) => ctx.rule == "me", target: "me" },
-              { cond: (ctx) => ctx.rule == "friend", target: "friend" },
-              { cond: (ctx) => ctx.rule == "sender", target: "sender" },
-              { cond: (ctx) => ctx.rule == "receiver", target: "receiver" },
-              { cond: (ctx) => ctx.rule == "blocked", target: "blocked" },
-              { cond: (ctx) => ctx.rule == "blocked", target: "none" },
+              { cond: (ctx) => ctx.rule.rule == "me", target: "me" },
+              { cond: (ctx) => ctx.rule.rule == "friend", target: "friend" },
+              { cond: (ctx) => ctx.rule.rule == "sender", target: "sender" },
+              {
+                cond: (ctx) => ctx.rule.rule == "receiver",
+                target: "receiver",
+              },
+              { cond: (ctx) => ctx.rule.rule == "blocked", target: "blocked" },
+              {
+                cond: (ctx, event) => ctx.rule.rule == "none",
+                target: "none",
+              },
             ],
           },
           me: {},
           friend: {
             on: {
-              UNFRIEND: {
-                actions: ["unFriend"],
+              CANCELREQUEST: {
+                actions: ["cancelRequest"],
                 target: "none",
               },
             },
@@ -42,17 +47,17 @@ const profileMachine = createMachine(
                 actions: ["acceptRequest"],
                 target: "friend",
               },
-              REJECT: {
-                actions: ["rejectRequest"],
+              CANCELREQUEST: {
+                actions: ["cancelRequest"],
                 target: "none",
               },
             },
           },
           receiver: {
             on: {
-              CANCEL: {
-                target: "none",
+              CANCELREQUEST: {
                 actions: ["cancelRequest"],
+                target: "none",
               },
             },
           },
@@ -60,8 +65,6 @@ const profileMachine = createMachine(
             on: {
               ADDFRIEND: {
                 actions: ["addFriend"],
-              },
-              ADDED: {
                 target: "receiver",
               },
             },
@@ -69,16 +72,16 @@ const profileMachine = createMachine(
           blocked: {
             on: {
               UNBLOCK: {
-                target: "none",
                 actions: ["unBlock"],
+                target: "none",
               },
             },
           },
         },
         on: {
           BLOCK: {
-            target: ".blocked",
             actions: ["block"],
+            target: ".blocked",
           },
           FAILED: ".define",
         },
@@ -91,7 +94,10 @@ const profileMachine = createMachine(
       DATA_CHANGED: [
         {
           target: "player",
-          cond: (context, event) => event.data,
+          cond: (context, event) => {
+            console.log("event ", event);
+            return event.data;
+          },
         },
         {
           target: "error",
@@ -102,40 +108,12 @@ const profileMachine = createMachine(
   },
   {
     actions: {
-      initContext: assign((context, event: AnyEventObject) => ({
-        ...event.data,
-      })),
-
-      addFriend: async (context, event) => {
-        console.log("addfriend");
-        console.log(context, event);
-        await axiosAuth.post("/friends/add", {
-          receiver: context.uid,
-          sender: event.uid,
-        });
-        raise({ type: "ADDED" });
-      },
-      unFriend: () => {
-        console.log("unFriend");
-      },
-      cancelRequest: () => {
-        console.log("cancelRequest");
-      },
-      sendRequest: () => {
-        console.log("sendRequest");
-      },
-      acceptRequest: () => {
-        console.log("acceptRequest");
-      },
-      rejectRequest: () => {
-        console.log("rejectRequest");
-      },
-      block: () => {
-        console.log("block");
-      },
-      unBlock: () => {
-        console.log("unBlock");
-      },
+      initContext: profileActions.initContext,
+      addFriend: profileActions.addFriend,
+      cancelRequest: profileActions.cancelRequest,
+      acceptRequest: profileActions.acceptRequest,
+      block: profileActions.block,
+      unBlock: profileActions.unBlock,
     },
   }
 );

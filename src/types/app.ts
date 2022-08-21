@@ -8,7 +8,10 @@ interface User {
   losses: number;
   xp: number;
   level: number;
-  rule: "me" | "friend" | "receiver" | "sender" | "blocked" | "none";
+  rule: {
+    rule: "me" | "friend" | "receiver" | "sender" | "blocked" | "none";
+    request: FriendRequest;
+  };
   tfaEnabled: boolean;
   tfaSecret?: string;
 }
@@ -56,4 +59,18 @@ type Room = {
   avatar?: string;
 };
 
-export { User, Game, FriendRequest, Notification, GameNotify, Message, Room };
+interface ProfileContext {
+  user: User;
+  request: FriendRequest;
+}
+
+export {
+  User,
+  Game,
+  FriendRequest,
+  Notification,
+  GameNotify,
+  Message,
+  Room,
+  ProfileContext,
+};

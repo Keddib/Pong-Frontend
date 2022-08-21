@@ -1,8 +1,8 @@
-import React, { FunctionComponent, useEffect } from "react";
+import { FunctionComponent, useEffect } from "react";
 import { mediaQueries } from "config/index";
-import { ToastContainer, toast, CloseButtonProps } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { io, Socket } from "socket.io-client";
+import { io } from "socket.io-client";
 import useMedia from "hooks/useMedia";
 import { GameNotify } from "types/app";
 import { useNavigate } from "react-router-dom";

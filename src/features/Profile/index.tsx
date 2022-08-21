@@ -15,11 +15,15 @@ const ProfileWrapper = () => {
   const [state] = useActor(profileService);
 
   useEffect(() => {
+    console.log("profile state..", state);
     if (state.matches("error")) {
       console.log("error state");
       setErrorStatusCode(400);
       return;
     }
+  }, [state, setErrorStatusCode]);
+
+  useEffect(() => {
     if (user || userError) {
       console.log("user", user);
       console.log("userError", userError);
@@ -29,7 +33,7 @@ const ProfileWrapper = () => {
         error: userError,
       });
     }
-  }, [user, userError]);
+  }, [user, userError, send]);
 
   if (state.matches("loading")) {
     return <Loading />;
