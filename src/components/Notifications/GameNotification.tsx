@@ -6,6 +6,7 @@ import { io } from "socket.io-client";
 import useMedia from "hooks/useMedia";
 import { GameNotify } from "types/app";
 import { useNavigate } from "react-router-dom";
+import useUserStatus from "~/src/hooks/useUserStatus";
 
 const GameSocket = io("ws://localhost:3001", {
   withCredentials: true,
@@ -17,6 +18,7 @@ const GameSocket = io("ws://localhost:3001", {
 export default function Notifications() {
   const xl = useMedia(mediaQueries.xl);
   const navigate = useNavigate();
+  const { updateUser } = useUserStatus();
 
   // when recieving a notification call this function with anvitation object
   /*
@@ -56,7 +58,10 @@ export default function Notifications() {
         invitation: data.invitation,
       });
     });
-
+    GameSocket.on("userStatusUpdate", async (data) => {
+      console.log("userStatusUpdate", data);
+      updateUser(data);
+    });
     // on error try to reconnect after a delay
     GameSocket.on("connect_error", () => {
       console.log("erro form socket");

@@ -9,6 +9,7 @@ import ChatBar from "./chatbar";
 import Main from "./main";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import useAuth from "hooks/useAuth";
+import UserStatusProvider from "./UserStatusProvider";
 
 const Dashboard = () => {
   const [chatBar, setChatBar] = useState(true);
@@ -40,10 +41,12 @@ const Dashboard = () => {
     >
       <div className="page bg-gradient-to-t from-spaceCadet to-spaceCadet/70">
         <div className="dash-layout">
-          <Sidebar />
-          <Header />
-          <Main setChatBar={setChatBar} />
-          {chatBar && <ChatBar />}
+          <UserStatusProvider>
+            <Sidebar />
+            <Header />
+            <Main setChatBar={setChatBar} />
+            <>{chatBar && <ChatBar />}</>
+          </UserStatusProvider>
         </div>
       </div>
     </main>

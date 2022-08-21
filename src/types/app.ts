@@ -9,7 +9,7 @@ interface User {
   xp: number;
   level: number;
   rule: {
-    rule: "me" | "friend" | "receiver" | "sender" | "blocked" | "none";
+    rule: "me" | "friends" | "receiver" | "sender" | "blocked" | "none";
     request: FriendRequest;
   };
   tfaEnabled: boolean;
@@ -64,6 +64,11 @@ interface ProfileContext {
   request: FriendRequest;
 }
 
+type UserStatus = {
+  userId: string;
+  status: "online" | "offline" | "playing" | "spectating";
+};
+
 export {
   User,
   Game,
@@ -73,4 +78,5 @@ export {
   Message,
   Room,
   ProfileContext,
+  UserStatus,
 };
