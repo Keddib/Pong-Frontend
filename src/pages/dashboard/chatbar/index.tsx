@@ -16,7 +16,7 @@ type Message = {
 };
 
 const socket = io("http://localhost:3500/", {
-  withCredentials: true,
+  withCredentials: true
 });
 const ChatBarTabs: FunctionComponent<{
   rooms: string[];
@@ -68,7 +68,7 @@ const ChatBar = () => {
   const [lastPong, setLastPong] = useState(null);
 
   const [currentRoom, setCurrentRoom] = useState("public");
-  const rooms = ["public", "game", "test"];
+  const rooms = ["public", "game", "support"];
 
   useEffect(() => {
     socket.emit("joinRoomToServer", currentRoom);
@@ -88,7 +88,7 @@ const ChatBar = () => {
           userId: msg["userId"],
           username: msg["username"],
           text: msg["text"],
-          date: new Date(),
+          date: new Date()
         };
         console.log("received new msg from srv", newMessage, messages);
         console.log(" user id ", user.uid, " meg user id ", msg["userId"]);
@@ -119,12 +119,12 @@ const ChatBar = () => {
     // setMessahes([...messages, newMessage]);
     // console.log('current user ', user)
     if (!inputMessage.length) return;
-    socket.emit("msgToServer", { room: "public", message: inputMessage });
+    socket.emit("msgToServer", { room: currentRoom, message: inputMessage });
     let newMessage: Message = {
       userId: user.uid,
       username: user.username,
       text: inputMessage,
-      date: new Date(),
+      date: new Date()
     };
 
     setMessages([...messages, newMessage]);
