@@ -19,7 +19,7 @@ const profileMachine = createMachine(
           define: {
             always: [
               { cond: (ctx) => ctx.rule.rule == "me", target: "me" },
-              { cond: (ctx) => ctx.rule.rule == "friend", target: "friend" },
+              { cond: (ctx) => ctx.rule.rule == "friends", target: "friend" },
               { cond: (ctx) => ctx.rule.rule == "sender", target: "sender" },
               {
                 cond: (ctx) => ctx.rule.rule == "receiver",
@@ -27,7 +27,7 @@ const profileMachine = createMachine(
               },
               { cond: (ctx) => ctx.rule.rule == "blocked", target: "blocked" },
               {
-                cond: (ctx, event) => ctx.rule.rule == "none",
+                cond: (ctx) => ctx.rule.rule == "none",
                 target: "none",
               },
             ],

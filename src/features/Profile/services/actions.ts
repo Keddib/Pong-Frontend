@@ -13,7 +13,7 @@ const actions = {
     console.log(context, event);
     try {
       const res = await axiosAuth.post(
-        "/friends/addd",
+        "/friends/add",
         {
           receiver: context.uid,
           sender: event.uid,
@@ -56,8 +56,7 @@ const actions = {
       axiosAuth.post(
         "/friends/accept",
         {
-          uid: context.uid,
-          status: true,
+          uid: context.rule.request.uid,
         },
         {
           headers: {

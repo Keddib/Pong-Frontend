@@ -24,6 +24,8 @@ const ProfileOptions = () => {
     return <BlockedButton />;
   } else if (state.matches("player.friend")) {
     return <FriendButton />;
+  } else if (state.matches("player.sender")) {
+    return <SenderButton />;
   }
   return <NoneButton />;
 };
@@ -130,5 +132,33 @@ const BlockedButton = () => {
     >
       {hover ? "unblock" : "blocked"}
     </button>
+  );
+};
+
+const SenderButton = () => {
+  const send = useProfileState().send;
+
+  const hundleDecline = () => {
+    send({ type: "CANCELREQUEST" });
+  };
+  const hundleAccept = () => {
+    send({ type: "ACCEPT" });
+  };
+
+  return (
+    <>
+      <button
+        className="button--3 px-4 text-sm md:px-8 md:text-xl"
+        onClick={hundleAccept}
+      >
+        accept
+      </button>
+      <button
+        className="button--3 px-4 text-sm md:px-8 md:text-xl"
+        onClick={hundleDecline}
+      >
+        decline
+      </button>
+    </>
   );
 };
