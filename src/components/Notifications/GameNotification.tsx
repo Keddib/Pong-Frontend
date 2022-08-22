@@ -5,21 +5,21 @@ import "react-toastify/dist/ReactToastify.css";
 import { io } from "socket.io-client";
 import useMedia from "hooks/useMedia";
 import { GameNotify } from "types/app";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import useUserStatus from "~/src/hooks/useUserStatus";
 
 const GameSocket = io("ws://localhost:3001", {
   withCredentials: true,
   extraHeaders: {
-    Authorization: "Bearer " + localStorage.getItem("accessToken"),
-  },
+    Authorization: "Bearer " + localStorage.getItem("accessToken")
+  }
 });
 
 export default function Notifications() {
   const xl = useMedia(mediaQueries.xl);
   const navigate = useNavigate();
   const { updateUser } = useUserStatus();
-
+  // const location = useLocation();
   // when recieving a notification call this function with anvitation object
   /*
     type GameNotify = {
@@ -34,9 +34,15 @@ export default function Notifications() {
       position: toast.POSITION.TOP_RIGHT,
       className: "game-invite-notification",
       onClose: () => {
-        console.log("on close....");
-        GameSocket.emit("declineInvitation", { invitation: invite.invitation });
-      },
+        console.log("on close....", location);
+        if (
+          location.pathname + location.search !==
+          "/game?invitation=" + invite.invitation
+        )
+          GameSocket.emit("declineInvitation", {
+            invitation: invite.invitation
+          });
+      }
     });
   };
 
@@ -55,7 +61,7 @@ export default function Notifications() {
       notify({
         username: data.userId,
         accept: acceptGameReq,
-        invitation: data.invitation,
+        invitation: data.invitation
       });
     });
     GameSocket.on("userStatusUpdate", async (data) => {
@@ -87,7 +93,7 @@ export default function Notifications() {
 }
 
 const GameInviteNotif: FunctionComponent<{ invitation: GameNotify }> = ({
-  invitation,
+  invitation
 }) => (
   <div className="w-full flex flex-col gap-1">
     <div className="title">
