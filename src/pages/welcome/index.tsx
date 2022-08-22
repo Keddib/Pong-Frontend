@@ -27,7 +27,7 @@ const Welcome: FunctionComponent = () => {
               <h1>
                 Become a Pro <span className="text-crayola">Pong</span> Player
               </h1>
-              <h2 className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pictonBlue to-crayola">
+              <h2 className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-crayola to-pictonBlue">
                 are you ready ?
               </h2>
               <Link to="/home" className="button--2 w-56 text-center">

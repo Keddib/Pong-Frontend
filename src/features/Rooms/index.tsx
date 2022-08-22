@@ -25,7 +25,7 @@ function RoomsPage() {
 
   return (
     <div className="m-auto w-full h-full flex flex-col gap-4">
-      <div className=" rounded-2xl py-4 pl-4 flex flex-col gap-4 w-full h-full">
+      <div className=" rounded-2xl py-4 flex flex-col gap-4 w-full h-full">
         <TabBar links={links} />
         <Routes>
           <Route index element={<Rooms />} />
