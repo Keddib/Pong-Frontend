@@ -18,7 +18,6 @@ const FriendListItem: FunctionComponent<{ user: User }> = ({ user }) => {
     navigate("/game", {
       state: { mode: gameMode, custom: { opponent: user.uid }, from },
     });
-    setInvite(true);
   };
   return (
     <ElementBar rank={-1}>

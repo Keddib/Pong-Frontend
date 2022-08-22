@@ -3,7 +3,7 @@ import {
   useLocation,
   useNavigate,
   useParams,
-  useSearchParams,
+  useSearchParams
 } from "react-router-dom";
 import Play from "./components/Playing";
 import Waiting from "./components/Waiting";
@@ -12,7 +12,7 @@ import { User } from "types/user";
 import { Socket } from "socket.io-client";
 import useAuth from "~/src/hooks/useAuth";
 import { GameState } from "./components/Pong/utils/Types";
-import { axiosUsers, checkUserSession } from "~/src/services/axios";
+
 interface CustomGamePayload {
   opponent: string;
 }
@@ -44,10 +44,10 @@ export default function Game() {
   useEffect(() => {
     socket.current = io("ws://localhost:3001", {
       withCredentials: true,
-      extraHeaders: { Authorization: "Bearer " + getAccessToken() },
+      extraHeaders: { Authorization: "Bearer " + getAccessToken() }
     }).on("connect", () => {
       console.log("socket created", socket.current);
-      if (!location.state) location.state = { mode: "classic" };
+      if (!location?.state) location.state = { mode: "classic" };
 
       if (spectate) {
         socket.current?.emit("spectate", { gameId: spectate });
@@ -55,8 +55,8 @@ export default function Game() {
         socket.current?.emit("initGame");
         socket.current?.on("authenticated", () => {
           socket.current?.emit("playerJoined", {
-            mode: location.state.mode,
-            custom: invitation ? { invitation } : location.state.custom,
+            mode: location?.state?.mode,
+            custom: invitation ? { invitation } : location?.state?.custom
           });
         });
       }
@@ -64,7 +64,7 @@ export default function Game() {
       socket.current?.on("gameState", (data: GameState) => {
         if (
           gameState == "waiting" &&
-          location.state.mode.toLowerCase() === data.mode.toLowerCase() &&
+          location?.state?.mode.toLowerCase() === data.mode.toLowerCase() &&
           !opponent &&
           !once
         ) {
@@ -83,7 +83,7 @@ export default function Game() {
           // } else {
           setOpponent(
             JSON.parse(data.playerData)[
-              (data.players.indexOf(socket.current?.id) + 1) % 2
+              (data.players.indexOf(socket.current?.id || "") + 1) % 2
             ]
           );
           setPlayers(JSON.parse(data.playerData));
@@ -129,8 +129,8 @@ export default function Game() {
       <Play players={players} gameStateData={gameStateData} socket={socket} />
     );
   else if (gameState == "canceled") {
-    navigate(location.state.from || "/home", {
-      replace: true,
+    navigate(location?.state?.from || "/home", {
+      replace: true
     });
   }
   return <>{page}</>;
