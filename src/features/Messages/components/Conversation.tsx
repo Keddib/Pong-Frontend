@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import ElementBar from "components/ElementBar";
-import RoomCard from "~/src/components/RoomCard";
+import RoomCard from "components/RoomCard";
 
 const room = {
   name: "KhromBrom",
@@ -9,7 +9,7 @@ const room = {
 
 const Conversation = () => {
   return (
-    <Link to="12893">
+    <Link to="convId" className="">
       <ElementBar rank={-1}>
         <div className="flex justify-between items-center w-full">
           <RoomCard room={room} />
