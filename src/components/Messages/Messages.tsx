@@ -15,7 +15,7 @@ const Messages: FunctionComponent<{ messages: Message[] }> = ({ messages }) => {
   }, [messages]);
 
   return (
-    <ul className="chat-messages">
+    <ul className="chat-messages bg-spaceCadet rounded-3xl">
       {messages &&
         messages.map((message) => (
           <Message
@@ -36,7 +36,7 @@ const Message: FunctionComponent<{ message: Message; own: boolean }> = ({
   return (
     <li className={own ? "message-wrapper own" : "message-wrapper"}>
       <Link to={`/profile/${message.username}`}>{message.username}</Link>
-      <p>{message.text}</p>
+      <p className="normal-case">{message.text}</p>
       <span>{format(new Date(message.date))}</span>
     </li>
   );

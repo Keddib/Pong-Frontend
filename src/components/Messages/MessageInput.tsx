@@ -30,7 +30,7 @@ const MessageInput: FunctionComponent<{ setMsg: (msg: string) => void }> = ({
             type="message"
             name="messageInput"
             id="default-message"
-            className="message-input"
+            className="message-input w-full"
             placeholder="message for players..."
             required
           />
