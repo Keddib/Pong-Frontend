@@ -1,13 +1,10 @@
 import Star from "assets/icons/star.svg";
-import Ellipsis from "assets/icons/ellipsis.svg";
-import Xmark from "assets/icons/xmark.svg";
 import Image from "components/Image";
 import { FunctionComponent, useState } from "react";
 import { useActor } from "@xstate/react";
 import useProfileState from "../../hooks/useProfileState";
 import ProfileOptions from "./ProfileOptions";
-import Dropdown from "~/src/components/Dropdown";
-
+import Actions from "./ProfileActions";
 const ExStar: FunctionComponent<{ lvl: number }> = (props) => {
   return (
     <div className="w-fit absolute right-0 bottom-0">
@@ -47,41 +44,9 @@ const ProfileHeader = () => {
       <div className="grow"></div>
       <div className="right-side self-end flex items-center gap-2">
         <ProfileOptions />
-        {user.rule.rule != "me" && <Actions />}
+        {user.rule.rule != "me" && <Actions user={user} />}
       </div>
     </header>
-  );
-};
-
-const Actions = () => {
-  const [show, setShow] = useState(false);
-
-  function showDropDown() {
-    setShow(!show);
-  }
-
-  return (
-    <div className="relative">
-      <button className="group bell-button" onClick={showDropDown}>
-        <Ellipsis className="iconBell" />
-      </button>
-      {show && (
-        <Dropdown className="w-fit">
-          <>
-            <div className=" flex justify-end">
-              <button onClick={showDropDown}>
-                <Xmark className="w-5 h-5 fill-lotion/50 hover:fill-lotion" />
-              </button>
-            </div>
-            <>
-              <p>option lklsdjfhdlskjfhd</p>
-              <p>option lklsdjfhdlskjfhd</p>
-              <p>option lklsdjfhdlskjfhd</p>
-            </>
-          </>
-        </Dropdown>
-      )}
-    </div>
   );
 };
 

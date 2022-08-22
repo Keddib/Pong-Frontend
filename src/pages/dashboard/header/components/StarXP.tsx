@@ -1,6 +1,7 @@
 import Star from "assets/icons/star.svg";
-import { User } from "types/app";
 import { FunctionComponent } from "react";
+import { levelFactor } from "config/index";
+import { User } from "types/app";
 
 const UserStarXP: FunctionComponent<{ user: User }> = ({ user }) => {
   return (
@@ -14,7 +15,14 @@ const UserStarXP: FunctionComponent<{ user: User }> = ({ user }) => {
       <div className="flex flex-col justify-center grow ">
         <p>{`${user.xp} xp`}</p>
         <div className="w-full h-3 rounded-3xl bg-lotion/50">
-          <div className="w-[0] bg-crayola h-3 rounded-3xl"></div>
+          <div
+            className="bg-crayola h-3 rounded-3xl"
+            style={{
+              width:
+                (((user.xp / (user.level * levelFactor)) * 100).toString() ||
+                  "0") + "%",
+            }}
+          ></div>
         </div>
       </div>
     </div>

@@ -55,6 +55,7 @@ type Message = {
 type Room = {
   name: string;
   id: string;
+  uid: string;
   status?: string;
   avatar?: string;
 };

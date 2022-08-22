@@ -3,7 +3,7 @@ import {
   useLocation,
   useNavigate,
   useParams,
-  useSearchParams
+  useSearchParams,
 } from "react-router-dom";
 import Play from "./components/Playing";
 import Waiting from "./components/Waiting";
@@ -19,6 +19,7 @@ interface CustomGamePayload {
 interface LocationState {
   mode: string;
   custom?: CustomGamePayload;
+  from?: string;
 }
 interface Loc extends Location {
   state: LocationState;
@@ -43,7 +44,7 @@ export default function Game() {
   useEffect(() => {
     socket.current = io("ws://localhost:3001", {
       withCredentials: true,
-      extraHeaders: { Authorization: "Bearer " + getAccessToken() }
+      extraHeaders: { Authorization: "Bearer " + getAccessToken() },
     }).on("connect", () => {
       console.log("socket created", socket.current);
       if (!location.state) location.state = { mode: "classic" };
@@ -55,7 +56,7 @@ export default function Game() {
         socket.current?.on("authenticated", () => {
           socket.current?.emit("playerJoined", {
             mode: location.state.mode,
-            custom: invitation ? { invitation } : location.state.custom
+            custom: invitation ? { invitation } : location.state.custom,
           });
         });
       }
@@ -128,7 +129,9 @@ export default function Game() {
       <Play players={players} gameStateData={gameStateData} socket={socket} />
     );
   else if (gameState == "canceled") {
-    navigate("/home", { replace: true });
+    navigate(location.state.from || "/home", {
+      replace: true,
+    });
   }
   return <>{page}</>;
 }

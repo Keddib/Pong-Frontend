@@ -1,7 +1,7 @@
 import Connect from "assets/images/rooms.png";
 import useMedia from "hooks/useMedia";
 import { mediaQueries } from "config/index";
-import SearchBar from "../SearchBar";
+import SearchBar from "components/SearchBar";
 import RoomForm from "./RoomForm";
 import { useEffect, useState } from "react";
 

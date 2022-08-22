@@ -22,4 +22,6 @@ const mediaQueries: MediaQueries = {
   xl2: "(min-width: 1536px)",
 };
 
-export { api, mediaQueries };
+const levelFactor = 40;
+
+export { api, mediaQueries, levelFactor };

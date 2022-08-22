@@ -4,10 +4,11 @@ import { FunctionComponent, MouseEventHandler, useState } from "react";
 import ElementBar from "components/ElementBar";
 import UserCard from "components/Usercard";
 import { User } from "types/app";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 const FriendListItem: FunctionComponent<{ user: User }> = ({ user }) => {
-  const [invite, setInvite] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.pathname;
 
   interface CustomGamePayload {
     opponent: string;
@@ -15,7 +16,7 @@ const FriendListItem: FunctionComponent<{ user: User }> = ({ user }) => {
   const handleInviteToPlayButton = (e: any) => {
     const gameMode = "classic";
     navigate("/game", {
-      state: { mode: gameMode, custom: { opponent: user.uid } }
+      state: { mode: gameMode, custom: { opponent: user.uid }, from },
     });
     setInvite(true);
   };

@@ -2,9 +2,19 @@ import RoomImg from "assets/images/friends.jpg";
 import { Link } from "react-router-dom";
 import Image from "components/Image";
 import { Room } from "types/app";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
+import useUserStatus from "~/src/hooks/useUserStatus";
 
 const RoomCard: FunctionComponent<{ room: Room }> = ({ room }) => {
+  const { userStatus } = useUserStatus();
+  const [status, setStatus] = useState(room.status);
+
+  useEffect(() => {
+    if (userStatus.userId == room.uid) {
+      setStatus(userStatus.status);
+    }
+  }, [userStatus, setStatus, room]);
+
   return (
     <Link to={"/messages" + room.id} className="user-wrapper group">
       <div className="relative">
@@ -15,7 +25,7 @@ const RoomCard: FunctionComponent<{ room: Room }> = ({ room }) => {
             className="user-img"
           />
         </div>
-        <span className={room.status}></span>
+        <span className={status}></span>
       </div>
       <div className="group-hover:text-lotion/70 ml-4">
         <h4 className="text-sm sm:text-lg">{room.name}</h4>

@@ -4,9 +4,10 @@ import { FunctionComponent, Dispatch, SetStateAction, useEffect } from "react";
 const SearchBar: FunctionComponent<{
   setQuery: Dispatch<SetStateAction<string>>;
 }> = ({ setQuery }) => {
-  useEffect(()=>{
+  useEffect(() => {
     setQuery("");
-  },[])
+  }, [setQuery]);
+
   return (
     <div className="search-bar">
       <form

@@ -4,26 +4,26 @@ import CircleX from "assets/icons/circle-xmark.svg";
 import GameResult from "features/Profile/components/Gameresult";
 import { FunctionComponent } from "react";
 import { User, Game } from "types/app";
+import { levelFactor } from "config/index";
 
 const OverView: FunctionComponent<{ user: User; game: Game }> = ({
   user,
   game,
 }) => {
-  const lvlFactor = 40;
   return (
     <>
       <div className="rounded-2xl bg-spaceCadet p-4 flex flex-col gap-2 sm:gap-4 md:gap-8">
         <div>
           <div className="flex justify-between items-center px-2">
             <p>{`Lvl. ${user.level}`}</p>
-            <p>{`${user.xp} xp / ${user.level * lvlFactor} xp `}</p>
+            <p>{`${user.xp} xp`}</p>
           </div>
           <div className="bg-lotion/30 rounded-2xl h-4">
             <div
               className="rounded-2xl bg-crayola h-full"
               style={{
                 width:
-                  (((user.xp / (user.level * lvlFactor)) * 100).toString() ||
+                  (((user.xp / (user.level * levelFactor)) * 100).toString() ||
                     "0") + "%",
               }}
             ></div>

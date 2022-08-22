@@ -85,6 +85,7 @@ const actions = {
         }
       );
     } catch (error) {
+      console.log("error from block action", error);
       raise({ type: "FAILED" });
     }
   },

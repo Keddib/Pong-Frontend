@@ -99,7 +99,7 @@
   .playing {
     @apply dot bg-pictonBlue;
   }
-  .watching {
+  .spectating {
     @apply dot bg-crayola;
   }
   .offline {
@@ -142,9 +142,9 @@
   }
 
   .dropdown {
-    @apply absolute rounded-2xl z-10 top-12 right-0 w-[250px] h-fit py-4 px-4
+    @apply absolute rounded-2xl z-10 top-12 right-0 w-[310px] h-fit py-4 px-4
     bg-spaceCadet border border-lotion/50 hover:border-lotion flex
-    flex-col gap-2 max-h-96 overflow-auto no-scrollbar;
+    flex-col gap-2 max-h-[570px] overflow-auto no-scrollbar;
   }
   .modal {
     @apply fixed h-full w-full top-0 left-0 z-50 bg-spaceCadet/90
