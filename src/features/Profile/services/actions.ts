@@ -16,12 +16,12 @@ const actions = {
         "/friends/add",
         {
           receiver: context.uid,
-          sender: event.uid,
+          sender: event.uid
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+          }
         }
       );
       console.log(" add friend response", res);
@@ -37,12 +37,12 @@ const actions = {
       const res = await axiosAuth.post(
         "/friends/decline",
         {
-          uid: context.rule.request.uid,
+          uid: context.rule.request.uid
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+          }
         }
       );
     } catch (error) {
@@ -56,12 +56,12 @@ const actions = {
       axiosAuth.post(
         "/friends/accept",
         {
-          uid: context.rule.request.uid,
+          uid: context.rule.request.uid
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+          }
         }
       );
     } catch (error) {
@@ -75,13 +75,13 @@ const actions = {
       axiosAuth.post(
         "/friends/block",
         {
-          uid: context.uid,
-          blocker: true,
+          uid: (context as any).rule.request.uid,
+          blocker: true
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+          }
         }
       );
     } catch (error) {
@@ -96,18 +96,18 @@ const actions = {
       axiosAuth.post(
         "/friends/unblock",
         {
-          uid: context.uid,
+          uid: context.uid
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+          }
         }
       );
     } catch (error) {
       raise({ type: "FAILED" });
     }
-  },
+  }
 };
 
 export default actions;

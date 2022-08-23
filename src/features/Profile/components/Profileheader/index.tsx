@@ -44,7 +44,7 @@ const ProfileHeader = () => {
       <div className="grow"></div>
       <div className="right-side self-end flex items-center gap-2">
         <ProfileOptions />
-        {(state.matches("me") || state.matches("blocked")) && (
+        {!state.matches("me") && !state.matches("blocked") && (
           <Actions user={user} />
         )}
       </div>
