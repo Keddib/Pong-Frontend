@@ -10,14 +10,13 @@ type Props = {
 
 const LeaderBoardList: FunctionComponent<Props> = ({ users }) => {
   const list = users.map((user, index) => (
-
     <li key={index}>
       <ElementBar rank={index}>
         <>
           <Rank index={index} />
           <div className="flex justify-between items-center w-full">
             <UserCard user={user} />
-            <span className="sm:mr-8 text-left">LVL {user.level} / {user.xp} XP</span>
+            <span className="sm:mr-8 text-left">{user.xp} XP</span>
           </div>
         </>
       </ElementBar>

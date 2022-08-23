@@ -16,7 +16,7 @@ const GameResult: FunctionComponent<{ game: Game }> = ({ game }) => {
   return (
     <li className="group bg-queenBlue/50 flex justify-between items-center rounded-xl border border-transparent hover:border-pictonBlue mb-1 py-1 ease-linear duration-100">
       <div className="group-hover:bg-pictonBlue w-1 mr-[1px] h-[25px] md:h-[45px] rounded-3xl"></div>
-      <div className="top-game flex gap-2 md:gap-8 justify-center items-center ">
+      <div className="top-game flex gap-2 md:gap-8 justify-center items-center">
         <UserCard user={game.playerOne} />
         <Result score={[game.scoreOne, game.scoreTwo]} />
         <UserCard user={game.playerTwo} />
