@@ -56,7 +56,7 @@ const actions = {
       axiosAuth.post(
         "/friends/accept",
         {
-          uid: context.uid,
+          uid: context.rule.request.uid,
         },
         {
           headers: {
