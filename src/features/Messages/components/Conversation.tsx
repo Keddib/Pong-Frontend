@@ -1,21 +1,35 @@
 import { Link } from "react-router-dom";
 import ElementBar from "components/ElementBar";
 import RoomCard from "components/RoomCard";
+import { FunctionComponent } from "react";
+import { User } from "~/src/types/app";
 
 const room = {
   name: "KhromBrom",
   id: "skhds_sdskhd_123",
 };
 
-const Conversation = () => {
+type Conversation = {
+
+  id: string;
+  name: string;
+  owner: User;
+  members: User[];
+  admins: User[];
+  type: string;
+  // status: 'online' | 'offline' | 'playing' | 'spectating'; // members status 
+
+}
+
+const Conversation : FunctionComponent<{conversation : Conversation}> = ({conversation}) => {
   return (
-    <Link to="convId" className="">
+    <Link to={conversation.id} className="">
       <ElementBar rank={-1}>
         <div className="flex justify-between items-center w-full">
-          <RoomCard room={room} />
-          <span className="bg-pictonBlue w-4 h-4 sm:w-6 sm:h-6 rounded-full flex justify-center items-center">
-            1
-          </span>
+          <RoomCard room={conversation} />
+          {/* <span className="bg-pictonBlue w-4 h-4 sm:w-6 sm:h-6 rounded-full flex justify-center items-center">
+          1
+          </span> */}
         </div>
       </ElementBar>
     </Link>

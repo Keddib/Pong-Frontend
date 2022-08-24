@@ -2,15 +2,41 @@ import SendIcon from "assets/icons/dm.svg";
 import Heart from "assets/images/heart.png";
 import { Outlet, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-import Coversation from "./Conversation";
+import CoversationCard from "./Conversation";
 import useMedia from "hooks/useMedia";
-import { mediaQueries } from "config";
+import { mediaQueries } from "config/index";
+import useAuth from "hooks/useAuth";
+import useAxiosPrivate from "hooks/useAxiosPrivate";
+import { User } from "types/app";
+import { Spinner } from "components/Loading";
+import { Conversation } from "types/app";
+
+
 
 const ConversationsList = () => {
   const [welcome, setWelcome] = useState(false);
+  const [loading, setLoading] = useState(false);
   const location = useLocation();
   const lg = useMedia(mediaQueries.lg);
+  const [conversations, SetConversations] = useState([] as Conversation[]);
+  const { user } = useAuth();
+  const axiosPrivate = useAxiosPrivate();
 
+
+  useEffect(() => {
+    const GetConversations = async () => {
+      try {
+        const rooms : Conversation [] = await axiosPrivate.get('/friends/rooms');
+        SetConversations(rooms);
+        setLoading(false);
+      } catch(error) {
+        console.log("fetch conv error", error);
+      }
+    }
+    GetConversations();
+    // get all conv
+  
+  }, []);
   useEffect(() => {
     console.log("location from chat", location);
     if (location.pathname == "/messages" && lg) {
@@ -18,7 +44,7 @@ const ConversationsList = () => {
     } else {
       setWelcome(false);
     }
-  }, [lg, location]);
+  }, [location]);
 
   return (
     <>
@@ -28,33 +54,9 @@ const ConversationsList = () => {
           <h4>Messaging</h4>
         </div>
         <ul className="flex flex-col gap-1">
-          <li>
-            <Coversation />
-          </li>
-          <li>
-            <Coversation />
-          </li>
-          <li>
-            <Coversation />
-          </li>
-          <li>
-            <Coversation />
-          </li>
-          <li>
-            <Coversation />
-          </li>
-          <li>
-            <Coversation />
-          </li>
-          <li>
-            <Coversation />
-          </li>
-          <li>
-            <Coversation />
-          </li>
-          <li>
-            <Coversation />
-          </li>
+          {loading ? <Spinner/> : <>{conversations.map((conv) => {
+            <CoversationCard conversation={conv}/>
+          }) }</>}
         </ul>
       </div>
       {welcome && (

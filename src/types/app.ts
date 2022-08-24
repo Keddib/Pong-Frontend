@@ -70,6 +70,18 @@ type UserStatus = {
   status: "online" | "offline" | "playing" | "spectating";
 };
 
+type Conversation = {
+
+  id: string;
+  name: string;
+  owner: User;
+  members: User[];
+  admins: User[];
+  type: string;
+  // status: 'online' | 'offline' | 'playing' | 'spectating'; // members status 
+
+}
+
 export {
   User,
   Game,
@@ -80,4 +92,5 @@ export {
   Room,
   ProfileContext,
   UserStatus,
+  Conversation
 };

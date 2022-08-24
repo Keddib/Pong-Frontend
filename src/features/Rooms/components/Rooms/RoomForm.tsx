@@ -6,6 +6,7 @@ import { User } from "~/src/types/app";
 import useAxiosPrivate from "~/src/hooks/useAxiosPrivate";
 import { axiosPrivate } from "~/src/services/axios/axios";
 import { getData } from "../../services/GetFormData";
+import useAuth from "~/src/hooks/useAuth";
 export { getData } from "../../services/GetFormData";
 
 const RoomForm = () => {
@@ -13,6 +14,8 @@ const RoomForm = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const doneButtonRef = useRef(null);
+  const { user } = useAuth();
+  const axiosPrivate = useAxiosPrivate();
 
   function showDropDown() {
     setShow(!show);
@@ -30,8 +33,27 @@ const RoomForm = () => {
     setError("");
     const data = getData(e);
     console.log("data", data);
+
+
+    // type: roomType;
+    // owner: string;
+    // name: string;
+
+    // password?: string;
+    // admins?: string[];
+    // banned?: string[];
+    // description?: string;
+
+
+
     try {
-      await axiosPrivate.post(`createRoom`, data);
+      await axiosPrivate.post(`/chat/createRoom`, {
+        type: data.type,
+        owner: user.uid,
+        name: data.name,
+        password: data?.password,
+        members: data?.members,
+      });
     } catch (err) {
       setError("upload filed! please try again");
     }

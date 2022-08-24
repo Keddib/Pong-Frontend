@@ -11,7 +11,7 @@ function getData(e: React.SyntheticEvent) {
   // collect data
   const RoomName = target.elements.RoomName.value;
   const RoomPassword = target.elements.Password.value;
-  const type = target.elements.private.checked;
+  const type = target.elements.private.checked ? 'private' : (RoomPassword ?  'protected' : 'public') ;
 
   const members: string[] = [];
   const memebersElems = target.elements.friend;
@@ -32,7 +32,7 @@ function getData(e: React.SyntheticEvent) {
   return {
     name: RoomName,
     password: RoomPassword,
-    private: type,
+    type: type,
     members: members,
   };
 }

@@ -4,14 +4,20 @@ import { format } from "timeago.js";
 import { uid } from "uid";
 import useAuth from "hooks/useAuth";
 import { Message } from "types/app";
+import useAxiosPrivate from "~/src/hooks/useAxiosPrivate";
 
 const Messages: FunctionComponent<{ messages: Message[] }> = ({ messages }) => {
   const messagesEndRef = useRef<HTMLHeadingElement>(null);
   const { user } = useAuth();
+  const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    console.log("cheking messages ", messages);
+
+
+
+
+
   }, [messages]);
 
   return (
