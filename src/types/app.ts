@@ -46,9 +46,9 @@ type GameNotify = {
 };
 
 type Message = {
-  username: string;
   text: string;
   date: Date;
+  username: string;
   userId: string;
 };
 
@@ -71,16 +71,14 @@ type UserStatus = {
 };
 
 type Conversation = {
-
   id: string;
   name: string;
   owner: User;
   members: User[];
   admins: User[];
   type: string;
-  // status: 'online' | 'offline' | 'playing' | 'spectating'; // members status 
-
-}
+  // status: 'online' | 'offline' | 'playing' | 'spectating'; // members status
+};
 
 export {
   User,
@@ -92,5 +90,5 @@ export {
   Room,
   ProfileContext,
   UserStatus,
-  Conversation
+  Conversation,
 };
