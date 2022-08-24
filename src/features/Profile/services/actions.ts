@@ -16,12 +16,12 @@ const actions = {
         "/friends/add",
         {
           receiver: context.uid,
-          sender: event.uid
+          sender: event.uid,
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
         }
       );
       console.log(" add friend response", res);
@@ -30,58 +30,57 @@ const actions = {
       raise({ type: "FAILED" });
     }
   },
-  cancelRequest: async (context: User, event: AnyEventObject) => {
+  cancelRequest: async (context: User) => {
     console.log("unFriend");
     try {
       // action
       const res = await axiosAuth.post(
         "/friends/decline",
         {
-          uid: context.rule.request.uid
+          uid: context.rule.request.uid,
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
         }
       );
     } catch (error) {
       raise({ type: "FAILED" });
     }
   },
-  acceptRequest: async (context: User, event: AnyEventObject) => {
+  acceptRequest: async (context: User) => {
     console.log("acceptRequest");
     try {
       // action
       axiosAuth.post(
         "/friends/accept",
         {
-          uid: context.rule.request.uid
+          uid: context.uid,
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
         }
       );
     } catch (error) {
       raise({ type: "FAILED" });
     }
   },
-  block: async (context: User, event: AnyEventObject) => {
+  block: async (context: User) => {
     console.log("block");
     try {
       // action
       axiosAuth.post(
         "/friends/block",
         {
-          uid: (context as any).rule.request.uid,
-          blocker: true
+          uid: context.rule.request.uid,
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
         }
       );
     } catch (error) {
@@ -89,25 +88,25 @@ const actions = {
       raise({ type: "FAILED" });
     }
   },
-  unBlock: async (context: User, event: AnyEventObject) => {
+  unBlock: async (context: User) => {
     console.log("unBlock");
     try {
       // action
       axiosAuth.post(
         "/friends/unblock",
         {
-          uid: context.uid
+          uid: context.uid,
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
         }
       );
     } catch (error) {
       raise({ type: "FAILED" });
     }
-  }
+  },
 };
 
 export default actions;

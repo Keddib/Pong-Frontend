@@ -25,7 +25,7 @@ const ProfileHeader = () => {
   const user = state.context;
 
   useEffect(() => {
-    if (state.matches("me") || state.matches("blocked")) {
+    if (state.matches("player.me") || state.matches("player.blocked")) {
       setShowActions(false);
     } else {
       setShowActions(true);
