@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, FunctionComponent } from "react";
 import {
   useLocation,
   useNavigate,
   useParams,
-  useSearchParams
+  useSearchParams,
 } from "react-router-dom";
 import Play from "./components/Playing";
 import Waiting from "./components/Waiting";
@@ -24,7 +24,10 @@ interface LocationState {
 interface Loc extends Location {
   state: LocationState;
 }
-export default function Game() {
+// {setGameRoomId: (id: string) => void}
+const Game: FunctionComponent<{ setGameRoomId: (id: string) => void }> = ({
+  setGameRoomId,
+}) => {
   const location: Loc = useLocation();
   const { signin } = useAuth();
   const [searchParams] = useSearchParams();
@@ -44,7 +47,7 @@ export default function Game() {
   useEffect(() => {
     socket.current = io("ws://localhost:3001", {
       withCredentials: true,
-      extraHeaders: { Authorization: "Bearer " + getAccessToken() }
+      extraHeaders: { Authorization: "Bearer " + getAccessToken() },
     }).on("connect", () => {
       console.log("socket created", socket.current);
       if (!location?.state) location.state = { mode: "classic" };
@@ -56,7 +59,7 @@ export default function Game() {
         socket.current?.on("authenticated", () => {
           socket.current?.emit("playerJoined", {
             mode: location?.state?.mode,
-            custom: invitation ? { invitation } : location?.state?.custom
+            custom: invitation ? { invitation } : location?.state?.custom,
           });
         });
       }
@@ -130,8 +133,10 @@ export default function Game() {
     );
   else if (gameState == "canceled") {
     navigate(location?.state?.from || "/home", {
-      replace: true
+      replace: true,
     });
   }
   return <>{page}</>;
-}
+};
+
+export default Game;
