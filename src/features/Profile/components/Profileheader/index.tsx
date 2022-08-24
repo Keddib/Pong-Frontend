@@ -1,6 +1,6 @@
 import Star from "assets/icons/star.svg";
 import Image from "components/Image";
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import { useActor } from "@xstate/react";
 import useProfileState from "../../hooks/useProfileState";
 import ProfileOptions from "./ProfileOptions";
@@ -19,9 +19,18 @@ const ExStar: FunctionComponent<{ lvl: number }> = (props) => {
 };
 
 const ProfileHeader = () => {
+  const [showActions, setShowActions] = useState(false);
   const profileService = useProfileState();
   const [state] = useActor(profileService);
   const user = state.context;
+
+  useEffect(() => {
+    if (state.matches("me") || state.matches("blocked")) {
+      setShowActions(false);
+    } else {
+      setShowActions(true);
+    }
+  }, [state]);
 
   return (
     <header className="bg-queenBlue/50 rounded-2xl p-2 md:px-8 md:py-12 relative flex">
@@ -44,9 +53,7 @@ const ProfileHeader = () => {
       <div className="grow"></div>
       <div className="right-side self-end flex items-center gap-2">
         <ProfileOptions />
-        {!state.matches("me") && !state.matches("blocked") && (
-          <Actions user={user} />
-        )}
+        {showActions && <Actions user={user} />}
       </div>
     </header>
   );
