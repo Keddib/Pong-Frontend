@@ -6,29 +6,16 @@ import { io } from "socket.io-client";
 import useMedia from "hooks/useMedia";
 import { GameNotify } from "types/app";
 import { useLocation, useNavigate } from "react-router-dom";
-import useUserStatus from "~/src/hooks/useUserStatus";
-
-const GameSocket = io("ws://localhost:3001", {
-  withCredentials: true,
-  extraHeaders: {
-    Authorization: "Bearer " + localStorage.getItem("accessToken")
-  }
-});
+import useUserStatus from "hooks/useUserStatus";
+import { gameSocket } from "services/axios/socket";
 
 export default function Notifications() {
   const xl = useMedia(mediaQueries.xl);
   const navigate = useNavigate();
   const { updateUser } = useUserStatus();
-  // const location = useLocation();
+  const location = useLocation();
+
   // when recieving a notification call this function with anvitation object
-  /*
-    type GameNotify = {
-      // name of sinder
-      name: string;
-      // behavior of accepting a request
-      accept: () => void;
-    };
-  */
   const notify = (invite: GameNotify) => {
     toast(<GameInviteNotif invitation={invite} />, {
       position: toast.POSITION.TOP_RIGHT,
@@ -39,21 +26,21 @@ export default function Notifications() {
           location.pathname + location.search !==
           "/game?invitation=" + invite.invitation
         )
-          GameSocket.emit("declineInvitation", {
-            invitation: invite.invitation
+          gameSocket.emit("declineInvitation", {
+            invitation: invite.invitation,
           });
-      }
+      },
     });
   };
 
   useEffect(() => {
     // on connect
-    GameSocket.on("connect", () => {
-      console.log("socket created", GameSocket);
+    gameSocket.on("connect", () => {
+      console.log("socket created", gameSocket);
     });
-    GameSocket.emit("subscribeGameInvites");
+    gameSocket.emit("subscribeGameInvites");
 
-    GameSocket.on("gameInvitesUpdate", async (data) => {
+    gameSocket.on("gameInvitesUpdate", async (data) => {
       console.log("game invites update..", data);
       const acceptGameReq = () => {
         navigate("/game?invitation=" + data.invitation);
@@ -61,24 +48,16 @@ export default function Notifications() {
       notify({
         username: data.userId,
         accept: acceptGameReq,
-        invitation: data.invitation
+        invitation: data.invitation,
       });
     });
-    GameSocket.on("userStatusUpdate", async (data) => {
+    gameSocket.on("userStatusUpdate", async (data) => {
       console.log("userStatusUpdate", data);
       updateUser(data);
     });
-    // on error try to reconnect after a delay
-    GameSocket.on("connect_error", () => {
-      console.log("erro form socket");
-      GameSocket.close();
-      // setTimeout(() => {
-      // GameSocket.connect();
-      // }, 1000);
-    });
 
     return () => {
-      GameSocket.disconnect();
+      gameSocket.disconnect();
     };
   }, []);
 
@@ -93,7 +72,7 @@ export default function Notifications() {
 }
 
 const GameInviteNotif: FunctionComponent<{ invitation: GameNotify }> = ({
-  invitation
+  invitation,
 }) => (
   <div className="w-full flex flex-col gap-1">
     <div className="title">
