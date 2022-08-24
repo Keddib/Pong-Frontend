@@ -1,6 +1,6 @@
 import { FunctionComponent, useState } from "react";
 import UserStatusContext from "src/context/userStatus";
-import { UserStatus } from "~/src/types/app";
+import { UserStatus } from "types/app";
 
 const UserStatusProvider: FunctionComponent<{ children: JSX.Element[] }> = ({
   children,

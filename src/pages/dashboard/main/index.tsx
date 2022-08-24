@@ -12,9 +12,12 @@ import ErrorHandler from "./components/ErrorHandler";
 import { mediaQueries } from "config/index";
 import useMedia from "hooks/useMedia";
 
-const Section: FunctionComponent<{ setChatBar: (b: boolean) => void }> = ({
-  setChatBar,
-}) => {
+type Iprops = {
+  setGameRoomId: (id: string) => void;
+  setChatBar: (b: boolean) => void;
+};
+
+const Section: FunctionComponent<Iprops> = ({ setChatBar, setGameRoomId }) => {
   const xl = useMedia(mediaQueries.xl);
   const [isMessages, setIsMessasges] = useState(false);
   useEffect(() => {
@@ -36,7 +39,10 @@ const Section: FunctionComponent<{ setChatBar: (b: boolean) => void }> = ({
           <Routes>
             <Route index element={<Navigate to="home" replace />} />
             <Route path="home" element={<Home />} />
-            <Route path="game" element={<Game />} />
+            <Route
+              path="game"
+              element={<Game setGameRoomId={setGameRoomId} />}
+            />
             <Route path="leaderboard" element={<Leaderboard />} />
             <Route
               path="messages/*"

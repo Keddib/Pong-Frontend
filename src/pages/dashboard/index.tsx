@@ -9,10 +9,11 @@ import ChatBar from "./chatbar";
 import Main from "./main";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import useAuth from "hooks/useAuth";
-import UserStatusProvider from "./UserStatusProvider";
+import UserStatusProvider from "./components/UserStatusProvider";
 
 const Dashboard = () => {
   const [chatBar, setChatBar] = useState(true);
+  const [gameRoomId, setGameRoomId] = useState("");
   const axiosPrivate = useAxiosPrivate();
   const { updateUser, signout } = useAuth();
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ const Dashboard = () => {
             signout();
           }
         }
-        navigate("/access/login", { replace: true });
+        // navigate("/access/login", { replace: true });
       }
     }
     getUserData();
@@ -44,8 +45,8 @@ const Dashboard = () => {
           <UserStatusProvider>
             <Sidebar />
             <Header />
-            <Main setChatBar={setChatBar} />
-            <>{chatBar && <ChatBar />}</>
+            <Main setChatBar={setChatBar} setGameRoomId={setGameRoomId} />
+            <>{chatBar && <ChatBar gameRoomId={gameRoomId} />}</>
           </UserStatusProvider>
         </div>
       </div>
