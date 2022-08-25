@@ -29,13 +29,14 @@ const PublicRoom: FunctionComponent<{ show: boolean }> = ({ show }) => {
       console.log("init listener");
 
       usersSocket.on("msgToClient", (msg) => {
+        if (msg.room != "public") return;
         let newMessage: Message = {
           userId: msg["userId"],
           username: msg["username"],
           text: msg["text"],
           date: new Date(),
         };
-        console.log("received new msg from srv", newMessage, messages);
+        console.log("received new msg from srv PIBLIC", newMessage, messages);
         console.log(" user id ", user.uid, " meg user id ", msg["userId"]);
         if (user.uid !== msg["userId"]) {
           console.log("received msg call stet ");

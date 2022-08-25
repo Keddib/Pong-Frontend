@@ -4,24 +4,19 @@ import RoomCard from "components/RoomCard";
 import { FunctionComponent } from "react";
 import { User } from "~/src/types/app";
 
-const room = {
-  name: "KhromBrom",
-  id: "skhds_sdskhd_123",
-};
-
 type Conversation = {
-
   id: string;
   name: string;
   owner: User;
   members: User[];
   admins: User[];
   type: string;
-  // status: 'online' | 'offline' | 'playing' | 'spectating'; // members status 
+  // status: 'online' | 'offline' | 'playing' | 'spectating'; // members status
+};
 
-}
-
-const Conversation : FunctionComponent<{conversation : Conversation}> = ({conversation}) => {
+const Conversation: FunctionComponent<{ conversation: Conversation }> = ({
+  conversation,
+}) => {
   return (
     <Link to={conversation.id} className="">
       <ElementBar rank={-1}>

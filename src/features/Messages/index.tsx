@@ -1,21 +1,11 @@
-import { FunctionComponent, useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import ConversationsList from "./components/ConversationsList";
 import ChatMessages from "./components/Chat";
 import useMedia from "hooks/useMedia";
 import { mediaQueries } from "config/index";
 
-type Props = {
-  setIsMessages: (b: boolean) => void;
-};
-
-const Messages: FunctionComponent<Props> = ({ setIsMessages }) => {
+const Messages = () => {
   const lg = useMedia(mediaQueries.lg);
-
-  useEffect(() => {
-    setIsMessages(true);
-    return () => setIsMessages(false);
-  });
 
   return (
     <>

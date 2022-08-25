@@ -1,5 +1,5 @@
 import { Route, Routes, Navigate } from "react-router-dom";
-import { FunctionComponent, useEffect, useState } from "react";
+import { FunctionComponent } from "react";
 import Home from "features/Home";
 import Friends from "features/Friends";
 import Leaderboard from "features/Leaderboard";
@@ -14,26 +14,13 @@ import useMedia from "hooks/useMedia";
 
 type Iprops = {
   setGameRoomId: (id: string) => void;
-  setChatBar: (b: boolean) => void;
 };
 
-const Section: FunctionComponent<Iprops> = ({ setChatBar, setGameRoomId }) => {
+const Section: FunctionComponent<Iprops> = ({ setGameRoomId }) => {
   const xl = useMedia(mediaQueries.xl);
-  const [isMessages, setIsMessasges] = useState(false);
-  useEffect(() => {
-    if (xl && !isMessages) {
-      setChatBar(true);
-    } else {
-      setChatBar(false);
-    }
-  }, [xl, setChatBar, isMessages]);
 
   return (
-    <section
-      className={`Dash-main container ${
-        xl && !isMessages ? "main-grid-xl" : ""
-      }`}
-    >
+    <section className={`Dash-main container ${xl ? "main-grid-xl" : ""}`}>
       <div className="dash-home-layout">
         <ErrorHandler>
           <Routes>
@@ -44,10 +31,7 @@ const Section: FunctionComponent<Iprops> = ({ setChatBar, setGameRoomId }) => {
               element={<Game setGameRoomId={setGameRoomId} />}
             />
             <Route path="leaderboard" element={<Leaderboard />} />
-            <Route
-              path="messages/*"
-              element={<Messages setIsMessages={setIsMessasges} />}
-            />
+            <Route path="messages/*" element={<Messages />} />
             <Route path="friends/*" element={<Friends />} />
             <Route path="rooms/*" element={<Rooms />} />
             <Route path="profile/:username/*" element={<Profile />} />

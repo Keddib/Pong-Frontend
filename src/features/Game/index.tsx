@@ -61,6 +61,10 @@ const Game: FunctionComponent<{ setGameRoomId: (id: string) => void }> = ({
             mode: location?.state?.mode,
             custom: invitation ? { invitation } : location?.state?.custom,
           });
+          socket.current?.on("roomName", (data: { roomName: string }) => {
+            console.log("roomname");
+            setGameRoomId(data.roomName);
+          });
         });
       }
       //onGameState
@@ -114,6 +118,7 @@ const Game: FunctionComponent<{ setGameRoomId: (id: string) => void }> = ({
 
     return () => {
       socket.current?.close();
+      setGameRoomId("");
     };
   }, [invitation]);
 

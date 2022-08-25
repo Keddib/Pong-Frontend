@@ -225,6 +225,9 @@
   .game-activity {
   }
 
+  .chat-bar-hidden {
+    @apply fixed w-1 h-1 -top-96;
+  }
   .chat-section {
     @apply grow flex flex-col gap-2 overflow-auto no-scrollbar;
   }

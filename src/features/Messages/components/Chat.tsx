@@ -1,10 +1,9 @@
 import BackArrow from "assets/icons/back-arrow.svg";
-import { FunctionComponent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import MessageInput from "components/Messages/MessageInput";
 import Messages from "components/Messages/Messages";
-import RoomCard from "components/RoomCard";
-import { Message, Room } from "types/app";
+import { Message } from "types/app";
 import Options from "./Options";
 
 const ChatMessages = () => {

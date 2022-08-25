@@ -11,8 +11,6 @@ import { User } from "types/app";
 import { Spinner } from "components/Loading";
 import { Conversation } from "types/app";
 
-
-
 const ConversationsList = () => {
   const [welcome, setWelcome] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -22,21 +20,21 @@ const ConversationsList = () => {
   const { user } = useAuth();
   const axiosPrivate = useAxiosPrivate();
 
-
   useEffect(() => {
     const GetConversations = async () => {
       try {
-        const rooms : Conversation [] = await axiosPrivate.get('/friends/rooms');
-        SetConversations(rooms);
+        const res = await axiosPrivate.get<Conversation[]>("/friends/rooms");
+        console.log("covs", res.data);
+        SetConversations(res.data);
         setLoading(false);
-      } catch(error) {
+      } catch (error) {
         console.log("fetch conv error", error);
       }
-    }
+    };
     GetConversations();
     // get all conv
-  
   }, []);
+
   useEffect(() => {
     console.log("location from chat", location);
     if (location.pathname == "/messages" && lg) {
@@ -46,6 +44,10 @@ const ConversationsList = () => {
     }
   }, [location]);
 
+  if (loading) {
+    return <Spinner />;
+  }
+
   return (
     <>
       <div className="min-w-[400px] h-full overflow-auto no-scrollbar">
@@ -54,9 +56,15 @@ const ConversationsList = () => {
           <h4>Messaging</h4>
         </div>
         <ul className="flex flex-col gap-1">
-          {loading ? <Spinner/> : <>{conversations.map((conv) => {
-            <CoversationCard conversation={conv}/>
-          }) }</>}
+          {conversations.length ? (
+            <>
+              {conversations.map((conv) => (
+                <CoversationCard key={conv.id} conversation={conv} />
+              ))}
+            </>
+          ) : (
+            <p>no conversations found</p>
+          )}
         </ul>
       </div>
       {welcome && (

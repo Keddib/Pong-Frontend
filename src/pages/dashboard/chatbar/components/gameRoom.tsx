@@ -2,7 +2,7 @@ import { FunctionComponent, useEffect, useState } from "react";
 import MessageInput from "components/Messages/MessageInput";
 import Messages from "components/Messages/Messages";
 import useAuth from "hooks/useAuth";
-import { gameSocket } from "services/axios/socket";
+import { usersSocket } from "services/axios/socket";
 import { Message } from "types/app";
 
 const GameRoom: FunctionComponent<{ show: boolean; roomId: string }> = ({
@@ -16,15 +16,17 @@ const GameRoom: FunctionComponent<{ show: boolean; roomId: string }> = ({
 
   useEffect(() => {
     if (!roomId) return;
-    gameSocket.emit("joinRoomToServer", roomId);
-    gameSocket.on("msgToClient", (msg) => {
+    usersSocket.emit("joinRoomToServer", roomId);
+    usersSocket.on("msgToClient", (msg) => {
+      if (msg.room != roomId) return;
+
       let newMessage: Message = {
         userId: msg["userId"],
         username: msg["username"],
         text: msg["text"],
         date: new Date(),
       };
-      console.log("received new msg from srv", newMessage, messages);
+      console.log("received new msg from srv ROOM", newMessage, messages);
       console.log(" user id ", user.uid, " meg user id ", msg["userId"]);
       if (user.uid !== msg["userId"]) {
         console.log("received msg call stet ");
@@ -40,8 +42,8 @@ const GameRoom: FunctionComponent<{ show: boolean; roomId: string }> = ({
 
   useEffect(() => {
     if (!inputMessage.length) return;
-    gameSocket.emit("msgToServer", {
-      room: "public",
+    usersSocket.emit("msgToServer", {
+      room: roomId,
       message: inputMessage,
     });
     let newMessage: Message = {

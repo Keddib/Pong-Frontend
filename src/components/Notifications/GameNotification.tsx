@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { io } from "socket.io-client";
 import useMedia from "hooks/useMedia";
 import { GameNotify } from "types/app";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useUserStatus from "hooks/useUserStatus";
 import { gameSocket } from "services/axios/socket";
 
@@ -13,7 +13,6 @@ export default function Notifications() {
   const xl = useMedia(mediaQueries.xl);
   const navigate = useNavigate();
   const { updateUser } = useUserStatus();
-  const location = useLocation();
 
   // when recieving a notification call this function with anvitation object
   const notify = (invite: GameNotify) => {
@@ -46,7 +45,7 @@ export default function Notifications() {
         navigate("/game?invitation=" + data.invitation);
       };
       notify({
-        username: data.userId,
+        username: data.username,
         accept: acceptGameReq,
         invitation: data.invitation,
       });
