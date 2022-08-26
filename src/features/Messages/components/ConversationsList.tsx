@@ -5,11 +5,10 @@ import { useState, useEffect } from "react";
 import CoversationCard from "./Conversation";
 import useMedia from "hooks/useMedia";
 import { mediaQueries } from "config/index";
-import useAuth from "hooks/useAuth";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
-import { User } from "types/app";
 import { Spinner } from "components/Loading";
 import { Conversation } from "types/app";
+import useAuth from "~/src/hooks/useAuth";
 
 const ConversationsList = () => {
   const [welcome, setWelcome] = useState(false);
@@ -17,15 +16,24 @@ const ConversationsList = () => {
   const location = useLocation();
   const lg = useMedia(mediaQueries.lg);
   const [conversations, SetConversations] = useState([] as Conversation[]);
-  const { user } = useAuth();
   const axiosPrivate = useAxiosPrivate();
+  const { user } = useAuth();
+
+  const publicConv = {
+    id: "public",
+    name: "khromBrom",
+    owner: user,
+    members: [user],
+    admins: [user],
+    type: "public",
+  };
 
   useEffect(() => {
     const GetConversations = async () => {
       try {
         const res = await axiosPrivate.get<Conversation[]>("/friends/rooms");
         console.log("covs", res.data);
-        SetConversations(res.data);
+        SetConversations([publicConv]);
         setLoading(false);
       } catch (error) {
         console.log("fetch conv error", error);
@@ -44,9 +52,21 @@ const ConversationsList = () => {
     }
   }, [location]);
 
-  if (loading) {
-    return <Spinner />;
-  }
+  let content = (function content() {
+    if (loading) {
+      return <Spinner />;
+    } else if (conversations.length) {
+      //
+      return (
+        <>
+          {conversations.map((conv) => (
+            <CoversationCard key={conv.id} conversation={conv} />
+          ))}
+        </>
+      );
+    }
+    return <p className="text-center">no conversations found</p>;
+  })();
 
   return (
     <>
@@ -55,17 +75,7 @@ const ConversationsList = () => {
           <SendIcon className="w-6 fill-pictonBlue" />
           <h4>Messaging</h4>
         </div>
-        <ul className="flex flex-col gap-1">
-          {conversations.length ? (
-            <>
-              {conversations.map((conv) => (
-                <CoversationCard key={conv.id} conversation={conv} />
-              ))}
-            </>
-          ) : (
-            <p>no conversations found</p>
-          )}
-        </ul>
+        <ul className="flex flex-col gap-1">{content}</ul>
       </div>
       {welcome && (
         <div className="h-full w-full rounded-3xl bg-queenBlue/50 flex flex-col justify-center items-center">

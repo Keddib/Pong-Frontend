@@ -1,14 +1,90 @@
 import BackArrow from "assets/icons/back-arrow.svg";
+import Ellipsis from "assets/icons/ellipsis.svg";
+
 import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import MessageInput from "components/Messages/MessageInput";
 import Messages from "components/Messages/Messages";
-import { Message } from "types/app";
-import Options from "./Options";
+import { Message, Conversation } from "types/app";
+import useAxiosPrivate from "hooks/useAxiosPrivate";
+import { Spinner } from "components/Loading";
+import RoomCard from "components/RoomCard";
+import { usersSocket } from "services/axios/socket";
+import useAuth from "hooks/useAuth";
+import { mediaQueries } from "src/config";
+import useMedia from "hooks/useMedia";
+import More from "./More";
 
 const ChatMessages = () => {
+  const { coversationID } = useParams();
+  const [loading, setLoading] = useState(true);
+  const [conv, setConv] = useState({} as Conversation);
   const [messages, setMessages] = useState([] as Message[]);
+  const [msgFromsrv, setmsgFromsrv] = useState({} as Message);
   const [inputMessage, setInputMessage] = useState("");
+  const [more, setMore] = useState(false);
+  const axiosPrivate = useAxiosPrivate();
+  const { user } = useAuth();
+  const lg = useMedia(mediaQueries.lg);
+
+  const publicConv = {
+    id: "public",
+    name: "khromBrom",
+    owner: user,
+    members: [user],
+    admins: [user],
+    type: "public",
+  };
+
+  useEffect(() => {
+    // get conversation
+
+    async function getConversationMessages() {
+      try {
+        // const resC = await axiosPrivate.get<Conversation>(
+        //   `chat/${coversationID}`
+        // );
+        // console.log("cov", resC.data);
+        setConv(publicConv);
+        const resM = await axiosPrivate.get<Message[]>(
+          `chat/messages/${coversationID}`
+        );
+        console.log("messages", resM.data);
+        setMessages(resM.data);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+        // setError()
+      }
+    }
+    setLoading(true);
+    getConversationMessages().then(() => {
+      usersSocket.emit("joinRoomToServer", conv.id);
+      console.log("init listener");
+      usersSocket.on("msgToClient", (msg) => {
+        if (msg.room != conv.id) return;
+        let newMessage: Message = {
+          userId: msg["userId"],
+          username: msg["username"],
+          text: msg["text"],
+          date: new Date(),
+        };
+        console.log("received new msg from srv PIBLIC", newMessage, messages);
+        console.log(" user id ", user.uid, " meg user id ", msg["userId"]);
+        if (user.uid !== msg["userId"]) {
+          console.log("received msg call stet ");
+          setmsgFromsrv(newMessage);
+        }
+      });
+    });
+    // get messages
+  }, [coversationID]);
+
+  useEffect(() => {
+    if (!msgFromsrv.text) return;
+    setMessages([...messages, msgFromsrv]);
+  }, [msgFromsrv]);
 
   useEffect(() => {
     if (inputMessage) {
@@ -19,23 +95,55 @@ const ChatMessages = () => {
         userId: "kedf_7444",
       };
       setMessages([...messages, newMsg]);
+      setInputMessage("");
     }
   }, [inputMessage]);
 
   return (
-    <div className="chat-section h-full rounded-3xl bg-queenBlue/50 p-2">
-      <div className="w-full flex justify-between items-center px-1">
-        <NavLink to="/messages" end>
-          <div className="flex justify-center items-center p-2 bg-queenBlue/20 rounded-full group hover:bg-queenBlue">
-            <BackArrow className="w-6 h-6 fill-lotion/50 group-hover:fill-lotion" />
+    <div className="h-full grow rounded-3xl bg-queenBlue/50 p-2 overflow-hidden flex flex-col gap-1">
+      {loading ? (
+        <Spinner />
+      ) : (
+        <>
+          <div className="w-full flex justify-between items-center px-1  ">
+            {!lg && (
+              <NavLink to="/messages" end>
+                <button className="flex justify-center items-center p-2 bg-queenBlue/20 rounded-full group hover:bg-queenBlue">
+                  <BackArrow className="w-6 h-6 fill-lotion/50 group-hover:fill-lotion" />
+                </button>
+              </NavLink>
+            )}
+            <RoomCard room={conv} />
+            {more ? (
+              <button
+                className="flex justify-center items-center p-2 bg-queenBlue/20 rounded-full group hover:bg-queenBlue"
+                onClick={() => {
+                  setMore(false);
+                }}
+              >
+                <BackArrow className="w-6 h-6 fill-lotion/50 group-hover:fill-lotion" />
+              </button>
+            ) : (
+              <button
+                className="group bell-button"
+                onClick={() => {
+                  setMore(true);
+                }}
+              >
+                <Ellipsis className="iconBell" />
+              </button>
+            )}
           </div>
-        </NavLink>
-        {/* <RoomCard /> */}
-        <p>card</p>
-        <Options />
-      </div>
-      <Messages messages={messages} />
-      <MessageInput setMsg={setInputMessage} />
+          {more ? (
+            <More conv={conv} />
+          ) : (
+            <>
+              <Messages messages={messages} />
+              <MessageInput setMsg={setInputMessage} />
+            </>
+          )}
+        </>
+      )}
     </div>
   );
 };

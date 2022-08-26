@@ -14,12 +14,12 @@ const Messages = () => {
           <Routes>
             {lg ? (
               <Route path="" element={<ConversationsList />}>
-                <Route path=":id" element={<ChatMessages />} />
+                <Route path=":coversationID" element={<ChatMessages />} />
               </Route>
             ) : (
               <>
                 <Route path="" element={<ConversationsList />} />
-                <Route path=":id" element={<ChatMessages />} />
+                <Route path=":coversationID" element={<ChatMessages />} />
               </>
             )}
           </Routes>

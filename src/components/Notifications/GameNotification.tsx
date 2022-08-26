@@ -2,7 +2,6 @@ import { FunctionComponent, useEffect } from "react";
 import { mediaQueries } from "config/index";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { io } from "socket.io-client";
 import useMedia from "hooks/useMedia";
 import { GameNotify } from "types/app";
 import { useNavigate } from "react-router-dom";
@@ -34,9 +33,9 @@ export default function Notifications() {
 
   useEffect(() => {
     // on connect
-    gameSocket.on("connect", () => {
-      console.log("socket created", gameSocket);
-    });
+    // gameSocket.on("connect", () => {
+    //   console.log("socket created", gameSocket);
+    // });
     gameSocket.emit("subscribeGameInvites");
 
     gameSocket.on("gameInvitesUpdate", async (data) => {
@@ -54,10 +53,6 @@ export default function Notifications() {
       console.log("userStatusUpdate", data);
       updateUser(data);
     });
-
-    return () => {
-      gameSocket.disconnect();
-    };
   }, []);
 
   return (
