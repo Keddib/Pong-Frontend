@@ -5,12 +5,12 @@ import Dropdown from "components/Dropdown";
 import { Link } from "react-router-dom";
 import { Notification } from "types/app";
 import Loading from "../Loading";
-import { usersSocket } from "services/axios/socket";
+import { friendsSocket } from "services/axios/socket";
 
 export default function Notifications() {
   const [show, setShow] = useState(false);
   const [news, setNews] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [notifications, setNotifications] = useState([] as Notification[]);
 
   function showDropDown() {
@@ -21,7 +21,7 @@ export default function Notifications() {
     // notify();
   }
   useEffect(() => {
-    setLoading(true);
+    // setLoading(true);
     // fetch notifications
     if (loading) {
       setTimeout(() => {
@@ -31,16 +31,16 @@ export default function Notifications() {
     }
 
     // on connect
-    if (!Loading) {
-      usersSocket.emit("notifications");
-      usersSocket.on("notification", async (data) => {
-        console.log("data notification", data);
-        // add notification to notification states
-        // setNotifications((notifs) => [...notifs, data]);
-        // setNews(true);
-      });
-    }
-  }, [loading]);
+
+    friendsSocket.emit("notifications");
+    friendsSocket.on("notification", async (data) => {
+      console.log("data notification", data);
+      // add notification to notification states
+      setNotifications((notifs) => [...notifs, data]);
+      // setNews(true);
+    });
+    console.log("listening for notifications");
+  }, []);
 
   return (
     <div className="notifications">
