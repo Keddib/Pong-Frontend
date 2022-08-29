@@ -1,5 +1,5 @@
 import welcomeBg from "assets/images/Home.gif";
-import LeftArrow from "assets/icons/caret-right.svg";
+import LeftArrow from "assets/icons/right-arrow.svg";
 import { Link } from "react-router-dom";
 import { FunctionComponent } from "react";
 import Logo from "components/Logo";

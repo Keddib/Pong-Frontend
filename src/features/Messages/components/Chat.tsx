@@ -1,4 +1,5 @@
 import BackArrow from "assets/icons/back-arrow.svg";
+import RightArrow from "assets/icons/right-arrow.svg";
 import Ellipsis from "assets/icons/ellipsis.svg";
 
 import { useEffect, useState } from "react";
@@ -121,7 +122,7 @@ const ChatMessages = () => {
                   setMore(false);
                 }}
               >
-                <BackArrow className="w-6 h-6 fill-lotion/50 group-hover:fill-lotion" />
+                <RightArrow className="w-6 h-6 fill-lotion/50 group-hover:fill-lotion" />
               </button>
             ) : (
               <button

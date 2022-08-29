@@ -235,9 +235,9 @@
     @apply grow p-2 overflow-auto no-scrollbar flex flex-col gap-2;
   }
   .message-wrapper {
-    @apply w-fit flex flex-col max-w-full break-words;
+    @apply w-fit flex flex-col max-w-full break-words relative;
   }
-  .message-wrapper a {
+  .message-wrapper button {
     @apply pl-2 font-light hover:scale-105 transition;
   }
   .message-wrapper p {
@@ -250,7 +250,7 @@
   .message-wrapper.own {
     @apply self-end;
   }
-  .message-wrapper.own a {
+  .message-wrapper.own button {
     @apply self-end;
   }
   .message-wrapper.own p {
@@ -275,6 +275,6 @@
   }
   .message-more-button {
     @apply rounded-3xl bg-queenBlue/50 w-full text-center py-2
-    hover:bg-queenBlue transition-all;
+    hover:bg-queenBlue transition-all flex justify-center items-center gap-2;
   }
 }

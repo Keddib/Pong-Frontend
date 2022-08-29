@@ -1,5 +1,6 @@
 import Bell from "assets/icons/bell.svg";
 import Xmark from "assets/icons/xmark.svg";
+import Trash from "assets/icons/trash.svg";
 import { FunctionComponent, useEffect, useState } from "react";
 import Dropdown from "components/Dropdown";
 import { Link } from "react-router-dom";
@@ -77,25 +78,34 @@ const NotificationList: FunctionComponent<{
   }
 
   return (
-    <ul>
-      {notifications.map((n, i) => {
-        return (
-          <li key={i}>
-            <Link
-              className="rounded-xl bg-queenBlue flex flex-col p-4"
-              to={
-                n.type == "request"
-                  ? "/friends/requests"
-                  : `/profile/${n.sender}`
-              }
-            >
-              <p>
-                <strong>{n.sender}</strong> sent you a friend request
-              </p>
-            </Link>
-          </li>
-        );
-      })}
-    </ul>
+    <div>
+      <ul className=" flex flex-col gap-1">
+        {notifications.map((n, i) => {
+          return (
+            <li key={i}>
+              <Link
+                className="rounded-xl bg-queenBlue flex flex-col p-4"
+                to={
+                  n.type == "request"
+                    ? "/friends/requests"
+                    : `/profile/${n.sender}`
+                }
+              >
+                <p>
+                  <strong>{n.sender}</strong>{" "}
+                  {n.type == "request"
+                    ? "sent you a friend request"
+                    : "accept your friend request"}
+                </p>
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+      <button className="text-sm flex gap-2 font-light mt-2 hover:scale-105 bg-lotion/70 rounded-3xl text-red/50 px-2 hover:bg-lotion">
+        clear all
+        <Trash className="w-3 fill-red/50" />
+      </button>
+    </div>
   );
 };
