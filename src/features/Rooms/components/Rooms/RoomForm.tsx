@@ -45,7 +45,7 @@ const RoomForm = () => {
     // description?: string;
 
 
-
+    data.members = [user];
     try {
       await axiosPrivate.post(`/chat/createRoom`, {
         type: data.type,

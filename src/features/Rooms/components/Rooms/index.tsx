@@ -3,6 +3,7 @@ import { FunctionComponent, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Spinner } from "~/src/components/Loading";
 import useAxiosPrivate from "~/src/hooks/useAxiosPrivate";
+import { User } from "~/src/types/app";
 import Header from "./Header";
 
 type roomType = "private" | "public" | "protected";
@@ -18,13 +19,13 @@ type ChatMessage = {
 type Room = {
   cid: string;
   type: roomType;
-  owner: string;
   messages: ChatMessage[];
   createdAt: Date;
   name: string;
   password: string;
-  admins: string[];
-  banned: string[];
+  admins: User[];
+  banned: User[];
+  members: User[];
   description: string;
 };
 
