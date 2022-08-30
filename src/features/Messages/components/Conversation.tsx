@@ -2,17 +2,7 @@ import { Link } from "react-router-dom";
 import ElementBar from "components/ElementBar";
 import RoomCard from "components/RoomCard";
 import { FunctionComponent } from "react";
-import { User } from "~/src/types/app";
-
-type Conversation = {
-  id: string;
-  name: string;
-  owner: User;
-  members: User[];
-  admins: User[];
-  type: string;
-  // status: 'online' | 'offline' | 'playing' | 'spectating'; // members status
-};
+import { Conversation } from "~/src/types/app";
 
 const Conversation: FunctionComponent<{ conversation: Conversation }> = ({
   conversation,

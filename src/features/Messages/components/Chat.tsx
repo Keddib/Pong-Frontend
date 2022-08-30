@@ -104,7 +104,7 @@ const ChatMessages = () => {
             <RoomCard room={conv} />
             {more ? (
               <button
-                className="flex justify-center items-center p-2 bg-queenBlue/20 rounded-full group hover:bg-queenBlue"
+                className="flex justify-center items-center p-2 bg-queenBlue/20 rounded-full group hover:bg-queenBlue w-fit"
                 onClick={() => {
                   setMore(false);
                 }}

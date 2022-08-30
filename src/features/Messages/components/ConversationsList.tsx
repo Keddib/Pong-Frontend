@@ -67,11 +67,13 @@ const ConversationsList = () => {
         </div>
         <ul className="flex flex-col gap-1">{content}</ul>
       </div>
-      {welcome && (
+      {welcome && lg ? (
         <div className="h-full w-full rounded-3xl bg-queenBlue/50 flex flex-col justify-center items-center">
           <img alt="heart drawing" src={Heart} className="w-32" />
           <h4>Pong messages</h4>
         </div>
+      ) : (
+        <></>
       )}
       <Outlet />
     </>
