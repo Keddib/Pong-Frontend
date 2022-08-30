@@ -9,6 +9,12 @@ const RequestList = () => {
   const [loading, setLoading] = useState(true);
   const [requests, setRequests] = useState([] as FriendRequest[]);
   const axiosPrivate = useAxiosPrivate();
+
+  function removeReq(rUid: string) {
+    const reqs = requests.filter((req) => req.uid != rUid);
+    setRequests(reqs);
+  }
+
   // use effect to fetch friendlist
   useEffect(() => {
     // fetch freinds
@@ -45,7 +51,11 @@ const RequestList = () => {
 
   const requestsArray = requests.map((request) => (
     <li key={request.uid}>
-      <RequestListItem user={request.sender} ReqUid={request.uid} />
+      <RequestListItem
+        user={request.sender}
+        ReqUid={request.uid}
+        removeReq={removeReq}
+      />
     </li>
   ));
 

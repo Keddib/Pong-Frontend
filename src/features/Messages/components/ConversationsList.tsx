@@ -17,23 +17,13 @@ const ConversationsList = () => {
   const lg = useMedia(mediaQueries.lg);
   const [conversations, SetConversations] = useState([] as Conversation[]);
   const axiosPrivate = useAxiosPrivate();
-  const { user } = useAuth();
-
-  const publicConv = {
-    id: "public",
-    name: "khromBrom",
-    owner: user,
-    members: [user],
-    admins: [user],
-    type: "public",
-  };
 
   useEffect(() => {
     const GetConversations = async () => {
       try {
         const res = await axiosPrivate.get<Conversation[]>("/friends/rooms");
         console.log("covs", res.data);
-        SetConversations([publicConv]);
+        SetConversations(res.data);
         setLoading(false);
       } catch (error) {
         console.log("fetch conv error", error);

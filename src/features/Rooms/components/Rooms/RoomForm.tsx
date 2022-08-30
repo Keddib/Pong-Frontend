@@ -2,11 +2,10 @@ import Xmark from "assets/icons/xmark.svg";
 import { FunctionComponent, useEffect, useRef, useState } from "react";
 import Dropdown from "components/Dropdown";
 import { Spinner } from "components/Loading";
-import { User } from "~/src/types/app";
-import useAxiosPrivate from "~/src/hooks/useAxiosPrivate";
-import { axiosPrivate } from "~/src/services/axios/axios";
+import { User } from "types/app";
+import useAxiosPrivate from "hooks/useAxiosPrivate";
 import { getData } from "../../services/GetFormData";
-import useAuth from "~/src/hooks/useAuth";
+import useAuth from "hooks/useAuth";
 export { getData } from "../../services/GetFormData";
 
 const RoomForm = () => {
@@ -16,6 +15,26 @@ const RoomForm = () => {
   const doneButtonRef = useRef(null);
   const { user } = useAuth();
   const axiosPrivate = useAxiosPrivate();
+  const [friends, setFriends] = useState([] as User[]);
+
+  useEffect(() => {
+    const abortController = new AbortController();
+    async function getFriends() {
+      try {
+        const res = await axiosPrivate.get<User[]>("/friends/all", {
+          signal: abortController.signal,
+        });
+        setFriends(res.data);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+      }
+    }
+    getFriends();
+    return () => {
+      abortController.abort();
+    };
+  }, [axiosPrivate]);
 
   function showDropDown() {
     setShow(!show);
@@ -33,26 +52,18 @@ const RoomForm = () => {
     setError("");
     const data = getData(e);
     console.log("data", data);
-
-
-    // type: roomType;
-    // owner: string;
-    // name: string;
-
-    // password?: string;
-    // admins?: string[];
-    // banned?: string[];
-    // description?: string;
-
-
-    data.members = [user];
+    const dataMembers = friends.filter((f) => {
+      return data.members.includes(f.uid);
+    });
+    dataMembers.push(user);
     try {
       await axiosPrivate.post(`/chat/createRoom`, {
         type: data.type,
         owner: user.uid,
         name: data.name,
+        description: data.description,
         password: data?.password,
-        members: data?.members,
+        members: dataMembers,
       });
     } catch (err) {
       setError("upload filed! please try again");
@@ -104,6 +115,21 @@ const RoomForm = () => {
                 />
               </label>
               <label
+                htmlFor="Description"
+                className="block font-poppins capitalize "
+              >
+                <span className="text-lotion">Description</span>
+                <input
+                  autoComplete="off"
+                  maxLength={50}
+                  id="Description"
+                  placeholder="Description"
+                  type="text"
+                  className="input--2 text-lotion border border-lotion placeholder-lotion/50"
+                  required
+                />
+              </label>
+              <label
                 htmlFor="Password"
                 className="block font-poppins capitalize "
               >
@@ -116,7 +142,7 @@ const RoomForm = () => {
                   className="input--2 text-lotion border border-lotion placeholder-lotion/50"
                 />
               </label>
-              <SelectFriends />
+              <SelectFriends friends={friends} />
               <button
                 ref={doneButtonRef}
                 type="submit"
@@ -135,37 +161,12 @@ const RoomForm = () => {
 
 export default RoomForm;
 
-const SelectFriends = () => {
-  const [loading, setLoading] = useState(true);
-  const [friends, setFriends] = useState([] as User[]);
-  const axiosPrivate = useAxiosPrivate();
-
-  useEffect(() => {
-    const abortController = new AbortController();
-    async function getFriends() {
-      try {
-        const res = await axiosPrivate.get<User[]>("/friends/all", {
-          signal: abortController.signal,
-        });
-        setFriends(res.data);
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-      }
-    }
-    getFriends();
-    return () => {
-      abortController.abort();
-    };
-  }, [axiosPrivate]);
-
+const SelectFriends: FunctionComponent<{ friends: User[] }> = ({ friends }) => {
   return (
     <>
       <div className="border-b h-fit max-h-[200px] border-b-queenBlue overflow-auto no-scrollbar">
         <ul className="h-fit">
-          {loading ? (
-            <Spinner />
-          ) : friends.length ? (
+          {friends.length ? (
             <>
               {friends.map((friend) => (
                 <li key={friend.uid} className="mb-1">

@@ -28,30 +28,17 @@ const ChatMessages = () => {
   const { user } = useAuth();
   const lg = useMedia(mediaQueries.lg);
 
-  const publicConv = {
-    id: "public",
-    name: "khromBrom",
-    owner: user,
-    members: [user],
-    admins: [user],
-    type: "public",
-  };
-
   useEffect(() => {
     // get conversation
 
     async function getConversationMessages() {
       try {
-        // const resC = await axiosPrivate.get<Conversation>(
-        //   `chat/${coversationID}`
-        // );
-        // console.log("cov", resC.data);
-        setConv(publicConv);
-        const resM = await axiosPrivate.get<Message[]>(
-          `chat/messages/${coversationID}`
+        const res = await axiosPrivate.get<Conversation>(
+          `chat/${coversationID}`
         );
-        console.log("messages", resM.data);
-        setMessages(resM.data);
+        console.log("cov", res.data);
+        setConv(res.data);
+        setMessages(res.data.messages);
         setLoading(false);
       } catch (error) {
         console.log(error);

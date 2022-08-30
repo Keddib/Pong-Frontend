@@ -73,10 +73,12 @@ type UserStatus = {
 type Conversation = {
   id: string;
   name: string;
+  description: string;
   owner: User;
   members: User[];
   admins: User[];
   type: string;
+  messages: Message[];
   // status: 'online' | 'offline' | 'playing' | 'spectating'; // members status
 };
 

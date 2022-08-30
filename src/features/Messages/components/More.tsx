@@ -75,21 +75,18 @@ const PrivateMore: FunctionComponent<{ user: User }> = ({ user }) => {
         profile
       </button>
       {/* {user.status == "playing" && ( */}
-      <button className="message-more-button group" onClick={hundleSpectate}>
-        <Glasses className="w-6 h-6 fill-lotion/50  ease-in duration-150 group-hover:fill-lotion" />
-        spectate
-      </button>
-      {/* )} */}
+      {user.status == "playing" && (
+        <button className="message-more-button group" onClick={hundleSpectate}>
+          <Glasses className="w-6 h-6 fill-lotion/50  ease-in duration-150 group-hover:fill-lotion" />
+          spectate
+        </button>
+      )}
       <button
         className="message-more-button group"
         onClick={handleInviteToPlayButton}
       >
         <GamePad className="w-6 h-6 fill-lotion/50  ease-in duration-150 group-hover:fill-lotion" />
         invite to play
-      </button>
-      <button className="message-more-button group" onClick={hundleSendMessage}>
-        <DmIcon className="w-6 h-4  fill-lotion/50 group-hover:fill-lotion ease-in duration-150" />
-        send message
       </button>
 
       <button

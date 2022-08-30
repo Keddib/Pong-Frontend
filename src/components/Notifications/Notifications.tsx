@@ -14,6 +14,10 @@ export default function Notifications() {
   const [loading, setLoading] = useState(true);
   const [notifications, setNotifications] = useState([] as Notification[]);
 
+  function clearNotifs() {
+    setNotifications([]);
+  }
+
   function showDropDown() {
     if (news) {
       setNews(!news);
@@ -37,8 +41,8 @@ export default function Notifications() {
     friendsSocket.on("notification", async (data) => {
       console.log("data notification", data);
       // add notification to notification states
-      setNotifications((notifs) => [...notifs, data]);
-      // setNews(true);
+      setNotifications((notifs) => [data, ...notifs]);
+      setNews(true);
     });
     console.log("listening for notifications");
   }, []);
@@ -58,7 +62,10 @@ export default function Notifications() {
                 <Xmark className="w-5 h-5 fill-lotion/50 hover:fill-lotion" />
               </button>
             </div>
-            <NotificationList notifications={notifications} />
+            <NotificationList
+              notifications={notifications}
+              clearNotifs={clearNotifs}
+            />
           </>
         </Dropdown>
       )}
@@ -68,7 +75,8 @@ export default function Notifications() {
 
 const NotificationList: FunctionComponent<{
   notifications: Notification[];
-}> = ({ notifications }) => {
+  clearNotifs: () => void;
+}> = ({ notifications, clearNotifs }) => {
   if (!notifications.length) {
     return (
       <>
@@ -102,7 +110,10 @@ const NotificationList: FunctionComponent<{
           );
         })}
       </ul>
-      <button className="text-sm flex gap-2 font-light mt-2 hover:scale-105 bg-lotion/70 rounded-3xl text-red/50 px-2 hover:bg-lotion">
+      <button
+        className="text-sm flex gap-2 font-light mt-2 hover:scale-105 bg-lotion/70 rounded-3xl text-red/50 px-2 hover:bg-lotion"
+        onClick={clearNotifs}
+      >
         clear all
         <Trash className="w-3 fill-red/50" />
       </button>

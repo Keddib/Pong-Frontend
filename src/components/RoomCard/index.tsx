@@ -1,23 +1,33 @@
 import RoomImg from "assets/images/friends.jpg";
 import Image from "components/Image";
-import { Conversation } from "types/app";
+import { Conversation, User } from "types/app";
 import { FunctionComponent, useEffect, useState } from "react";
 import useUserStatus from "hooks/useUserStatus";
+import useAuth from "~/src/hooks/useAuth";
 
 const RoomCard: FunctionComponent<{ room: Conversation }> = ({ room }) => {
   const { userStatus } = useUserStatus();
+  const { user } = useAuth();
   const [status, setStatus] = useState("");
   const [avatar, setAvatar] = useState(RoomImg);
   const [name, setName] = useState(room.name);
+  const [currentUser, setCurrentUser] = useState({} as User);
+
   useEffect(() => {
-    if (userStatus.userId == room.id) {
+    if (userStatus.userId == currentUser.uid) {
       setStatus(userStatus.status);
     }
     if (room.type == "private") {
-      setName(room.members[0].nickname);
-      setAvatar(room.members[0].avatar);
+      const otherUser = room.members.find((u) => u.uid != user.uid);
+      if (otherUser) {
+        setName(otherUser.nickname);
+        setAvatar(otherUser.avatar);
+        setCurrentUser(otherUser);
+      }
     }
-  }, [userStatus, setStatus, room]);
+
+    console.log("skfhfkjshfskjjfhkhfd", status);
+  }, [userStatus]);
 
   return (
     <div className="user-wrapper group">
