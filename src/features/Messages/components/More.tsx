@@ -4,14 +4,16 @@ import GamePad from "assets/icons/gamepad.svg";
 import Glasses from "assets/icons/glasses.svg";
 import Trash from "assets/icons/trash.svg";
 import Leave from "assets/icons/logout.svg";
+import Ellipsis from "assets/icons/ellipsis.svg";
+import UserPlus from "assets/icons/user-plus.svg";
+
 // import Xmark from "assets/icons/xmark.svg";
 import Block from "assets/icons/block-user.svg";
 import { FunctionComponent, useEffect, useState } from "react";
 import { Conversation, User } from "types/app";
-import ElementBar from "~/src/components/ElementBar";
-import UserCard from "~/src/components/Usercard";
 import useAuth from "~/src/hooks/useAuth";
 import { useLocation, useNavigate } from "react-router-dom";
+import GroupMember from "./GroupMember";
 
 const More: FunctionComponent<{ conv: Conversation }> = ({ conv }) => {
   const { user } = useAuth();
@@ -107,7 +109,7 @@ const RoomMore: FunctionComponent<{ conv: Conversation }> = ({ conv }) => {
   const { user } = useAuth();
 
   useEffect(() => {
-    if (conv.owner == user) {
+    if (conv.owner.uid == user.uid) {
       setUserPosition("owner");
     } else if (conv.admins.find((u) => u.uid == user.uid)) {
       setUserPosition("admin");
@@ -132,6 +134,10 @@ const RoomMore: FunctionComponent<{ conv: Conversation }> = ({ conv }) => {
       {userPosition == "admin" || userPosition == "owner" ? <></> : <></>}
       <div className="messages-members rounded-3xl bg-queenBlue/50 pt-2 pb-6 pl-1">
         <p> {conv.members.length} member</p>
+        <button className="message-more-button group my-2" onClick={deleteRoom}>
+          <UserPlus className="w-6 h-4 fill-lotion/50 group-hover:fill-lotion ease-in duration-150" />{" "}
+          add member
+        </button>
         <ul className="flex-col flex gap-1 ">
           {conv.members.map((member) => {
             return (
@@ -139,12 +145,30 @@ const RoomMore: FunctionComponent<{ conv: Conversation }> = ({ conv }) => {
                 key={member.uid}
                 className=" flex items-center justify-between"
               >
-                <ElementBar rank={-1}>
-                  <div className="w-full flex justify-between items-center">
-                    <UserCard user={member} />
-                    <p>admin</p>
-                  </div>
-                </ElementBar>
+                <GroupMember member={member}>
+                  <></>
+                </GroupMember>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+      <div className="messages-members rounded-3xl bg-queenBlue/50 pt-2 pb-6 pl-1">
+        <p> {conv.admins.length} admins</p>
+        <button className="message-more-button group my-2" onClick={deleteRoom}>
+          <UserPlus className="w-6 h-4 fill-lotion/50 group-hover:fill-lotion ease-in duration-150" />{" "}
+          add admin
+        </button>
+        <ul className="flex-col flex gap-1 ">
+          {conv.admins.map((admin) => {
+            return (
+              <li
+                key={admin.uid}
+                className=" flex items-center justify-between"
+              >
+                <GroupMember member={admin}>
+                  <></>
+                </GroupMember>
               </li>
             );
           })}
@@ -166,6 +190,7 @@ const RoomMore: FunctionComponent<{ conv: Conversation }> = ({ conv }) => {
           delete room
         </button>
       )}
+      <p className="py-4 text-yonder">created by {conv.owner.nickname}</p>
     </>
   );
 };

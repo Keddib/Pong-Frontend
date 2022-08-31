@@ -18,14 +18,16 @@ const PublicRoom: FunctionComponent<{ show: boolean }> = ({ show }) => {
   useEffect(() => {
     usersSocket.emit("joinRoomToServer", "public");
 
-    const getData = async () => {
-      const msgs = await axiosPrivate.get(
+    const getMessages = async () => {
+      const res = await axiosPrivate.get(
         "http://localhost:3500/chat/messages/public"
       );
-      console.log(msgs.data);
-      setMessages(msgs.data);
+      console.log("messages", res.data);
+      if (Array.isArray(res.data)) {
+        setMessages(res.data);
+      }
     };
-    getData().then(() => {
+    getMessages().then(() => {
       console.log("init listener");
 
       usersSocket.on("msgToClient", (msg) => {
