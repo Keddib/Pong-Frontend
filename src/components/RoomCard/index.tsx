@@ -10,7 +10,7 @@ const RoomCard: FunctionComponent<{ room: Conversation }> = ({ room }) => {
   const { user } = useAuth();
   const [status, setStatus] = useState("");
   const [avatar, setAvatar] = useState(RoomImg);
-  const [name, setName] = useState(room.name);
+  const [name, setName] = useState(room.name as string);
   const [currentUser, setCurrentUser] = useState({} as User);
 
   useEffect(() => {
@@ -28,7 +28,8 @@ const RoomCard: FunctionComponent<{ room: Conversation }> = ({ room }) => {
   }, [userStatus]);
 
   useEffect(() => {
-    if (name.length > 16) {
+
+    if (name && name.length > 16) {
       setName(name.substring(0, 15) + ".");
     }
   }, [name]);
