@@ -7,22 +7,29 @@ import { Link } from "react-router-dom";
 import { Notification } from "types/app";
 import Loading from "../Loading";
 import { friendsSocket } from "services/axios/socket";
+import useAxiosPrivate from "~/src/hooks/useAxiosPrivate";
 
 export default function Notifications() {
   const [show, setShow] = useState(false);
   const [news, setNews] = useState(false);
   const [loading, setLoading] = useState(true);
   const [notifications, setNotifications] = useState([] as Notification[]);
+  const axiosPrivate = useAxiosPrivate();
 
-  function clearNotifs() {
+  async function clearNotifs() {
     setNotifications([]);
+    const res = await axiosPrivate.delete("http://localhost:3500/notification");
+    console.log("cleared notifs", res.data);
   }
 
-  function showDropDown() {
+  async function showDropDown() {
+    setShow(!show);
     if (news) {
       setNews(!news);
+      const res = await axiosPrivate.patch(
+        "http://localhost:3500/notification"
+      );
     }
-    setShow(!show);
     // notify();
   }
   useEffect(() => {
@@ -37,7 +44,26 @@ export default function Notifications() {
 
     // on connect
 
-    friendsSocket.emit("notifications");
+    // friendsSocket.emit("notifications");
+
+    const getNotifications = async () => {
+      const res = await axiosPrivate.get("http://localhost:3500/notification");
+      console.log("notifications", res.data);
+      let news = false;
+      setNotifications(
+        res.data.map((n) => {
+          const data = JSON.parse(n.json);
+          if (!n.seen) news = true;
+          return data;
+        })
+      );
+      if (news) setNews(true);
+    };
+
+    getNotifications().then(() => {
+      console.log("init listener");
+    });
+
     friendsSocket.on("notification", async (data) => {
       console.log("data notification", data);
       // add notification to notification states
