@@ -27,7 +27,7 @@ const RoomForm = () => {
         setFriends(res.data);
         setLoading(false);
       } catch (error) {
-        setLoading(false);
+        setLoading(false);  
       }
     }
     getFriends();

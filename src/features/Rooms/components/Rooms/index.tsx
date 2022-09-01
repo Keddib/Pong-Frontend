@@ -46,12 +46,9 @@ const RoomItem: FunctionComponent<{ room: Conversation }> = ({ room }) => {
         </div>
         <div className=" bg-lotion/30 h-[1px] rounded-3xl my-1"></div>
         <div className="woner flex items-center gap-2">
-          {/* <img src={room.owner.avatar} alt="user" className="border " />
-        <Link to={`/profile/${room.owner.username}`}>
-        <p>{room.owner.nickname}</p>
-      </Link> */}
-          <img src="" alt="" className="w-8 h-8 bg-queenBlue/50 rounded-full" />
-          <p className="text-xs">owner name</p>
+          {<><img  src={room.owner.avatar} alt="user" className="w-8 h-8 bg-queenBlue/50 rounded-full" /><Link to={`/profile/${room.owner.username}`}>
+            <p>{room.owner.nickname}</p>
+          </Link></> }
           <button
             className=" grow group"
             onClick={() => {

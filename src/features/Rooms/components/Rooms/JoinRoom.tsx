@@ -19,7 +19,7 @@ const JoinRoom: FunctionComponent<{
     };
     const password = target.elements.password.value;
     try {
-      await axiosPrivate.post(`joinRoom`, {
+      await axiosPrivate.post('/chat/join', {
         roomId: conv.id,
         password: password,
       });
@@ -30,7 +30,7 @@ const JoinRoom: FunctionComponent<{
 
   async function join() {
     try {
-      await axiosPrivate.post(`joinRoom`, {
+      await axiosPrivate.post('/chat/join', {
         roomId: conv.id,
       });
     } catch (err) {
