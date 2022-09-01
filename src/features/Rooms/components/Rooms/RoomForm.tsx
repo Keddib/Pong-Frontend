@@ -26,6 +26,8 @@ const RoomForm = () => {
         });
         setFriends(res.data);
         setLoading(false);
+        console.log("well");
+        setShow(!show);
       } catch (error) {
         setLoading(false);  
       }

@@ -1,6 +1,7 @@
 import { FunctionComponent, useState } from "react";
 import { Conversation } from "types/app";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
+import { useNavigate } from "react-router-dom";
 
 const JoinRoom: FunctionComponent<{
   setShowModal: (b: boolean) => void;
@@ -8,6 +9,7 @@ const JoinRoom: FunctionComponent<{
 }> = ({ setShowModal, conv }) => {
   const [error, setError] = useState("");
   const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
 
   async function submit(e: React.SyntheticEvent) {
     e.preventDefault();
@@ -19,10 +21,12 @@ const JoinRoom: FunctionComponent<{
     };
     const password = target.elements.password.value;
     try {
-      await axiosPrivate.post('/chat/join', {
+      await axiosPrivate.post("/chat/join", {
         roomId: conv.id,
         password: password,
       });
+      // redirect to /messages/convID
+      navigate(`/messages/${conv.id}`);
     } catch (err) {
       setError("somthing went wrong! please try again");
     }
@@ -30,9 +34,11 @@ const JoinRoom: FunctionComponent<{
 
   async function join() {
     try {
-      await axiosPrivate.post('/chat/join', {
+      await axiosPrivate.post("/chat/join", {
         roomId: conv.id,
       });
+      // redirect to /messages/convID
+      navigate(`/messages/${conv.id}`);
     } catch (err) {
       setError("upload filed! please try again");
     }
