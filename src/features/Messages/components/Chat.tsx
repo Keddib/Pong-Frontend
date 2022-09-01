@@ -2,7 +2,7 @@ import BackArrow from "assets/icons/back-arrow.svg";
 import RightArrow from "assets/icons/right-arrow.svg";
 import Ellipsis from "assets/icons/ellipsis.svg";
 
-import { useEffect, useState } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import MessageInput from "components/Messages/MessageInput";
 import Messages from "components/Messages/Messages";
@@ -16,7 +16,12 @@ import { mediaQueries } from "src/config";
 import useMedia from "hooks/useMedia";
 import More from "./More";
 
-const ChatMessages = () => {
+type Data = {
+  room: Conversation;
+  messages: Message[];
+};
+
+const ChatMessages: FunctionComponent<{ activeRoom: Data }> = () => {
   const { coversationID } = useParams();
   const [loading, setLoading] = useState(true);
   const [conv, setConv] = useState({} as Conversation);
@@ -92,7 +97,11 @@ const ChatMessages = () => {
   }, [inputMessage]);
 
   return (
-    <div className="h-full grow rounded-3xl bg-queenBlue/50 p-2 overflow-hidden flex flex-col gap-1">
+    <div
+      className={`h-full grow rounded-3xl bg-queenBlue p-2 overflow-hidden flex flex-col gap-1 ${
+        !lg && "absolute w-full top-0 left-0"
+      } `}
+    >
       {loading ? (
         <Spinner />
       ) : (

@@ -85,6 +85,7 @@ const Rooms = () => {
   const [error, setError] = useState("");
   const axiosPrivate = useAxiosPrivate();
   const [qeury, setQuery] = useState("");
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     const rooms = async () => {
@@ -100,7 +101,7 @@ const Rooms = () => {
       setloading(false);
     };
     rooms();
-  }, [qeury, axiosPrivate]);
+  }, [qeury, axiosPrivate, refresh]);
 
   if (loading) {
     return <Spinner />;
@@ -108,9 +109,15 @@ const Rooms = () => {
 
   return (
     <>
-      <Header setQuery={setQuery} />
+      <Header setQuery={setQuery} setRefresh={setRefresh} />
       <div className="flex flex-wrap gap-1">
-        <>{error ? <p>{error}</p> : <RoomsList rooms={rooms} />}</>
+        <>
+          {error ? (
+            <p className="w-full text-center">{error}</p>
+          ) : (
+            <RoomsList rooms={rooms} />
+          )}
+        </>
       </div>
     </>
   );
@@ -119,7 +126,7 @@ const Rooms = () => {
 export default Rooms;
 
 const RoomsList: FunctionComponent<{ rooms: Conversation[] }> = ({ rooms }) => {
-  if (!rooms.length) return <p>No rooms found</p>;
+  if (!rooms.length) return <p className="m-auto">No rooms found</p>;
   else {
     return (
       <>

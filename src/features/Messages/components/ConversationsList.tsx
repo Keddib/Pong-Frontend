@@ -7,16 +7,22 @@ import useMedia from "hooks/useMedia";
 import { mediaQueries } from "config/index";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import { Spinner } from "components/Loading";
-import { Conversation } from "types/app";
-import useAuth from "~/src/hooks/useAuth";
+import { Conversation, Message } from "types/app";
+
+type data = {
+  room: Conversation;
+  messages: Message[];
+};
 
 const ConversationsList = () => {
   const [welcome, setWelcome] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const location = useLocation();
   const lg = useMedia(mediaQueries.lg);
   const [conversations, SetConversations] = useState([] as Conversation[]);
   const axiosPrivate = useAxiosPrivate();
+  const [activeRoom, setActiveRoom] = useState();
 
   useEffect(() => {
     const GetConversations = async () => {
@@ -27,6 +33,8 @@ const ConversationsList = () => {
         setLoading(false);
       } catch (error) {
         console.log("fetch conv error", error);
+        setError("something went wrong! please refresh");
+        setLoading(false);
       }
     };
     GetConversations();
@@ -35,12 +43,15 @@ const ConversationsList = () => {
 
   useEffect(() => {
     console.log("location from chat", location);
-    if (location.pathname == "/messages" && lg) {
+    if (
+      (location.pathname == "/messages" || location.pathname == "/messages/") &&
+      lg
+    ) {
       setWelcome(true);
     } else {
       setWelcome(false);
     }
-  }, [location]);
+  }, [location, setWelcome, lg]);
 
   let content = (function content() {
     if (loading) {
@@ -54,6 +65,8 @@ const ConversationsList = () => {
           ))}
         </>
       );
+    } else if (error) {
+      <p className="text-center">{error}</p>;
     }
     return <p className="text-center">no conversations found</p>;
   })();

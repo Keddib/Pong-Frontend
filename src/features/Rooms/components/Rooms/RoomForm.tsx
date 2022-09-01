@@ -1,5 +1,12 @@
 import Xmark from "assets/icons/xmark.svg";
-import { FunctionComponent, useEffect, useRef, useState } from "react";
+import {
+  Dispatch,
+  FunctionComponent,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Dropdown from "components/Dropdown";
 import { Spinner } from "components/Loading";
 import { User } from "types/app";
@@ -8,7 +15,9 @@ import { getData } from "../../services/GetFormData";
 import useAuth from "hooks/useAuth";
 export { getData } from "../../services/GetFormData";
 
-const RoomForm = () => {
+const RoomForm: FunctionComponent<{
+  setRefresh: Dispatch<SetStateAction<boolean>>;
+}> = ({ setRefresh }) => {
   const [show, setShow] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -67,6 +76,7 @@ const RoomForm = () => {
         password: data?.password,
         members: dataMembers,
       });
+      setRefresh((prev) => !prev);
       showDropDown();
     } catch (err) {
       setError("upload filed! please try again");

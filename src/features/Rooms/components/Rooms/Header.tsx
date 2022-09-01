@@ -7,7 +7,8 @@ import { Dispatch, FunctionComponent, SetStateAction } from "react";
 
 const Header: FunctionComponent<{
   setQuery: Dispatch<SetStateAction<string>>;
-}> = ({ setQuery }) => {
+  setRefresh: Dispatch<SetStateAction<boolean>>;
+}> = ({ setQuery, setRefresh }) => {
   const md = useMedia(mediaQueries.md);
   return (
     <header className="bg-queenBlue/50 rounded-2xl p-4 relative md:h-[200px] flex">
@@ -18,7 +19,7 @@ const Header: FunctionComponent<{
           <SearchBar setQuery={setQuery} />
         </div>
         <div className="w-1/2 md:w-1/4 self-end">
-          <RoomForm />
+          <RoomForm setRefresh={setRefresh} />
         </div>
       </div>
     </header>
