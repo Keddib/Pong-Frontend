@@ -1,17 +1,20 @@
 import Lock from "assets/icons/lock.svg";
 import RightArrow from "assets/icons/right-long.svg";
 import { FunctionComponent, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Modal from "components/Modal";
 import { Spinner } from "components/Loading";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import { Conversation } from "types/app";
 import Header from "./Header";
 import JoinRoom from "./JoinRoom";
+import useAuth from "hooks/useAuth";
 
 const RoomItem: FunctionComponent<{ room: Conversation }> = ({ room }) => {
   const [showModal, setShowModal] = useState(false);
   const [roomName, setRoomName] = useState(room.name);
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const modal = showModal ? (
     <Modal>
       <JoinRoom setShowModal={setShowModal} conv={room} />
@@ -46,13 +49,26 @@ const RoomItem: FunctionComponent<{ room: Conversation }> = ({ room }) => {
         </div>
         <div className=" bg-lotion/30 h-[1px] rounded-3xl my-1"></div>
         <div className="woner flex items-center gap-2">
-          {<><img  src={room.owner.avatar} alt="user" className="w-8 h-8 bg-queenBlue/50 rounded-full" /><Link to={`/profile/${room.owner.username}`}>
-            <p>{room.owner.nickname}</p>
-          </Link></> }
+          {
+            <>
+              <img
+                src={room.owner.avatar}
+                alt="user"
+                className="w-8 h-8 bg-queenBlue/50 rounded-full"
+              />
+              <Link to={`/profile/${room.owner.username}`}>
+                <p>{room.owner.nickname}</p>
+              </Link>
+            </>
+          }
           <button
             className=" grow group"
             onClick={() => {
-              setShowModal(true);
+              if (room.members.find((m) => m.uid == user.uid)) {
+                navigate(`/messages/${room.id}`);
+              } else {
+                setShowModal(true);
+              }
             }}
           >
             <RightArrow className="w-8 fill-crayola/50 group-hover:fill-crayola ml-auto" />
@@ -68,11 +84,13 @@ const Rooms = () => {
   const [loading, setloading] = useState(true);
   const [error, setError] = useState("");
   const axiosPrivate = useAxiosPrivate();
+  const [qeury, setQuery] = useState("");
+
   useEffect(() => {
     const rooms = async () => {
       try {
         const res = await axiosPrivate.get<Conversation[]>(
-          "http://localhost:3500/chat/rooms"
+          `http://localhost:3500/chat/rooms`
         );
         console.log("retrieved rooms ", res.data);
         setRooms(res.data);
@@ -82,7 +100,7 @@ const Rooms = () => {
       setloading(false);
     };
     rooms();
-  }, []);
+  }, [qeury, axiosPrivate]);
 
   if (loading) {
     return <Spinner />;
@@ -90,7 +108,7 @@ const Rooms = () => {
 
   return (
     <>
-      <Header />
+      <Header setQuery={setQuery} />
       <div className="flex flex-wrap gap-1">
         <>{error ? <p>{error}</p> : <RoomsList rooms={rooms} />}</>
       </div>

@@ -3,15 +3,11 @@ import useMedia from "hooks/useMedia";
 import { mediaQueries } from "config/index";
 import SearchBar from "components/SearchBar";
 import RoomForm from "./RoomForm";
-import { useEffect, useState } from "react";
+import { Dispatch, FunctionComponent, SetStateAction } from "react";
 
-const Header = () => {
-  const [query, setQuery] = useState("");
-
-  useEffect(() => {
-    console.log("query to search", query);
-  }, [query]);
-
+const Header: FunctionComponent<{
+  setQuery: Dispatch<SetStateAction<string>>;
+}> = ({ setQuery }) => {
   const md = useMedia(mediaQueries.md);
   return (
     <header className="bg-queenBlue/50 rounded-2xl p-4 relative md:h-[200px] flex">

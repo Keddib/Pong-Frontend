@@ -27,9 +27,8 @@ const RoomForm = () => {
         setFriends(res.data);
         setLoading(false);
         console.log("well");
-        setShow(!show);
       } catch (error) {
-        setLoading(false);  
+        setLoading(false);
       }
     }
     getFriends();
@@ -39,6 +38,7 @@ const RoomForm = () => {
   }, [axiosPrivate]);
 
   function showDropDown() {
+    console.log("clicked....");
     setShow(!show);
   }
 
@@ -67,6 +67,7 @@ const RoomForm = () => {
         password: data?.password,
         members: dataMembers,
       });
+      showDropDown();
     } catch (err) {
       setError("upload filed! please try again");
     }

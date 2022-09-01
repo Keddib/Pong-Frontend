@@ -48,10 +48,10 @@ const ChatMessages = () => {
     }
     setLoading(true);
     getConversationMessages().then(() => {
-      usersSocket.emit("joinRoomToServer", conv.id);
+      usersSocket.emit("joinRoomToServer", coversationID);
       console.log("init listener");
       usersSocket.on("msgToClient", (msg) => {
-        if (msg.room != conv.id) return;
+        if (msg.room != coversationID) return;
         let newMessage: Message = {
           userId: msg["userId"],
           username: msg["username"],
@@ -76,11 +76,15 @@ const ChatMessages = () => {
 
   useEffect(() => {
     if (inputMessage) {
+      usersSocket.emit("msgToServer", {
+        room: coversationID,
+        message: inputMessage,
+      });
       const newMsg = {
-        username: "keddib",
+        username: user.username,
         text: inputMessage,
         date: new Date(),
-        userId: "kedf_7444",
+        userId: user.uid,
       };
       setMessages([...messages, newMsg]);
       setInputMessage("");
