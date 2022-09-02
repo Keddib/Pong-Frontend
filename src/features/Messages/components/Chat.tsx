@@ -2,7 +2,7 @@ import BackArrow from "assets/icons/back-arrow.svg";
 import RightArrow from "assets/icons/right-arrow.svg";
 import Ellipsis from "assets/icons/ellipsis.svg";
 
-import { FunctionComponent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import MessageInput from "components/Messages/MessageInput";
 import Messages from "components/Messages/Messages";
@@ -14,21 +14,18 @@ import { usersSocket } from "services/axios/socket";
 import useAuth from "hooks/useAuth";
 import { mediaQueries } from "src/config";
 import useMedia from "hooks/useMedia";
-import More from "./More";
+import RoomInfo from "./RoomInfo";
+import SetErrorPage from "~/src/components/ErrorPage";
 
-type Data = {
-  room: Conversation;
-  messages: Message[];
-};
-
-const ChatMessages: FunctionComponent<{ activeRoom: Data }> = () => {
+const ChatMessages = () => {
   const { coversationID } = useParams();
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [conv, setConv] = useState({} as Conversation);
   const [messages, setMessages] = useState([] as Message[]);
   const [msgFromsrv, setmsgFromsrv] = useState({} as Message);
   const [inputMessage, setInputMessage] = useState("");
-  const [more, setMore] = useState(false);
+  const [roomInfo, setRoomInfo] = useState(false);
   const axiosPrivate = useAxiosPrivate();
   const { user } = useAuth();
   const lg = useMedia(mediaQueries.lg);
@@ -47,6 +44,7 @@ const ChatMessages: FunctionComponent<{ activeRoom: Data }> = () => {
         setLoading(false);
       } catch (error) {
         console.log(error);
+        setError(true);
         setLoading(false);
         // setError()
       }
@@ -96,6 +94,10 @@ const ChatMessages: FunctionComponent<{ activeRoom: Data }> = () => {
     }
   }, [inputMessage]);
 
+  if (error) {
+    return <SetErrorPage />;
+  }
+
   return (
     <div
       className={`h-full grow rounded-3xl bg-queenBlue p-2 overflow-hidden flex flex-col gap-1 ${
@@ -115,11 +117,11 @@ const ChatMessages: FunctionComponent<{ activeRoom: Data }> = () => {
               </NavLink>
             )}
             <RoomCard room={conv} />
-            {more ? (
+            {roomInfo ? (
               <button
                 className="flex justify-center items-center p-2 bg-queenBlue/20 rounded-full group hover:bg-queenBlue w-fit"
                 onClick={() => {
-                  setMore(false);
+                  setRoomInfo(false);
                 }}
               >
                 <RightArrow className="w-6 h-6 fill-lotion/50 group-hover:fill-lotion" />
@@ -128,15 +130,15 @@ const ChatMessages: FunctionComponent<{ activeRoom: Data }> = () => {
               <button
                 className="group bell-button"
                 onClick={() => {
-                  setMore(true);
+                  setRoomInfo(true);
                 }}
               >
                 <Ellipsis className="iconBell" />
               </button>
             )}
           </div>
-          {more ? (
-            <More conv={conv} />
+          {roomInfo ? (
+            <RoomInfo conv={conv} />
           ) : (
             <>
               <Messages messages={messages} />

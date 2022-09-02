@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
-import ConversationsList from "./components/ConversationsList";
+import ConversationsList from "./components/Conversations";
 import ChatMessages from "./components/Chat";
-import { Conversation, Message } from "~/src/types/app";
+import SetErrorPage from "~/src/components/ErrorPage";
 
 const Messages = () => {
   return (
@@ -12,6 +12,7 @@ const Messages = () => {
             <Route path="" element={<ConversationsList />}>
               <Route path=":coversationID" element={<ChatMessages />} />
             </Route>
+            <Route path="*" element={<SetErrorPage />} />
           </Routes>
         </div>
       </div>

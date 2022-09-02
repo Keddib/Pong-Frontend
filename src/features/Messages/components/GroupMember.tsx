@@ -1,4 +1,5 @@
 import Ellipsis from "assets/icons/ellipsis.svg";
+import UserIcon from "assets/icons/user.svg";
 import Xmark from "assets/icons/xmark.svg";
 import GamePad from "assets/icons/gamepad.svg";
 import DmIcon from "assets/icons/dm.svg";
@@ -9,6 +10,7 @@ import useUserStatus from "hooks/useUserStatus";
 import useAuth from "hooks/useAuth";
 import ElementBar from "components/ElementBar";
 import Dropdown from "~/src/components/Dropdown";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const GroupMember: FunctionComponent<{
   member: User;
@@ -18,6 +20,9 @@ const GroupMember: FunctionComponent<{
   const { userStatus } = useUserStatus();
   const [status, setStatus] = useState(member.status);
   const [drop, setDrop] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.pathname;
 
   useEffect(() => {
     if (userStatus.userId == member.uid) {
@@ -43,46 +48,66 @@ const GroupMember: FunctionComponent<{
             </h4>
           </div>
         </div>
-        <div className="relative">
-          <button
-            className="group bell-button bg-spaceCadet/50 hover:bg-spaceCadet w-8 h-8"
-            onClick={() => {
-              setDrop(!drop);
-            }}
-          >
-            <Ellipsis className="iconBell group-hover:bg-transparent" />
-          </button>
-          {drop && (
-            <Dropdown className="top-8 w-60">
-              <>
-                <div className="flex justify-end">
+        {user.uid != member.uid && (
+          <div className="relative">
+            <button
+              className="group bell-button bg-spaceCadet/50 hover:bg-spaceCadet w-8 h-8"
+              onClick={() => {
+                setDrop(!drop);
+              }}
+            >
+              <Ellipsis className="iconBell group-hover:bg-transparent" />
+            </button>
+            {drop && (
+              <Dropdown className="top-8 w-60">
+                <>
+                  <div className="flex justify-end">
+                    <button
+                      onClick={() => {
+                        setDrop(!drop);
+                      }}
+                    >
+                      <Xmark className="w-5 h-5 fill-lotion/50 hover:fill-lotion" />
+                    </button>
+                  </div>
                   <button
+                    className="start chating flex gap-2 items-center group text-lotion/50 hover:text-lotion"
                     onClick={() => {
-                      setDrop(!drop);
+                      navigate(`/profile/${member.username}`);
                     }}
                   >
-                    <Xmark className="w-5 h-5 fill-lotion/50 hover:fill-lotion" />
+                    <UserIcon className="w-5 h-5  fill-lotion/50 group-hover:fill-lotion ease-in duration-150" />
+                    view profile
                   </button>
-                </div>
-                <button
-                  className="send game request flex gap-2 items-center group"
-                  onClick={() => {}}
-                >
-                  <GamePad className="w-6 h-6 fill-lotion/50  ease-in duration-150 group-hover:fill-lotion" />
-                  invite to play
-                </button>
-                <button
-                  className="start chating flex gap-2 items-center group"
-                  onClick={() => {}}
-                >
-                  <DmIcon className="w-6 h-4  fill-lotion/50 group-hover:fill-lotion ease-in duration-150" />
-                  send message
-                </button>
-                {children}
-              </>
-            </Dropdown>
-          )}
-        </div>
+                  <button
+                    className="send game request flex gap-2 items-center group text-lotion/50 hover:text-lotion"
+                    onClick={() => {
+                      const gameMode = "classic";
+                      navigate("/game", {
+                        state: {
+                          mode: gameMode,
+                          custom: { opponent: user.uid },
+                          from,
+                        },
+                      });
+                    }}
+                  >
+                    <GamePad className="w-6 h-6 fill-lotion/50  ease-in duration-150 group-hover:fill-lotion" />
+                    invite to play
+                  </button>
+                  {/* <button
+                    className="start chating flex gap-2 items-center group text-lotion/50 hover:text-lotion"
+                    onClick={() => {}}
+                  >
+                    <DmIcon className="w-6 h-4  fill-lotion/50 group-hover:fill-lotion ease-in duration-150" />
+                    send message
+                  </button> */}
+                  {children}
+                </>
+              </Dropdown>
+            )}
+          </div>
+        )}
       </div>
     </ElementBar>
   );

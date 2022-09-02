@@ -4,12 +4,12 @@ import OverView from "./Overview";
 import MatchHistory from "./Matchhistory";
 import EditProfile from "./Updateprofile";
 import { Route, Routes } from "react-router-dom";
-import useErrorStatus from "hooks/useErrorStatus";
 import { FunctionComponent, useEffect } from "react";
 import { useGetGames } from "../hooks/useUserData";
 import { Spinner } from "components/Loading";
 import useProfileState from "../hooks/useProfileState";
 import { useActor } from "@xstate/react";
+import SetErrorPage from "~/src/components/ErrorPage";
 
 const links = {
   first: {
@@ -49,7 +49,7 @@ const Profile: FunctionComponent = () => {
             {user.rule.rule == "me" && (
               <Route path="settings" element={<EditProfile />} />
             )}
-            <Route path="*" element={<SetError />} />
+            <Route path="*" element={<SetErrorPage />} />
           </Routes>
         ) : (
           <Spinner />
@@ -60,11 +60,3 @@ const Profile: FunctionComponent = () => {
 };
 
 export default Profile;
-
-const SetError = () => {
-  const { setErrorStatusCode } = useErrorStatus();
-  useEffect(() => {
-    setErrorStatusCode(404);
-  }, []);
-  return <></>;
-};

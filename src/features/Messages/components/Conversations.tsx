@@ -7,12 +7,7 @@ import useMedia from "hooks/useMedia";
 import { mediaQueries } from "config/index";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import { Spinner } from "components/Loading";
-import { Conversation, Message } from "types/app";
-
-type data = {
-  room: Conversation;
-  messages: Message[];
-};
+import { Conversation } from "types/app";
 
 const ConversationsList = () => {
   const [welcome, setWelcome] = useState(false);
@@ -22,7 +17,6 @@ const ConversationsList = () => {
   const lg = useMedia(mediaQueries.lg);
   const [conversations, SetConversations] = useState([] as Conversation[]);
   const axiosPrivate = useAxiosPrivate();
-  const [activeRoom, setActiveRoom] = useState();
 
   useEffect(() => {
     const GetConversations = async () => {

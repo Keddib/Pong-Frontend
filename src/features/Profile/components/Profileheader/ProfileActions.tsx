@@ -12,9 +12,9 @@ import useProfileState from "../../hooks/useProfileState";
 const Actions: FunctionComponent<{ user: User }> = ({ user }) => {
   const [show, setShow] = useState(false);
 
+  const send = useProfileState().send;
   const navigate = useNavigate();
   const location = useLocation();
-  const send = useProfileState().send;
   const from = location.pathname;
 
   function showDropDown() {
