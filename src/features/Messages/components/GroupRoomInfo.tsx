@@ -186,8 +186,22 @@ const EditPassword: FunctionComponent<{ conv: Conversation }> = ({ conv }) => {
     setLoading(true);
     setError("");
     // get data
+    const target = e.target as typeof e.target & {
+      elements: {
+        OldPassword: { value: string };
+        Password: { value: string };
+        Password2: { value: string };
+      };
+    };
+
+    // collect data
+    const oldPassword = target.elements.OldPassword?.value;
+    const newPassword = target.elements.Password.value;
+    const confirmPassword = target.elements.Password2.value;
+
     try {
-      //
+      // send data to server
+      console.log(oldPassword, newPassword, confirmPassword);
     } catch (err) {
       setError("upload filed! please try again");
     }
