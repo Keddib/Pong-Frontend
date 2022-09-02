@@ -25,6 +25,7 @@ const ChatMessages = () => {
   const [messages, setMessages] = useState([] as Message[]);
   const [msgFromsrv, setmsgFromsrv] = useState({} as Message);
   const [inputMessage, setInputMessage] = useState("");
+  const [refresh, setRefresh] = useState(false);
   const [roomInfo, setRoomInfo] = useState(false);
   const axiosPrivate = useAxiosPrivate();
   const { user } = useAuth();
@@ -32,42 +33,61 @@ const ChatMessages = () => {
 
   useEffect(() => {
     // get conversation
-
-    async function getConversationMessages() {
+    async function getConversation() {
       try {
         const res = await axiosPrivate.get<Conversation>(
           `chat/${coversationID}`
         );
         console.log("cov", res.data);
         setConv(res.data);
-        setMessages(res.data.messages);
-        setLoading(false);
       } catch (error) {
         console.log(error);
         setError(true);
-        setLoading(false);
-        // setError()
       }
     }
     setLoading(true);
-    getConversationMessages().then(() => {
-      usersSocket.emit("joinRoomToServer", coversationID);
-      console.log("init listener");
-      usersSocket.on("msgToClient", (msg) => {
-        if (msg.room != coversationID) return;
-        let newMessage: Message = {
-          userId: msg["userId"],
-          username: msg["username"],
-          text: msg["text"],
-          date: new Date(),
-        };
-        console.log("received new msg from srv PIBLIC", newMessage, messages);
-        console.log(" user id ", user.uid, " meg user id ", msg["userId"]);
-        if (user.uid !== msg["userId"]) {
-          console.log("received msg call stet ");
-          setmsgFromsrv(newMessage);
-        }
-      });
+    getConversation();
+    setLoading(false);
+  }, [refresh, axiosPrivate, coversationID]);
+
+  useEffect(() => {
+    // get messages
+
+    async function getConversationMessages() {
+      // try {
+      //   const res = await axiosPrivate.get<Conversation>(
+      //     `chat/${coversationID}`
+      //   );
+      //   console.log("cov", res.data);
+      //   setConv(res.data);
+      //   // setMessages(res.data.messages);
+      //   // get messages
+      //   setLoading(false);
+      // } catch (error) {
+      //   console.log(error);
+      //   setError(true);
+      //   setLoading(false);
+      //   // setError()
+      // }
+      // get messages
+    }
+    // setLoading(true);
+    usersSocket.emit("joinRoomToServer", coversationID);
+    console.log("init listener");
+    usersSocket.on("msgToClient", (msg) => {
+      if (msg.room != coversationID) return;
+      let newMessage: Message = {
+        userId: msg["userId"],
+        username: msg["username"],
+        text: msg["text"],
+        date: new Date(),
+      };
+      console.log("received new msg from srv PIBLIC", newMessage, messages);
+      console.log(" user id ", user.uid, " meg user id ", msg["userId"]);
+      if (user.uid !== msg["userId"]) {
+        console.log("received msg call stet ");
+        setmsgFromsrv(newMessage);
+      }
     });
     // get messages
   }, [coversationID]);
