@@ -8,7 +8,7 @@ const Conversation: FunctionComponent<{ conversation: Conversation }> = ({
   conversation,
 }) => {
   return (
-    <Link to={conversation.id} className="">
+    <Link to={conversation.cid} className="">
       <ElementBar rank={-1}>
         <div className="flex justify-between items-center w-full">
           <RoomCard room={conversation} />

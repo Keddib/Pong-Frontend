@@ -38,7 +38,8 @@ const ChatMessages = () => {
         const res = await axiosPrivate.get<Conversation>(
           `chat/${coversationID}`
         );
-        console.log("cov", res.data);
+        console.log("cov -> ", res.data);
+        res.data.admins.push(res.data.owner);
         setConv(res.data);
       } catch (error) {
         console.log(error);
@@ -139,7 +140,7 @@ const ChatMessages = () => {
             <RoomCard room={conv} />
             {roomInfo ? (
               <button
-                className="flex justify-center items-center p-2 bg-queenBlue/20 rounded-full group hover:bg-queenBlue w-fit"
+                className="flex justify-center items-center p-2 bg-spaceCadet/50 rounded-full group hover:bg-spaceCadet w-fit"
                 onClick={() => {
                   setRoomInfo(false);
                 }}
@@ -148,17 +149,19 @@ const ChatMessages = () => {
               </button>
             ) : (
               <button
-                className="group bell-button"
+                className="flex justify-center items-center p-2 bg-spaceCadet/50 rounded-full group hover:bg-spaceCadet w-fit"
                 onClick={() => {
-                  setRoomInfo(true);
+                  if (!loading) {
+                    setRoomInfo(true);
+                  }
                 }}
               >
-                <Ellipsis className="iconBell" />
+                <Ellipsis className="w-6 h-6 fill-lotion/50 group-hover:fill-lotion" />
               </button>
             )}
           </div>
           {roomInfo ? (
-            <RoomInfo conv={conv} />
+            <RoomInfo conv={conv} setRefresh={setRefresh} />
           ) : (
             <>
               <Messages messages={messages} />

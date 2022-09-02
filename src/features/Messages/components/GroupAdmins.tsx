@@ -4,14 +4,27 @@ import Mute from "assets/icons/mute.svg";
 import { FunctionComponent } from "react";
 import { Conversation } from "types/app";
 import GroupMember from "./GroupMember";
+import useAxiosPrivate from "~/src/hooks/useAxiosPrivate";
 
 const GroupAdmins: FunctionComponent<{
   conv: Conversation;
   position: string;
-}> = ({ conv, position }) => {
-  function addAdmin() {
-    //
-    console.log("....->");
+  setRefresh: (b: boolean) => void;
+}> = ({ conv, position, setRefresh }) => {
+  const axiosPrivate = useAxiosPrivate();
+
+  async function removeAdmin(adId: string) {
+    console.log(conv.cid, adId);
+    try {
+      await axiosPrivate.post("chat/deleteadmin", {
+        cid: conv.cid,
+        uid: adId,
+      });
+      // refresh
+      setRefresh(true);
+    } catch (error) {
+      console.log("error chat/admin", error);
+    }
   }
 
   return (
@@ -27,10 +40,12 @@ const GroupAdmins: FunctionComponent<{
                     <>
                       <button
                         className="start chating flex gap-2 items-center group text-lotion/50 hover:text-lotion"
-                        onClick={() => {}}
+                        onClick={() => {
+                          removeAdmin(admin.uid);
+                        }}
                       >
                         <UserMinus className="w-6 h-6  fill-lotion/50 group-hover:fill-lotion ease-in duration-150" />
-                        remove from admin list
+                        remove admin
                       </button>
                       <button
                         className="start chating flex gap-2 items-center group text-lotion/50 hover:text-lotion"

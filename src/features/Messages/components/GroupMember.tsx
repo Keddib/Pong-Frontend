@@ -86,7 +86,7 @@ const GroupMember: FunctionComponent<{
                       navigate("/game", {
                         state: {
                           mode: gameMode,
-                          custom: { opponent: user.uid },
+                          custom: { opponent: member.uid },
                           from,
                         },
                       });

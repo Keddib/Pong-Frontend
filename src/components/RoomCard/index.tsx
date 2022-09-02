@@ -3,32 +3,39 @@ import Image from "components/Image";
 import { Conversation, User } from "types/app";
 import { FunctionComponent, useEffect, useState } from "react";
 import useUserStatus from "hooks/useUserStatus";
-import useAuth from "~/src/hooks/useAuth";
+import useAuth from "hooks/useAuth";
 
 const RoomCard: FunctionComponent<{ room: Conversation }> = ({ room }) => {
   const { userStatus } = useUserStatus();
   const { user } = useAuth();
   const [status, setStatus] = useState("");
   const [avatar, setAvatar] = useState(RoomImg);
-  const [name, setName] = useState(room.name as string);
+  const [name, setName] = useState(room.name);
   const [currentUser, setCurrentUser] = useState({} as User);
 
   useEffect(() => {
     if (userStatus.userId == currentUser.uid) {
       setStatus(userStatus.status);
     }
+  }, [userStatus]);
+
+  useEffect(() => {
     if (room.type == "private") {
       const otherUser = room.members.find((u) => u.uid != user.uid);
       if (otherUser) {
         setName(otherUser.nickname);
         setAvatar(otherUser.avatar);
         setCurrentUser(otherUser);
+        setStatus(otherUser.status);
       }
+    } else {
+      setName(room.name);
+      setAvatar(RoomImg);
+      setStatus("");
     }
-  }, [userStatus]);
+  }, [room]);
 
   useEffect(() => {
-
     if (name && name.length > 16) {
       setName(name.substring(0, 15) + ".");
     }

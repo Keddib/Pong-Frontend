@@ -71,7 +71,7 @@ type UserStatus = {
 };
 
 type Conversation = {
-  id: string;
+  cid: string;
   name: string;
   description: string;
   owner: User;

@@ -4,7 +4,10 @@ import useAuth from "~/src/hooks/useAuth";
 import PrivateRoomInfo from "./PrivateRoomInfo";
 import GroupRoomInfo from "./GroupRoomInfo";
 
-const RoomInfo: FunctionComponent<{ conv: Conversation }> = ({ conv }) => {
+const RoomInfo: FunctionComponent<{
+  conv: Conversation;
+  setRefresh: (b: boolean) => void;
+}> = ({ conv, setRefresh }) => {
   const { user } = useAuth();
   const [convUser, setConvUser] = useState({} as User);
 
@@ -18,9 +21,9 @@ const RoomInfo: FunctionComponent<{ conv: Conversation }> = ({ conv }) => {
   return (
     <div className="message-more">
       {conv.type == "private" ? (
-        <PrivateRoomInfo user={convUser} />
+        <PrivateRoomInfo user={convUser} setRefresh={setRefresh} />
       ) : (
-        <GroupRoomInfo conv={conv} />
+        <GroupRoomInfo conv={conv} setRefresh={setRefresh} />
       )}
     </div>
   );

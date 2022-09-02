@@ -6,7 +6,10 @@ import { FunctionComponent } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { User } from "types/app";
 
-const PrivateRoomInfo: FunctionComponent<{ user: User }> = ({ user }) => {
+const PrivateRoomInfo: FunctionComponent<{
+  user: User;
+  setRefresh: (b: boolean) => void;
+}> = ({ user, setRefresh }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -24,6 +27,7 @@ const PrivateRoomInfo: FunctionComponent<{ user: User }> = ({ user }) => {
   const hundleBlock = () => {
     //
     console.log("action block");
+    setRefresh(true);
   };
 
   const hundleSpectate = () => {

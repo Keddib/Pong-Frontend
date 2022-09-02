@@ -11,7 +11,7 @@ import { Conversation } from "types/app";
 
 const ConversationsList = () => {
   const [welcome, setWelcome] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const location = useLocation();
   const lg = useMedia(mediaQueries.lg);
@@ -55,7 +55,7 @@ const ConversationsList = () => {
       return (
         <>
           {conversations.map((conv) => (
-            <CoversationCard key={conv.id} conversation={conv} />
+            <CoversationCard key={conv.cid} conversation={conv} />
           ))}
         </>
       );

@@ -22,11 +22,11 @@ const JoinRoom: FunctionComponent<{
     const password = target.elements.password.value;
     try {
       await axiosPrivate.post("/chat/join", {
-        roomId: conv.id,
+        roomId: conv.cid,
         password: password,
       });
       // redirect to /messages/convID
-      navigate(`/messages/${conv.id}`);
+      navigate(`/messages/${conv.cid}`);
     } catch (err) {
       setError("somthing went wrong! please try again");
     }
@@ -35,10 +35,10 @@ const JoinRoom: FunctionComponent<{
   async function join() {
     try {
       await axiosPrivate.post("/chat/join", {
-        roomId: conv.id,
+        roomId: conv.cid,
       });
       // redirect to /messages/convID
-      navigate(`/messages/${conv.id}`);
+      navigate(`/messages/${conv.cid}`);
     } catch (err) {
       setError("upload filed! please try again");
     }

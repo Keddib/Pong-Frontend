@@ -27,8 +27,10 @@ const RoomItem: FunctionComponent<{ room: Conversation }> = ({ room }) => {
       const name: string = room.name.substring(0, 15) + ".";
       setRoomName(name);
       console.log("name", name);
+    } else {
+      setRoomName(room.name);
     }
-  }, []);
+  }, [room]);
 
   return (
     <>
@@ -65,7 +67,7 @@ const RoomItem: FunctionComponent<{ room: Conversation }> = ({ room }) => {
             className=" grow group"
             onClick={() => {
               if (room.members.find((m) => m.uid == user.uid)) {
-                navigate(`/messages/${room.id}`);
+                navigate(`/messages/${room.cid}`);
               } else {
                 setShowModal(true);
               }
