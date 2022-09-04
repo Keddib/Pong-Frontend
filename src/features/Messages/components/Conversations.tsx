@@ -36,7 +36,7 @@ const ConversationsList = () => {
     return () => {
       abortController.abort();
     };
-  });
+  },[]);
 
   useEffect(() => {
     if (

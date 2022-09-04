@@ -9,7 +9,6 @@ type Props = {
 const RequireAuth: FunctionComponent<Props> = ({ children }) => {
   const auth = useAuth();
   const location = useLocation();
-
   if (auth.isUserAuth()) {
     return children;
   }

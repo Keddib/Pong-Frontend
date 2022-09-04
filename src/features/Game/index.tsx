@@ -1,5 +1,10 @@
 import React, { useState, useEffect, useRef, FunctionComponent } from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useSearchParams,
+  Navigate
+} from "react-router-dom";
 import Play from "./components/Playing";
 import Waiting from "./components/Waiting";
 import io from "socket.io-client";
@@ -21,7 +26,7 @@ interface Loc extends Location {
 }
 // {setGameRoomId: (id: string) => void}
 const Game: FunctionComponent<{ setGameRoomId: (id: string) => void }> = ({
-  setGameRoomId,
+  setGameRoomId
 }) => {
   const location: Loc = useLocation();
   const { signin } = useAuth();
@@ -38,10 +43,11 @@ const Game: FunctionComponent<{ setGameRoomId: (id: string) => void }> = ({
   const invitation = searchParams.get("invitation");
   const spectate = searchParams.get("spectate");
   const [players, setPlayers] = useState([] as User[]);
+
   useEffect(() => {
     socket.current = io("ws://localhost:3001", {
       withCredentials: true,
-      extraHeaders: { Authorization: "Bearer " + getAccessToken() },
+      extraHeaders: { Authorization: "Bearer " + getAccessToken() }
     }).on("connect", () => {
       if (!location?.state) location.state = { mode: "classic" };
 
@@ -52,7 +58,7 @@ const Game: FunctionComponent<{ setGameRoomId: (id: string) => void }> = ({
         socket.current?.on("authenticated", () => {
           socket.current?.emit("playerJoined", {
             mode: location?.state?.mode,
-            custom: invitation ? { invitation } : location?.state?.custom,
+            custom: invitation ? { invitation } : location?.state?.custom
           });
           socket.current?.on("roomName", (data: { roomName: string }) => {
             setGameRoomId(data.roomName);
@@ -67,19 +73,6 @@ const Game: FunctionComponent<{ setGameRoomId: (id: string) => void }> = ({
           !opponent &&
           !once
         ) {
-          // if (!spectate) {
-          //   setOpponent(
-          //     JSON.parse(data.playerData)[
-          //       (data.players.indexOf(socket.current?.id) + 1) % 2
-          //     ]
-          //   );
-          //   setPlayers([
-          //     user,
-          //     JSON.parse(data.playerData)[
-          //       (data.players.indexOf(socket.current?.id) + 1) % 2
-          //     ]
-          //   ]);
-          // } else {
           setOpponent(
             JSON.parse(data.playerData)[
               (data.players.indexOf(socket.current?.id || "") + 1) % 2
@@ -109,6 +102,7 @@ const Game: FunctionComponent<{ setGameRoomId: (id: string) => void }> = ({
     });
 
     return () => {
+      socket.current?.removeAllListeners();
       socket.current?.close();
       setGameRoomId("");
     };
@@ -129,9 +123,7 @@ const Game: FunctionComponent<{ setGameRoomId: (id: string) => void }> = ({
       <Play players={players} gameStateData={gameStateData} socket={socket} />
     );
   else if (gameState == "canceled") {
-    navigate(location?.state?.from || "/home", {
-      replace: true,
-    });
+    return <Navigate to={location?.state?.from || "/home"} replace={true} />;
   }
   return <>{page}</>;
 };

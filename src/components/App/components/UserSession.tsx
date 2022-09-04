@@ -17,13 +17,12 @@ const UserSession = () => {
       const accTok = await refresh();
       if (accTok == "error") {
         setIsLoading(false);
-        navigate("/access/signin");
       }
       try {
         const res = await axiosAuth.get("/user", {
           headers: {
-            Authorization: `Bearer ${accTok}`,
-          },
+            Authorization: `Bearer ${accTok}`
+          }
         });
         const user = res.data;
         if (user) {
@@ -32,7 +31,6 @@ const UserSession = () => {
         }
       } catch (error) {
         setIsLoading(false);
-        navigate("/access/signin");
       }
     };
 
