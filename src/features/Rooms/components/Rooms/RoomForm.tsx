@@ -35,7 +35,6 @@ const RoomForm: FunctionComponent<{
         });
         setFriends(res.data);
         setLoading(false);
-        console.log("well");
       } catch (error) {
         setLoading(false);
       }
@@ -44,10 +43,9 @@ const RoomForm: FunctionComponent<{
     return () => {
       abortController.abort();
     };
-  }, [axiosPrivate]);
+  });
 
   function showDropDown() {
-    console.log("clicked....");
     setShow(!show);
   }
 
@@ -62,7 +60,6 @@ const RoomForm: FunctionComponent<{
     setLoading(true);
     setError("");
     const data = getData(e);
-    console.log("data", data);
     const dataMembers = friends.filter((f) => {
       return data.members.includes(f.uid);
     });

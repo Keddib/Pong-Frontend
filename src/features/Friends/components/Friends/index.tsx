@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
-import axios from "axios";
 import { Spinner } from "components/Loading";
 import { User } from "types/app";
 import FriendListItem from "./FriendListItem";
 
 const FriendList = () => {
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [friends, setFriends] = useState([] as User[]);
   const axiosPrivate = useAxiosPrivate();
 
@@ -24,19 +24,12 @@ const FriendList = () => {
           signal: abortController.signal,
         });
         // check payload
-        console.log("user", res.data);
         setFriends(res.data);
         setLoading(false);
       } catch (error) {
-        if (axios.isAxiosError(error)) {
-          console.log("axios error ", error.response?.status);
-          // if forbiden check user state and sign in
-        } else {
-          console.log(error);
-        }
         setLoading(false);
+        setError("something went wrong! please try again");
       }
-      // setErrorStatusCode(400);
     }
     getFriends();
     return () => {
@@ -60,8 +53,14 @@ const FriendList = () => {
             <>{friendsArray}</>
           ) : (
             <div className="w-full h-full flex justify-center items-center flex-col gap-4">
-              <p>search for friens</p>
-              <Link to="/rooms/players">serach page</Link>
+              {error ? (
+                <p>{error}</p>
+              ) : (
+                <>
+                  <p>search for friens</p>
+                  <Link to="/rooms/players">serach page</Link>
+                </>
+              )}
             </div>
           )}
         </ul>

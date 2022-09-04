@@ -54,7 +54,6 @@ function LogoutButton() {
       <button
         className="group mt-4"
         onClick={() => {
-          console.log("log button clicked");
           setShowModal(true);
         }}
       >

@@ -1,4 +1,4 @@
-import { FormEvent, FunctionComponent, useState } from "react";
+import React, { FormEvent, FunctionComponent, useState } from "react";
 import axios from "axios";
 import Modal from "components/Modal";
 import { Spinner } from "components/Loading";
@@ -14,11 +14,20 @@ const Confirm: FunctionComponent<{ from: string }> = ({ from }) => {
   const navigate = useNavigate();
   const { setAccessToken, signin } = useAuth();
 
-  async function hundleSubmit(e: FormEvent) {
+  async function hundleSubmit(e: React.SyntheticEvent) {
     setLoading(true);
     e.preventDefault();
-    e.currentTarget.elements.code.disable = true;
-    const code = e.currentTarget.elements.code.value;
+
+    const target = e.target as typeof e.target & {
+      elements: {
+        code: {
+          value: string;
+          disable: boolean;
+        };
+      };
+    };
+    target.elements.code.disable = true;
+    const code = target.elements.code.value;
 
     try {
       const res = await axiosPrivate.post<{ access_token: string }>(
@@ -30,13 +39,11 @@ const Confirm: FunctionComponent<{ from: string }> = ({ from }) => {
           withCredentials: true,
         }
       );
-      console.log(res);
       setAccessToken(res.data.access_token);
       signin({} as User);
       navigate(from, { replace: true });
       return;
     } catch (error) {
-      console.log(error);
       if (axios.isAxiosError(error)) {
         const status = error.response?.status;
         if (status == 401) {

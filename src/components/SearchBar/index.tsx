@@ -14,7 +14,6 @@ const SearchBar: FunctionComponent<{
         onSubmit={(e) => {
           e.preventDefault();
           const query = (e.target as any).searchInput.value;
-          console.log(`search for ${query}`);
           setQuery(query);
         }}
       >

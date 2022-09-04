@@ -60,7 +60,6 @@ function EditProfile() {
     }
     // send response to update user
     try {
-      console.log("data");
       await axiosPrivate.post(`/user/${user.uid}/update`, data);
       // update user avatar
     } catch (err) {

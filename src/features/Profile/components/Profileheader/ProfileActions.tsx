@@ -6,7 +6,7 @@ import Block from "assets/icons/block-user.svg";
 import Dropdown from "components/Dropdown";
 import { FunctionComponent, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { User } from "~/src/types/app";
+import { User } from "types/app";
 import useProfileState from "../../hooks/useProfileState";
 
 const Actions: FunctionComponent<{ user: User }> = ({ user }) => {

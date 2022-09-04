@@ -3,7 +3,7 @@ import RightArrow from "assets/icons/right-arrow.svg";
 import BottomArrow from "assets/icons/bottom-arrow.svg";
 import { FunctionComponent, useRef, useState } from "react";
 import { Conversation } from "types/app";
-import { Spinner } from "~/src/components/Loading";
+import { Spinner } from "components/Loading";
 
 const EditPassword: FunctionComponent<{
   conv: Conversation;

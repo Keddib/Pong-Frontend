@@ -25,9 +25,9 @@ const Success: FunctionComponent<{
           </code>
         </div>
         <p>
-          This backup code lets you log in to Twitter if you can&apos;t receive
-          a text message or don&apos;t have access to any of your other
-          two-factor authentication methods.
+          This backup code lets you log in to Pong if you can&apos;t receive a
+          text message or don&apos;t have access to any of your other two-factor
+          authentication methods.
         </p>
       </div>
       <div className="px-10 w-full mt-4">

@@ -95,7 +95,6 @@ const profileMachine = createMachine(
         {
           target: "player",
           cond: (context, event) => {
-            console.log("event ", event);
             return event.data;
           },
         },

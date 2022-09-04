@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import { User } from "~/src/types/app";
+import { User } from "types/app";
 
 const SelectFriends: FunctionComponent<{ friends: User[] }> = ({ friends }) => {
   return (

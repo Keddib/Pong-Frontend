@@ -1,8 +1,8 @@
 import { useActor } from "@xstate/react";
 import axios from "axios";
 import { useContext, useState } from "react";
-import { Spinner } from "~/src/components/Loading";
-import useAxiosPrivate from "~/src/hooks/useAxiosPrivate";
+import { Spinner } from "components/Loading";
+import useAxiosPrivate from "hooks/useAxiosPrivate";
 import TFAcontext from "../context/TFAcontext";
 
 const Confirm = () => {
@@ -11,21 +11,28 @@ const Confirm = () => {
   const [loading, setLoading] = useState(false);
   const axiosPrivate = useAxiosPrivate();
 
-  async function hundleSubmit(e: FormEvent) {
+  async function hundleSubmit(e: React.SyntheticEvent) {
     setLoading(true);
     e.preventDefault();
-    e.currentTarget.elements.code.disable = true;
-    const code = e.currentTarget.elements.code.value;
+    const target = e.target as typeof e.target & {
+      elements: {
+        code: {
+          value: string;
+          disable: boolean;
+        };
+      };
+    };
+
+    target.elements.code.disable = true;
+    const code = target.elements.code.value;
 
     try {
-      const res = await axiosPrivate.post("auth/enable-tfa", {
+      await axiosPrivate.post("auth/enable-tfa", {
         code: code,
         secret: state.context.secret,
       });
-      console.log(res);
       TFAservice.send({ type: "SUCCESS" });
     } catch (error) {
-      console.log(error);
       if (axios.isAxiosError(error)) {
         const status = error.response?.status;
         if (status == 401) {

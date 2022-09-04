@@ -19,7 +19,7 @@ function useRefreshToken() {
       }
       return accessToken;
     } catch (error) {
-      console.log(error);
+      error;
     }
     return "error";
   }

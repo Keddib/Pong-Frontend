@@ -2,7 +2,6 @@ import { FunctionComponent, useEffect, useState } from "react";
 import { Spinner } from "components/Loading";
 import SearchBar from "components/SearchBar";
 import { User } from "types/app";
-import axios from "axios";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import FriendListItem from "features/Friends/components/Friends/FriendListItem";
 
@@ -29,6 +28,7 @@ const PlayersList: FunctionComponent<{ users: User[] }> = ({ users }) => {
 const Players = () => {
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState("");
+  const [error, setError] = useState("");
   const [players, setPlayers] = useState([] as User[]);
   const axiosPrivate = useAxiosPrivate();
 
@@ -37,7 +37,6 @@ const Players = () => {
     const abortController = new AbortController();
     async function getFriends() {
       try {
-        // fetch user data
         const res = await axiosPrivate.get<User[]>(
           `user/search?query=` + query,
           {
@@ -45,19 +44,12 @@ const Players = () => {
           }
         );
         // check payload
-        console.log("user", res.data);
         setPlayers(res.data);
         setLoading(false);
       } catch (error) {
-        if (axios.isAxiosError(error)) {
-          console.log("axios error ", error.response?.status);
-          // if forbiden check user state and sign in
-        } else {
-          console.log(error);
-        }
         setLoading(false);
+        setError("somethig went wrong! please try again");
       }
-      // setErrorStatusCode(400);
     }
     getFriends();
     return () => {
@@ -71,7 +63,11 @@ const Players = () => {
         <SearchBar setQuery={setQuery} />
       </div>
       <ul className="flex flex-col gap-1 h-full overflow-auto no-scrollbar">
-        {!loading ? <PlayersList users={players} /> : <Spinner />}
+        {!loading ? (
+          <>{error ? <p>{error}</p> : <PlayersList users={players} />}</>
+        ) : (
+          <Spinner />
+        )}
       </ul>
     </div>
   );

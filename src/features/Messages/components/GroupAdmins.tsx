@@ -4,7 +4,7 @@ import Mute from "assets/icons/mute.svg";
 import { FunctionComponent } from "react";
 import { Conversation } from "types/app";
 import GroupMember from "./GroupMember";
-import useAxiosPrivate from "~/src/hooks/useAxiosPrivate";
+import useAxiosPrivate from "hooks/useAxiosPrivate";
 
 const GroupAdmins: FunctionComponent<{
   conv: Conversation;

@@ -22,11 +22,9 @@ const RoomItem: FunctionComponent<{ room: Conversation }> = ({ room }) => {
   ) : null;
 
   useEffect(() => {
-    console.log(room.name.length);
     if (room.name.length > 16) {
       const name: string = room.name.substring(0, 15) + ".";
       setRoomName(name);
-      console.log("name", name);
     } else {
       setRoomName(room.name);
     }
@@ -95,7 +93,6 @@ const Rooms = () => {
         const res = await axiosPrivate.get<Conversation[]>(
           `http://localhost:3500/chat/rooms`
         );
-        console.log("retrieved rooms ", res.data);
         setRooms(res.data);
       } catch (error) {
         setError("failed loading rooms! please try again");

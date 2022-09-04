@@ -10,7 +10,7 @@ const Scanning = () => {
   return (
     <>
       <h4 className="text-2xl text-center">
-        Link the app to your Twitter account
+        Link the app to your Pong account
       </h4>
       <p className="text-center">
         Use your authentication app to scan this QR code. If you don’t have an

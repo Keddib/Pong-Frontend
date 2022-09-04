@@ -9,7 +9,7 @@ import { FunctionComponent, useEffect, useState } from "react";
 import useUserStatus from "hooks/useUserStatus";
 import useAuth from "hooks/useAuth";
 import ElementBar from "components/ElementBar";
-import Dropdown from "~/src/components/Dropdown";
+import Dropdown from "components/Dropdown";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const GroupMember: FunctionComponent<{

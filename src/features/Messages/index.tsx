@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import ConversationsList from "./components/Conversations";
 import ChatMessages from "./components/Chat";
-import SetErrorPage from "~/src/components/ErrorPage";
+import SetErrorPage from "components/ErrorPage";
 
 const Messages = () => {
   return (

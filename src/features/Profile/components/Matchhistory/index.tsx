@@ -6,7 +6,6 @@ const MatchHistory: FunctionComponent<{ games: Game[] }> = ({ games }) => {
   const gamesElem = (function getgames() {
     if (games?.length) {
       return games.map((game) => {
-        console.log(game);
         return <GameResult key={game.id} game={game} />;
       });
     }

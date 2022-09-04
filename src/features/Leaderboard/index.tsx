@@ -4,7 +4,6 @@ import LeaderBoardList from "./components/List";
 import { User } from "types/app";
 import { Spinner } from "src/components/Loading";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
-import axios from "axios";
 
 export default function Leaderboard() {
   const [loading, setLoading] = useState(false);
@@ -17,26 +16,16 @@ export default function Leaderboard() {
     const abortController = new AbortController();
     async function getFriends() {
       try {
-        // fetch user data
         const res = await axiosPrivate.get<User[]>(`game/leaderboard`, {
           signal: abortController.signal,
         });
         // check payload
-        console.log("user", res.data);
-        if(res.data)
-          setPlayers(res.data);
+        if (res.data) setPlayers(res.data);
         setLoading(false);
       } catch (error) {
-        if (axios.isAxiosError(error)) {
-          console.log("axios error ", error.response?.status);
-          // if forbiden check user state and sign in
-        } else {
-          console.log(error);
-        }
         setLoading(false);
         setError("somting went wrong! please try again");
       }
-      // setErrorStatusCode(400);
     }
     getFriends();
     return () => {
@@ -56,7 +45,11 @@ export default function Leaderboard() {
           <span className="text-end ">XP</span>
         </div>
         <div className="Rank h-full">
-          {loading ? <Spinner /> : <LeaderBoardList users={players} />}
+          {loading ? (
+            <Spinner />
+          ) : (
+            <>{error ? <p>{error}</p> : <LeaderBoardList users={players} />}</>
+          )}
         </div>
       </div>
     </div>

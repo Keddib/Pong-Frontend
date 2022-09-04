@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import Loading from "components/Loading";
 import { axiosAuth } from "services/axios/axios";
 import useAuth from "hooks/useAuth";
@@ -9,6 +9,7 @@ const UserSession = () => {
   const { signin, isUserAuth } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const refresh = useRefreshToken();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // check user session
@@ -16,6 +17,7 @@ const UserSession = () => {
       const accTok = await refresh();
       if (accTok == "error") {
         setIsLoading(false);
+        navigate("/access/signin");
       }
       try {
         const res = await axiosAuth.get("/user", {
@@ -25,14 +27,12 @@ const UserSession = () => {
         });
         const user = res.data;
         if (user) {
-          // validate user before signin
-          console.log("authenticated user", user);
           signin(user);
           setIsLoading(false);
         }
       } catch (error) {
-        console.log("not authorized...", error);
         setIsLoading(false);
+        navigate("/access/signin");
       }
     };
 

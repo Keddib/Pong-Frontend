@@ -15,7 +15,7 @@ import useAuth from "hooks/useAuth";
 import { mediaQueries } from "src/config";
 import useMedia from "hooks/useMedia";
 import RoomInfo from "./RoomInfo";
-import SetErrorPage from "~/src/components/ErrorPage";
+import SetErrorPage from "components/ErrorPage";
 
 const ChatMessages = () => {
   const { coversationID } = useParams();
@@ -38,11 +38,9 @@ const ChatMessages = () => {
         const res = await axiosPrivate.get<Conversation>(
           `chat/${coversationID}`
         );
-        console.log("cov -> ", res.data);
         res.data.admins.push(res.data.owner);
         setConv(res.data);
       } catch (error) {
-        console.log(error);
         setError(true);
       }
     }
@@ -59,13 +57,11 @@ const ChatMessages = () => {
       //   const res = await axiosPrivate.get<Conversation>(
       //     `chat/${coversationID}`
       //   );
-      //   console.log("cov", res.data);
       //   setConv(res.data);
       //   // setMessages(res.data.messages);
       //   // get messages
       //   setLoading(false);
       // } catch (error) {
-      //   console.log(error);
       //   setError(true);
       //   setLoading(false);
       //   // setError()
@@ -74,7 +70,6 @@ const ChatMessages = () => {
     }
     // setLoading(true);
     usersSocket.emit("joinRoomToServer", coversationID);
-    console.log("init listener");
     usersSocket.on("msgToClient", (msg) => {
       if (msg.room != coversationID) return;
       let newMessage: Message = {
@@ -83,10 +78,7 @@ const ChatMessages = () => {
         text: msg["text"],
         date: new Date(),
       };
-      console.log("received new msg from srv PIBLIC", newMessage, messages);
-      console.log(" user id ", user.uid, " meg user id ", msg["userId"]);
       if (user.uid !== msg["userId"]) {
-        console.log("received msg call stet ");
         setmsgFromsrv(newMessage);
       }
     });

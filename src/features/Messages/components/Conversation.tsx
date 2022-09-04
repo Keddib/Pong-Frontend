@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import ElementBar from "components/ElementBar";
 import RoomCard from "components/RoomCard";
 import { FunctionComponent } from "react";
-import { Conversation } from "~/src/types/app";
+import { Conversation } from "types/app";
 
 const Conversation: FunctionComponent<{ conversation: Conversation }> = ({
   conversation,

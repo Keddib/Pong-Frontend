@@ -9,10 +9,8 @@ const actions = {
   }),
 
   addFriend: async (context: User, event: AnyEventObject) => {
-    console.log("addfriend");
-    console.log(context, event);
     try {
-      const res = await axiosAuth.post(
+      await axiosAuth.post(
         "/friends/add",
         {
           receiver: context.uid,
@@ -24,17 +22,14 @@ const actions = {
           },
         }
       );
-      console.log(" add friend response", res);
     } catch (error) {
-      console.log("error", error, "raise event");
       raise({ type: "FAILED" });
     }
   },
   cancelRequest: async (context: User) => {
-    console.log("unFriend");
     try {
       // action
-      const res = await axiosAuth.post(
+      await axiosAuth.post(
         "/friends/decline",
         {
           uid: context.rule.request.uid,
@@ -50,7 +45,6 @@ const actions = {
     }
   },
   acceptRequest: async (context: User) => {
-    console.log("acceptRequest");
     try {
       // action
       axiosAuth.post(
@@ -69,7 +63,6 @@ const actions = {
     }
   },
   block: async (context: User) => {
-    console.log("block");
     try {
       // action
       axiosAuth.post(
@@ -84,12 +77,10 @@ const actions = {
         }
       );
     } catch (error) {
-      console.log("error from block action", error);
       raise({ type: "FAILED" });
     }
   },
   unBlock: async (context: User) => {
-    console.log("unBlock");
     try {
       // action
       axiosAuth.post(

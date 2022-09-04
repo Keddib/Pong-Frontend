@@ -10,7 +10,6 @@ const MessageInput: FunctionComponent<{ setMsg: (msg: string) => void }> = ({
       messageInput: { value: string };
     };
     const msg = target.messageInput.value;
-    console.log(`message for ${msg}`);
     setMsg(msg);
     target.messageInput.value = "";
   }

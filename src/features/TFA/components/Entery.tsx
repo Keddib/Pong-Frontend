@@ -20,7 +20,7 @@ const Entry = () => {
           </span>
         </div>
         <div>
-          <p>Link an authentication app to your Twitter account</p>
+          <p>Link an authentication app to your Pong account</p>
           <p className=" text-black/50">
             Use a compatible authentication app (like Google Authenticator,
             Authy, Duo Mobile, 1Password, etc.) We’ll generate a QR code for you

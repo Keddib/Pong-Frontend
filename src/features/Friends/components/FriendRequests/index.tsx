@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { FriendRequest } from "types/app";
-import useAxiosPrivate from "~/src/hooks/useAxiosPrivate";
-import axios from "axios";
-import { Spinner } from "~/src/components/Loading";
+import useAxiosPrivate from "hooks/useAxiosPrivate";
+import { Spinner } from "components/Loading";
 import RequestListItem from "./RequestItem";
 
 const RequestList = () => {
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [requests, setRequests] = useState([] as FriendRequest[]);
   const axiosPrivate = useAxiosPrivate();
 
@@ -29,16 +29,11 @@ const RequestList = () => {
           }
         );
         // check payload
-        console.log("user", res.data);
         setRequests(res.data);
         setLoading(false);
       } catch (error) {
-        if (axios.isAxiosError(error)) {
-          console.log("axios error ", error.response?.status);
-          // if forbiden check user state and sign in
-        } else {
-          console.log(error);
-        }
+        setLoading(false);
+        setError("somthing went wrong! please retry again");
       }
       // setErrorStatusCode(400);
       setLoading(false);
@@ -69,7 +64,7 @@ const RequestList = () => {
             <>{requestsArray}</>
           ) : (
             <div className="w-full h-full flex justify-center items-center">
-              <p>no friend requests</p>
+              {error ? <p>{error}</p> : <p>no friend requests</p>}
             </div>
           )}
         </ul>

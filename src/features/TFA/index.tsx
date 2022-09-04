@@ -15,7 +15,6 @@ const TwoFA = () => {
       <button
         className="text-sm font-light text-lotion/50 hover:text-lotion"
         onClick={() => {
-          console.log("log button clicked");
           setShowModal(true);
         }}
       >

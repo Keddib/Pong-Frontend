@@ -20,7 +20,6 @@ const authenticateUser = async (code: string) => {
     return "TFA";
   }
   const accessToken = res.data.access_token;
-  console.log("accessToken :", accessToken);
   return accessToken;
 };
 
@@ -28,11 +27,7 @@ async function endSession() {
   try {
     await axiosAuth("/auth/logout", { withCredentials: true });
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.log(error.response?.status);
-    } else {
-      console.log(error);
-    }
+    error;
   }
 }
 

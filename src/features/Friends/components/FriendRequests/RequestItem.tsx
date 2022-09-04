@@ -11,11 +11,8 @@ const RequestListItem: FunctionComponent<{
   ReqUid: string;
   removeReq: (uid: string) => void;
 }> = ({ user, ReqUid, removeReq }) => {
-  // const [isDone, setDone] = useState(false);
   const axiosPrivate = useAxiosPrivate();
-
   function hundleAccepteRequest(ReqUid: string) {
-    console.log("req", ReqUid);
     try {
       axiosPrivate.post("/friends/accept", {
         uid: ReqUid,
@@ -29,7 +26,6 @@ const RequestListItem: FunctionComponent<{
   }
 
   function hundleCancelRequest(ReqUid: string) {
-    console.log("req", ReqUid);
     try {
       axiosPrivate.post("/friends/decline", {
         uid: ReqUid,

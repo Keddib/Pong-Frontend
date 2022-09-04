@@ -26,15 +26,11 @@ const GameRoom: FunctionComponent<{ show: boolean; roomId: string }> = ({
         text: msg["text"],
         date: new Date(),
       };
-      console.log("received new msg from srv ROOM", newMessage, messages);
-      console.log(" user id ", user.uid, " meg user id ", msg["userId"]);
       if (user.uid !== msg["userId"]) {
-        console.log("received msg call stet ");
         setmsgFromsrv(newMessage);
       }
     });
   }, [roomId]);
-
   useEffect(() => {
     if (!msgFromsrv.text) return;
     setMessages([...messages, msgFromsrv]);

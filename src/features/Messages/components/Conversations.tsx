@@ -19,24 +19,26 @@ const ConversationsList = () => {
   const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
+    const abortController = new AbortController();
     const GetConversations = async () => {
       try {
-        const res = await axiosPrivate.get<Conversation[]>("/friends/rooms");
-        console.log("covs", res.data);
+        const res = await axiosPrivate.get<Conversation[]>("/friends/rooms", {
+          signal: abortController.signal,
+        });
         SetConversations(res.data);
         setLoading(false);
       } catch (error) {
-        console.log("fetch conv error", error);
         setError("something went wrong! please refresh");
         setLoading(false);
       }
     };
     GetConversations();
-    // get all conv
-  }, []);
+    return () => {
+      abortController.abort();
+    };
+  });
 
   useEffect(() => {
-    console.log("location from chat", location);
     if (
       (location.pathname == "/messages" || location.pathname == "/messages/") &&
       lg

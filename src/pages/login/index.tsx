@@ -25,7 +25,6 @@ export default function Login() {
   const [is2FA, set2FA] = useState(false);
   const state = location.state as { from: string };
   const from = state ? state.from : "/home";
-  console.log("user will be redirected to : ", from);
 
   const hundleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

@@ -1,6 +1,6 @@
 import { FunctionComponent, useEffect, useState } from "react";
 import { Conversation, User } from "types/app";
-import useAuth from "~/src/hooks/useAuth";
+import useAuth from "hooks/useAuth";
 import PrivateRoomInfo from "./PrivateRoomInfo";
 import GroupRoomInfo from "./GroupRoomInfo";
 

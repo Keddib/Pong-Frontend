@@ -5,50 +5,31 @@ import { FunctionComponent, useEffect, useState } from "react";
 import Dropdown from "components/Dropdown";
 import { Link } from "react-router-dom";
 import { Notification } from "types/app";
-import Loading from "../Loading";
 import { friendsSocket } from "services/axios/socket";
-import useAxiosPrivate from "~/src/hooks/useAxiosPrivate";
+import useAxiosPrivate from "hooks/useAxiosPrivate";
 
 export default function Notifications() {
   const [show, setShow] = useState(false);
   const [news, setNews] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [notifications, setNotifications] = useState([] as Notification[]);
   const axiosPrivate = useAxiosPrivate();
 
   async function clearNotifs() {
     setNotifications([]);
-    const res = await axiosPrivate.delete("http://localhost:3500/notification");
-    console.log("cleared notifs", res.data);
+    await axiosPrivate.delete("http://localhost:3500/notification");
   }
 
   async function showDropDown() {
     setShow(!show);
     if (news) {
       setNews(!news);
-      const res = await axiosPrivate.patch(
-        "http://localhost:3500/notification"
-      );
+      await axiosPrivate.patch("http://localhost:3500/notification");
     }
     // notify();
   }
   useEffect(() => {
-    // setLoading(true);
-    // fetch notifications
-    if (loading) {
-      setTimeout(() => {
-        setLoading(false);
-        // if there is some notifications
-      }, 2000);
-    }
-
-    // on connect
-
-    // friendsSocket.emit("notifications");
-
     const getNotifications = async () => {
       const res = await axiosPrivate.get("http://localhost:3500/notification");
-      console.log("notifications", res.data);
       let news = false;
       setNotifications(
         res.data.map((n) => {
@@ -61,16 +42,12 @@ export default function Notifications() {
     };
 
     getNotifications().then(() => {
-      console.log("init listener");
+      friendsSocket.on("notification", async (data) => {
+        // add notification to notification states
+        setNotifications((notifs) => [data, ...notifs]);
+        setNews(true);
+      });
     });
-
-    friendsSocket.on("notification", async (data) => {
-      console.log("data notification", data);
-      // add notification to notification states
-      setNotifications((notifs) => [data, ...notifs]);
-      setNews(true);
-    });
-    console.log("listening for notifications");
   }, []);
 
   return (

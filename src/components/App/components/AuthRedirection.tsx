@@ -39,7 +39,6 @@ const RedirectAuth = () => {
     return <Navigate to="/home" replace />;
   }
 
-  // console.log("is not auth...32");
   return <Outlet />;
 };
 

@@ -5,8 +5,8 @@ import useAuth from "hooks/useAuth";
 import { Conversation } from "types/app";
 import GroupMembers from "./GroupMembers";
 import GroupAdmins from "./GroupAdmins";
-import useAxiosPrivate from "~/src/hooks/useAxiosPrivate";
-import Modal from "~/src/components/Modal";
+import useAxiosPrivate from "hooks/useAxiosPrivate";
+import Modal from "components/Modal";
 import { useNavigate } from "react-router-dom";
 import EditPassword from "./GroupPassword";
 

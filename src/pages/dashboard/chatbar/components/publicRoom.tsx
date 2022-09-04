@@ -22,14 +22,11 @@ const PublicRoom: FunctionComponent<{ show: boolean }> = ({ show }) => {
       const res = await axiosPrivate.get(
         "http://localhost:3500/chat/messages/public"
       );
-      console.log("messages", res.data);
       if (Array.isArray(res.data)) {
         setMessages(res.data);
       }
     };
     getMessages().then(() => {
-      console.log("init listener");
-
       usersSocket.on("msgToClient", (msg) => {
         if (msg.room != "public") return;
         let newMessage: Message = {
@@ -38,10 +35,7 @@ const PublicRoom: FunctionComponent<{ show: boolean }> = ({ show }) => {
           text: msg["text"],
           date: new Date(),
         };
-        console.log("received new msg from srv PIBLIC", newMessage, messages);
-        console.log(" user id ", user.uid, " meg user id ", msg["userId"]);
         if (user.uid !== msg["userId"]) {
-          console.log("received msg call stet ");
           setmsgFromsrv(newMessage);
         }
       });
@@ -51,7 +45,6 @@ const PublicRoom: FunctionComponent<{ show: boolean }> = ({ show }) => {
   useEffect(() => {
     // send message
     // setMessahes([...messages, newMessage]);
-    // console.log('current user ', user)
     if (!msgFromsrv.text) return;
 
     setMessages([...messages, msgFromsrv]);
@@ -65,7 +58,6 @@ const PublicRoom: FunctionComponent<{ show: boolean }> = ({ show }) => {
   useEffect(() => {
     // send message
     // setMessahes([...messages, newMessage]);
-    // console.log('current user ', user)
     if (!inputMessage.length) return;
     usersSocket.emit("msgToServer", {
       room: "public",

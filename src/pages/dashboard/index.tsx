@@ -17,10 +17,12 @@ const Dashboard = () => {
   const { updateUser, signout } = useAuth();
   const navigate = useNavigate();
   useEffect(() => {
+    const abortController = new AbortController();
     async function getUserData() {
       try {
-        const res = await axiosPrivate.get<User>("/user");
-        console.log("authenticated user../ ", res.data);
+        const res = await axiosPrivate.get<User>("/user", {
+          signal: abortController.signal,
+        });
         updateUser(res.data);
       } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -32,6 +34,9 @@ const Dashboard = () => {
       }
     }
     getUserData();
+    return () => {
+      abortController.abort();
+    };
   }, []);
 
   return (

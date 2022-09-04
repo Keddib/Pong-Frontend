@@ -2,7 +2,7 @@ import { useActor } from "@xstate/react";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import useProfileState from "../../hooks/useProfileState";
-import useAuth from "~/src/hooks/useAuth";
+import useAuth from "hooks/useAuth";
 
 const ProfileOptions = () => {
   const profileService = useProfileState();
@@ -93,7 +93,6 @@ const NoneButton = () => {
   const { user } = useAuth();
 
   const hundleOnClick = () => {
-    console.log("add frien clicked..");
     send({ type: "ADDFRIEND", uid: user.uid });
   };
 

@@ -9,7 +9,7 @@ import { useGetGames } from "../hooks/useUserData";
 import { Spinner } from "components/Loading";
 import useProfileState from "../hooks/useProfileState";
 import { useActor } from "@xstate/react";
-import SetErrorPage from "~/src/components/ErrorPage";
+import SetErrorPage from "components/ErrorPage";
 
 const links = {
   first: {
@@ -27,10 +27,8 @@ const Profile: FunctionComponent = () => {
   const [state] = useActor(profileService);
   const [games] = useGetGames(state.context.uid);
   const user = state.context;
-  console.log("context", state.context);
 
   useEffect(() => {
-    console.log("user from profile", user);
     links.first.path = `/profile/${user.username}`;
   }, [user]);
 

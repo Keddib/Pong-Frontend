@@ -1,5 +1,5 @@
 // custom hook
-import { MediaQuery } from "~/src/types/config";
+import { MediaQuery } from "types/config";
 import { useState, useEffect } from "react";
 
 export default function useMedia(query: MediaQuery): boolean {

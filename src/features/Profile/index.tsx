@@ -15,9 +15,7 @@ const ProfileWrapper = () => {
   const [state] = useActor(profileService);
 
   useEffect(() => {
-    console.log("profile state..", state);
     if (state.matches("error")) {
-      console.log("error state");
       setErrorStatusCode(400);
       return;
     }
@@ -25,8 +23,6 @@ const ProfileWrapper = () => {
 
   useEffect(() => {
     if (user || userError) {
-      console.log("user", user);
-      console.log("userError", userError);
       send({
         type: "DATA_CHANGED",
         data: user,

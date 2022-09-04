@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import Image from "components/Image";
 import { User } from "types/app";
 import { FunctionComponent, useEffect, useState } from "react";
-import useUserStatus from "~/src/hooks/useUserStatus";
+import useUserStatus from "hooks/useUserStatus";
 
 const UserCard: FunctionComponent<{ user: User }> = ({ user }) => {
   const { userStatus } = useUserStatus();

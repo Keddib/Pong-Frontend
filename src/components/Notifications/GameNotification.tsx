@@ -1,6 +1,6 @@
-import { FunctionComponent, useEffect } from "react";
+import { FunctionComponent, useEffect, useRef } from "react";
 import { mediaQueries } from "config/index";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer, toast, ToastOptions, Id } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useMedia from "hooks/useMedia";
 import { GameNotify } from "types/app";
@@ -12,14 +12,14 @@ export default function Notifications() {
   const xl = useMedia(mediaQueries.xl);
   const navigate = useNavigate();
   const { updateUser } = useUserStatus();
+  const toastId = useRef<Id | null>(null);
 
   // when recieving a notification call this function with anvitation object
   const notify = (invite: GameNotify) => {
-    toast(<GameInviteNotif invitation={invite} />, {
+    toastId.current = toast(<GameInviteNotif invitation={invite} />, {
       position: toast.POSITION.TOP_RIGHT,
       className: "game-invite-notification",
       onClose: () => {
-        console.log("on close....", location);
         if (
           location.pathname + location.search !==
           "/game?invitation=" + invite.invitation
@@ -31,17 +31,17 @@ export default function Notifications() {
     });
   };
 
+  const dismissNotification = () => {
+    if (toastId.current) toast.dismiss(toastId.current);
+  };
+
   useEffect(() => {
-    // on connect
-    // gameSocket.on("connect", () => {
-    //   console.log("socket created", gameSocket);
-    // });
     gameSocket.emit("subscribeGameInvites");
 
     gameSocket.on("gameInvitesUpdate", async (data) => {
-      console.log("game invites update..", data);
       const acceptGameReq = () => {
         navigate("/game?invitation=" + data.invitation);
+        dismissNotification();
       };
       notify({
         username: data.username,
@@ -50,7 +50,6 @@ export default function Notifications() {
       });
     });
     gameSocket.on("userStatusUpdate", async (data) => {
-      console.log("userStatusUpdate", data);
       updateUser(data);
     });
   }, []);

@@ -1,16 +1,11 @@
 import React, { useState, useEffect, useRef, FunctionComponent } from "react";
-import {
-  useLocation,
-  useNavigate,
-  useParams,
-  useSearchParams,
-} from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import Play from "./components/Playing";
 import Waiting from "./components/Waiting";
 import io from "socket.io-client";
 import { User } from "types/user";
 import { Socket } from "socket.io-client";
-import useAuth from "~/src/hooks/useAuth";
+import useAuth from "hooks/useAuth";
 import { GameState } from "./components/Pong/utils/Types";
 
 interface CustomGamePayload {
@@ -31,7 +26,6 @@ const Game: FunctionComponent<{ setGameRoomId: (id: string) => void }> = ({
   const location: Loc = useLocation();
   const { signin } = useAuth();
   const [searchParams] = useSearchParams();
-  console.log("game mode = ", location?.state?.mode);
   const { user, getAccessToken } = useAuth();
   const [opponent, setOpponent] = useState(null as null | User);
 
@@ -49,7 +43,6 @@ const Game: FunctionComponent<{ setGameRoomId: (id: string) => void }> = ({
       withCredentials: true,
       extraHeaders: { Authorization: "Bearer " + getAccessToken() },
     }).on("connect", () => {
-      console.log("socket created", socket.current);
       if (!location?.state) location.state = { mode: "classic" };
 
       if (spectate) {
@@ -62,7 +55,6 @@ const Game: FunctionComponent<{ setGameRoomId: (id: string) => void }> = ({
             custom: invitation ? { invitation } : location?.state?.custom,
           });
           socket.current?.on("roomName", (data: { roomName: string }) => {
-            console.log("roomname");
             setGameRoomId(data.roomName);
           });
         });
