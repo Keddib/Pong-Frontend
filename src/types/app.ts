@@ -18,6 +18,7 @@ interface User {
 
 interface Game {
   id: number;
+  gameId: string;
   mode: string;
   status: "playing" | "done";
   playerOne: User;
@@ -92,5 +93,5 @@ export {
   Room,
   ProfileContext,
   UserStatus,
-  Conversation,
+  Conversation
 };

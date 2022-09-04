@@ -5,7 +5,7 @@ import {
   SetStateAction,
   useEffect,
   useRef,
-  useState,
+  useState
 } from "react";
 import Dropdown from "components/Dropdown";
 import { Spinner } from "components/Loading";
@@ -31,7 +31,7 @@ const RoomForm: FunctionComponent<{
     async function getFriends() {
       try {
         const res = await axiosPrivate.get<User[]>("/friends/all", {
-          signal: abortController.signal,
+          signal: abortController.signal
         });
         setFriends(res.data);
         setLoading(false);
@@ -43,7 +43,7 @@ const RoomForm: FunctionComponent<{
     return () => {
       abortController.abort();
     };
-  });
+  }, []);
 
   function showDropDown() {
     setShow(!show);
@@ -71,7 +71,7 @@ const RoomForm: FunctionComponent<{
         name: data.name,
         description: data.description,
         password: data?.password,
-        members: dataMembers,
+        members: dataMembers
       });
       setRefresh((prev) => !prev);
       showDropDown();

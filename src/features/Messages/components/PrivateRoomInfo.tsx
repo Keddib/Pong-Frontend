@@ -5,6 +5,7 @@ import Block from "assets/icons/block-user.svg";
 import { FunctionComponent } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { User } from "types/app";
+import Spectate from "~/src/components/Spectate";
 
 const PrivateRoomInfo: FunctionComponent<{
   user: User;
@@ -19,8 +20,8 @@ const PrivateRoomInfo: FunctionComponent<{
       state: {
         mode: gameMode,
         custom: { opponent: user.uid },
-        from: location.pathname,
-      },
+        from: location.pathname
+      }
     });
   };
 
@@ -47,12 +48,7 @@ const PrivateRoomInfo: FunctionComponent<{
         profile
       </button>
 
-      {user.status == "playing" && (
-        <button className="message-more-button group" onClick={hundleSpectate}>
-          <Glasses className="w-6 h-6 fill-lotion/50  ease-in duration-150 group-hover:fill-lotion" />
-          spectate
-        </button>
-      )}
+      {user.status == "playing" && <Spectate userId={user.uid} />}
       <button
         className="message-more-button group"
         onClick={handleInviteToPlayButton}

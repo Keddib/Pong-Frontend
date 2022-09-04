@@ -99,8 +99,9 @@ const Rooms = () => {
       }
       setloading(false);
     };
+    console.log("------>");
     rooms();
-  }, [qeury, axiosPrivate, refresh]);
+  }, [qeury, refresh]);
 
   if (loading) {
     return <Spinner />;
