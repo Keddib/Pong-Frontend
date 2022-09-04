@@ -11,6 +11,7 @@ const UserCard: FunctionComponent<{ user: User }> = ({ user }) => {
   useEffect(() => {
     if (userStatus.userId == user.uid) {
       setStatus(userStatus.status);
+      user.status = userStatus.status;
     }
   }, [userStatus, setStatus, user]);
 

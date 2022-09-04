@@ -4,6 +4,7 @@ import { mediaQueries } from "config/index";
 import useMedia from "hooks/useMedia";
 import UserCard from "components/Usercard";
 import { User } from "types/user";
+import LoadingPlayer from "../Waiting/components/LoadingUser";
 
 type Players = User[];
 
@@ -16,9 +17,10 @@ type Props = {
 const PlayersBar: FunctionComponent<{ players: User[] }> = ({ players }) => {
   return (
     <div className="players flex gap-2 items-center justify-between rounded-3xl bg-queenBlue/50 py-8 px-2 md:px-10">
-      <UserCard user={players[0]} />
+      {players[0] ? <UserCard user={players[0]} /> : <LoadingPlayer />}
+
       <h3 className="text-crayola font-light text-sm md:text-3xl">VS</h3>
-      <UserCard user={players[1]} />
+      {players[1] ? <UserCard user={players[1]} /> : <LoadingPlayer />}
     </div>
   );
 };

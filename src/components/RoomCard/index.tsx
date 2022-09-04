@@ -16,6 +16,7 @@ const RoomCard: FunctionComponent<{ room: Conversation }> = ({ room }) => {
   useEffect(() => {
     if (userStatus.userId == currentUser.uid) {
       setStatus(userStatus.status);
+      setCurrentUser({ ...currentUser, status: userStatus.status });
     }
   }, [userStatus]);
 
