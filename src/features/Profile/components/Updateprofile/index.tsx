@@ -1,6 +1,5 @@
 import React, { ChangeEvent, useRef, useState } from "react";
 import useAuth from "hooks/useAuth";
-import Image from "components/Image";
 import TwoFA from "features/TFA";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import { Spinner } from "components/Loading";
@@ -17,9 +16,16 @@ function EditProfile() {
   const subButtonRef = useRef(null);
 
   function hundleImageChange(event: ChangeEvent<HTMLInputElement>) {
+    setError("");
+    event.preventDefault();
     if (event.target.files) {
       const elm = event.target.files[0];
-      setImage(URL.createObjectURL(elm));
+      if (elm.type.match(/\/(?:gif|jpe?g|tiff?|png|webp|bmp)$/))
+        setImage(URL.createObjectURL(elm));
+      else {
+        setError("only images are accepted");
+        event.target.value = "";
+      }
     }
   }
 

@@ -28,7 +28,7 @@ const SelectFriend: FunctionComponent<{ user: User }> = ({ user }) => {
     <label htmlFor={user.username} className="input-container">
       <div className="flex items-center">
         <div className="w-10 h-10">
-          <img src={user.avatar} alt="user" />
+          <img src={user.avatar} alt="user" className="rounded-full" />
         </div>
         <div className="group-hover:text-lotion/70 ml-2">
           <h4 className="text-sm">{user.nickname}</h4>
