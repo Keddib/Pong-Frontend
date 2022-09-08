@@ -9,7 +9,11 @@ type Iprops = {
 const Image: FunctionComponent<Iprops> = ({ imageUrl, alt, className }) => {
   return (
     <div className="h-full rounded-full bg-lotion/50">
-      <img src={imageUrl} alt={alt} className={className} />
+      <img
+        src={imageUrl + `?time=${Date.now()}`}
+        alt={alt}
+        className={className}
+      />
     </div>
   );
 };

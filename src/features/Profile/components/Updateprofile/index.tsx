@@ -99,10 +99,10 @@ function EditProfile() {
         >
           <label htmlFor="photo" className="flex items-center gap-2">
             <div className="shrink-0 inline h-16 w-16 ">
-              <Image
-                className="object-cover rounded-full"
-                imageUrl={image}
+              <img
+                src={image}
                 alt="Current profile"
+                className="object-cover rounded-full"
               />
             </div>
             <span className="sr-only">Choose profile photo</span>
