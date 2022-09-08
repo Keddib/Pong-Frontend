@@ -1,12 +1,15 @@
-import React, { ChangeEvent, FormEvent, useRef, useState } from "react";
+import React, { ChangeEvent, useRef, useState } from "react";
 import useAuth from "hooks/useAuth";
 import Image from "components/Image";
 import TwoFA from "features/TFA";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import { Spinner } from "components/Loading";
+import { User } from "types/app";
+import useProfileState from "features/Profile/hooks/useProfileState";
 
 function EditProfile() {
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
+  const send = useProfileState().send;
   const [image, setImage] = useState(user.avatar);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -29,7 +32,7 @@ function EditProfile() {
       currentButton.disabled = true;
     }
     setLoading(true);
-    // setError("");
+    setError("");
     const target = e.target as typeof e.target & {
       elements: {
         nickname: { value: string };
@@ -38,16 +41,7 @@ function EditProfile() {
     };
     const nickname = target.elements.nickname.value;
     const avatar = target.elements.avatar.files[0];
-    // get data to send wiith respone
-    const data = new FormData();
-    if (nickname || avatar) {
-      if (nickname) {
-        // we may validate nickname
-        data.append("nickname", nickname);
-      } else {
-        data.append("avatar", avatar, avatar.name);
-      }
-    } else {
+    if (!nickname && !avatar) {
       setError("one failed is required");
       setLoading(false);
       if (subButtonRef.current) {
@@ -60,8 +54,29 @@ function EditProfile() {
     }
     // send response to update user
     try {
-      await axiosPrivate.post(`/user/${user.uid}/update`, data);
-      // update user avatar
+      if (nickname) {
+        const res = await axiosPrivate.patch<User>(`/user/nickname`, {
+          nickname,
+        });
+        updateUser(res.data);
+        send({
+          type: "DATA_CHANGED",
+          data: res.data,
+          error: null,
+        });
+      }
+      if (avatar) {
+        const avatarData = new FormData();
+        avatarData.append("avatar", avatar, avatar.name);
+        const res = await axiosPrivate.patch<User>(`/user/avatar`, avatarData);
+        updateUser(res.data);
+        send({
+          type: "DATA_CHANGED",
+          data: res.data,
+          error: null,
+        });
+      }
+      target.elements.nickname.value = "";
     } catch (err) {
       setError("upload filed! please try again");
     }

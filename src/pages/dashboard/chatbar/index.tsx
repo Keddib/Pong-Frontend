@@ -8,6 +8,7 @@ import GameRoom from "./components/gameRoom";
 const ChatBar: FunctionComponent<{ gameRoomId: string }> = ({ gameRoomId }) => {
   const xl = useMedia(mediaQueries.xl);
   const [currentRoom, setCurrentRoom] = useState("public");
+  const [newMsg, setNewMsg] = useState("");
 
   useEffect(() => {
     if (!gameRoomId) {
@@ -29,6 +30,7 @@ const ChatBar: FunctionComponent<{ gameRoomId: string }> = ({ gameRoomId }) => {
             rooms={["public", gameRoomId]}
             currentRoom={currentRoom}
             setCurrentRoom={setCurrentRoom}
+            newMsg={newMsg}
           />
           <PublicRoom show={currentRoom == "public"} />
           {gameRoomId && (

@@ -6,8 +6,12 @@ const AuthRedirection = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!searchParams.get("code")) navigate("/", { replace: true });
-  });
+    const code = searchParams.get("code");
+    console.log("code from redirect url", code);
+    if (!code) {
+      navigate("/", { replace: true });
+    }
+  }, []);
 
   return (
     <div className="w-full h-full bg-spaceCadet flex flex-col justify-center items-center">

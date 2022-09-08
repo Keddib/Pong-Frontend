@@ -4,7 +4,8 @@ const ChatBarTabs: FunctionComponent<{
   rooms: [string, string];
   currentRoom: string;
   setCurrentRoom: (room: string) => void;
-}> = ({ rooms, currentRoom, setCurrentRoom }) => {
+  newMsg: string;
+}> = ({ rooms, currentRoom, setCurrentRoom, newMsg }) => {
   function hundlePublic() {
     //
     setCurrentRoom(rooms[0]);
@@ -23,7 +24,12 @@ const ChatBarTabs: FunctionComponent<{
             currentRoom == rooms[0] && "text-lotion"
           }`}
         >
-          public
+          public{" "}
+          {currentRoom == rooms[0] && newMsg == rooms[0] ? (
+            <span className="w-2 h-2 bg-red rounded-full"></span>
+          ) : (
+            <></>
+          )}
         </p>
       </button>
       <span className="bg-pictonBlue w-1 h-8 rounded-xl"></span>
