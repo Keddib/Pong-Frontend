@@ -104,11 +104,11 @@ function EditProfile() {
           onSubmit={submit}
         >
           <label htmlFor="photo" className="flex items-center gap-2">
-            <div className="shrink-0 inline h-16 w-16 ">
+            <div className="shrink-0 inline h-16 w-16 rounded-full overflow-hidden">
               <img
                 src={image}
                 alt="Current profile"
-                className="object-cover rounded-full"
+                className="object-cover h-full"
               />
             </div>
             <span className="sr-only">Choose profile photo</span>

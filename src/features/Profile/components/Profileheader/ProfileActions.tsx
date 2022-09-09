@@ -32,7 +32,7 @@ const Actions: FunctionComponent<{ user: User }> = ({ user }) => {
     send({ type: "BLOCK" });
   };
   const hundleSendMessage = () => {
-    send({ type: "SENDMESSAGE" });
+    navigate("/messages", { state: { receiver: user.uid } });
   };
 
   return (

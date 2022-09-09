@@ -40,6 +40,7 @@ const ChatMessages = () => {
         );
         res.data.admins.push(res.data.owner);
         setConv(res.data);
+        // if not in convs set error
       } catch (error) {
         setError(true);
       }

@@ -1,6 +1,6 @@
 import SendIcon from "assets/icons/dm.svg";
 import Heart from "assets/images/heart.png";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import CoversationCard from "./Conversation";
 import useMedia from "hooks/useMedia";
@@ -8,12 +8,18 @@ import { mediaQueries } from "config/index";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import { Spinner } from "components/Loading";
 import { Conversation } from "types/app";
+import { usersSocket } from "services/axios/socket";
 
 const ConversationsList = () => {
   const [welcome, setWelcome] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [activeConv, setActiveConv] = useState("");
   const [error, setError] = useState("");
-  const location = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation() as {
+    state: { receiver?: string };
+    pathname: string;
+  };
   const lg = useMedia(mediaQueries.lg);
   const [conversations, SetConversations] = useState([] as Conversation[]);
   const axiosPrivate = useAxiosPrivate();
@@ -25,18 +31,44 @@ const ConversationsList = () => {
         const res = await axiosPrivate.get<Conversation[]>("/friends/rooms", {
           signal: abortController.signal,
         });
-        SetConversations(res.data);
+        SetConversations(
+          res.data.filter((c) => c.messages?.length > 0 || c.type != "private")
+        );
         setLoading(false);
       } catch (error) {
         setError("something went wrong! please refresh");
         setLoading(false);
       }
     };
+
     GetConversations();
     return () => {
       abortController.abort();
     };
-  },[]);
+  }, []);
+
+  useEffect(() => {
+    if (!loading) {
+      const receiver = location?.state?.receiver;
+      if (receiver) {
+        console.log("---->");
+        usersSocket.emit("createPrivateRoom", { receiver });
+        usersSocket.on("privateRoomCreated", (room: Conversation) => {
+          console.log("---->1");
+          console.log(room);
+          const exRoom = conversations.find((c) => c.cid == room.cid);
+          if (!exRoom) {
+            console.log("convs", conversations);
+            SetConversations((prev) => [room, ...prev]);
+            navigate(room.cid);
+          }
+        });
+      }
+    }
+    return () => {
+      usersSocket.removeAllListeners("privateRoomCreated");
+    };
+  }, [loading]);
 
   useEffect(() => {
     if (
