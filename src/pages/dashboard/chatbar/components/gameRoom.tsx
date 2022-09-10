@@ -13,12 +13,13 @@ const GameRoom: FunctionComponent<{ show: boolean; roomId: string }> = ({
   const [msgFromsrv, setmsgFromsrv] = useState({} as Message);
   const [inputMessage, setInputMessage] = useState("");
   const { user } = useAuth();
-
+  const recognizableRoomId = "GAME_"+roomId
   useEffect(() => {
     if (!roomId) return;
-    usersSocket.emit("joinRoomToServer", roomId);
+    
+    usersSocket.emit("joinRoomToServer", recognizableRoomId);
     usersSocket.on("msgToClient", (msg) => {
-      if (msg.room != roomId) return;
+      if (msg.room != recognizableRoomId) return;
 
       let newMessage: Message = {
         ownerId: msg["ownerId"],
@@ -39,7 +40,7 @@ const GameRoom: FunctionComponent<{ show: boolean; roomId: string }> = ({
   useEffect(() => {
     if (!inputMessage.length) return;
     usersSocket.emit("msgToServer", {
-      room: roomId,
+      room: recognizableRoomId,
       message: inputMessage,
     });
     let newMessage: Message = {
