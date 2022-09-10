@@ -99,8 +99,6 @@ const ChatMessages = () => {
     if (inputMessage) {
       usersSocket.emit("msgToServer", {
         room: conv.cid,
-
-        
         message: inputMessage
       });
       const newMsg = {
