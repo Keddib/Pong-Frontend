@@ -59,14 +59,15 @@ const ConversationsList = () => {
         console.log("---->");
         usersSocket.emit("createPrivateRoom", { receiver });
         usersSocket.on("privateRoomCreated", (room: Conversation) => {
-          console.log("---->1");
+          console.log("---->1", room);
           console.log(room);
           const exRoom = conversations.find((c) => c.cid == room.cid);
           if (!exRoom) {
-            console.log("convs", conversations);
-            SetConversations((prev) => [room, ...prev]);
-            navigate(room.cid);
+            console.log("convs", room);
+
+            SetConversations((prev) => [{ ...room, name: "noname" }, ...prev]);
           }
+          navigate(room.cid);
         });
       }
     }

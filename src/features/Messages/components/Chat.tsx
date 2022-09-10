@@ -16,6 +16,7 @@ import { mediaQueries } from "src/config";
 import useMedia from "hooks/useMedia";
 import RoomInfo from "./RoomInfo";
 import SetErrorPage from "components/ErrorPage";
+import Conversation from "./Conversation";
 
 const ChatMessages = () => {
   const { coversationID } = useParams();
@@ -97,7 +98,9 @@ const ChatMessages = () => {
   useEffect(() => {
     if (inputMessage) {
       usersSocket.emit("msgToServer", {
-        room: coversationID,
+        room: conv.cid,
+
+        
         message: inputMessage
       });
       const newMsg = {
