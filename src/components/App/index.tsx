@@ -3,7 +3,6 @@ import { Route, Routes, BrowserRouter } from "react-router-dom";
 import AuthProvider from "./components/AuthProvider";
 import { RequireAuth, RedirectAuth } from "./components/AuthRedirection";
 import AuthRedirection from "./components/AuthRedirectionPage";
-
 import Loading from "components/Loading";
 import Error404 from "components/Error404";
 import UserSession from "./components/UserSession";

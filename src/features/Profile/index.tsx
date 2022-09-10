@@ -6,6 +6,7 @@ import useErrorStatus from "hooks/useErrorStatus";
 import { useGetUser } from "./hooks/useUserData";
 import profileMachine from "./services/profileMachine";
 import ProfileStateContext from "features/Profile/context/ProfileState";
+import useTitle from "~/src/hooks/useTitle";
 
 const ProfileWrapper = () => {
   const { setErrorStatusCode } = useErrorStatus();
@@ -13,6 +14,11 @@ const ProfileWrapper = () => {
   const profileService = useInterpret(profileMachine);
   const { send } = profileService;
   const [state] = useActor(profileService);
+  const setTitle = useTitle();
+
+  useEffect(() => {
+    setTitle("Profile");
+  }, []);
 
   useEffect(() => {
     if (state.matches("error")) {

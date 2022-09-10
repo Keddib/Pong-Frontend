@@ -4,12 +4,18 @@ import LeaderBoardList from "./components/List";
 import { User } from "types/app";
 import { Spinner } from "src/components/Loading";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
+import useTitle from "~/src/hooks/useTitle";
 
 export default function Leaderboard() {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [players, setPlayers] = useState([] as User[]);
   const axiosPrivate = useAxiosPrivate();
+  const setTitle = useTitle();
+
+  useEffect(() => {
+    setTitle("Leader Board");
+  }, []);
 
   useEffect(() => {
     // fetch freinds

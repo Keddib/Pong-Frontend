@@ -3,7 +3,7 @@ import MessageInput from "components/Messages/MessageInput";
 import Messages from "components/Messages/Messages";
 import useAuth from "hooks/useAuth";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
-import { usersSocket } from "services/axios/socket";
+import { usersSocket } from "~/src/services/socket";
 import { Message } from "types/app";
 
 const PublicRoom: FunctionComponent<{ show: boolean }> = ({ show }) => {
@@ -43,14 +43,12 @@ const PublicRoom: FunctionComponent<{ show: boolean }> = ({ show }) => {
   }, []);
 
   useEffect(() => {
-
     if (!msgFromsrv.text) return;
 
     setMessages([...messages, msgFromsrv]);
   }, [msgFromsrv]);
 
   useEffect(() => {
-
     if (!inputMessage.length) return;
     usersSocket.emit("msgToServer", {
       room: "public",

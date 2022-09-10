@@ -1,10 +1,17 @@
 import welcomeBg from "assets/images/Home.gif";
 import LeftArrow from "assets/icons/right-arrow.svg";
 import { Link } from "react-router-dom";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useEffect } from "react";
 import Logo from "components/Logo";
+import useTitle from "hooks/useTitle";
 
 const Welcome: FunctionComponent = () => {
+  const setTitle = useTitle();
+
+  useEffect(() => {
+    setTitle("Welcome to Pong");
+  }, []);
+
   return (
     <main className="h-full">
       <div

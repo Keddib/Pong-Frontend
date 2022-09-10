@@ -2,6 +2,8 @@ import { Routes, Route } from "react-router-dom";
 import TabBar from "components/TabBar";
 import Players from "./components/Players";
 import Rooms from "./components/Rooms";
+import useTitle from "~/src/hooks/useTitle";
+import { useEffect } from "react";
 
 //  full screen on mobile version
 // import { FullScreen, useFullScreenHandle } from "react-full-screen";
@@ -22,6 +24,12 @@ function RoomsPage() {
       path: "players",
     },
   };
+
+  const setTitle = useTitle();
+
+  useEffect(() => {
+    setTitle("Rooms");
+  }, []);
 
   return (
     <div className="m-auto w-full h-full flex flex-col gap-4">

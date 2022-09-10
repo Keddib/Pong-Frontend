@@ -10,13 +10,13 @@ import { Message, Conversation } from "types/app";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import { Spinner } from "components/Loading";
 import RoomCard from "components/RoomCard";
-import { usersSocket } from "services/axios/socket";
+import { usersSocket } from "~/src/services/socket";
 import useAuth from "hooks/useAuth";
 import { mediaQueries } from "src/config";
 import useMedia from "hooks/useMedia";
 import RoomInfo from "./RoomInfo";
 import SetErrorPage from "components/ErrorPage";
-import Conversation from "./Conversation";
+// import Conversation from "./Conversations/Conversation";
 
 const ChatMessages = () => {
   const { coversationID } = useParams();
@@ -81,7 +81,7 @@ const ChatMessages = () => {
         ownerId: msg["ownerId"],
         username: msg["username"],
         text: msg["text"],
-        date: new Date()
+        date: new Date(),
       };
       if (user.uid !== msg["ownerId"]) {
         setmsgFromsrv(newMessage);
@@ -99,13 +99,13 @@ const ChatMessages = () => {
     if (inputMessage) {
       usersSocket.emit("msgToServer", {
         room: conv.cid,
-        message: inputMessage
+        message: inputMessage,
       });
       const newMsg = {
         username: user.username,
         text: inputMessage,
         date: new Date(),
-        ownerId: user.uid
+        ownerId: user.uid,
       };
       setMessages([...messages, newMsg]);
       setInputMessage("");

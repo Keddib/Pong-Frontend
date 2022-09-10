@@ -8,7 +8,7 @@ import { mediaQueries } from "config/index";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import { Spinner } from "components/Loading";
 import { Conversation } from "types/app";
-import { usersSocket } from "services/axios/socket";
+import { usersSocket } from "~/src/services/socket";
 
 const ConversationsList = () => {
   const [welcome, setWelcome] = useState(false);
@@ -29,7 +29,7 @@ const ConversationsList = () => {
     const GetConversations = async () => {
       try {
         const res = await axiosPrivate.get<Conversation[]>("/friends/rooms", {
-          signal: abortController.signal
+          signal: abortController.signal,
         });
         console.log(res.data);
         SetConversations(

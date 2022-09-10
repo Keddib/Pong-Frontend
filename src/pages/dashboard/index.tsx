@@ -10,12 +10,20 @@ import Main from "./main";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import useAuth from "hooks/useAuth";
 import UserStatusProvider from "./components/UserStatusProvider";
+import useTitle from "~/src/hooks/useTitle";
 
 const Dashboard = () => {
   const [gameRoomId, setGameRoomId] = useState("");
   const axiosPrivate = useAxiosPrivate();
   const { updateUser, signout } = useAuth();
   const navigate = useNavigate();
+
+  const setTitle = useTitle();
+
+  useEffect(() => {
+    setTitle("Home");
+  }, []);
+
   useEffect(() => {
     const abortController = new AbortController();
     async function getUserData() {

@@ -41,7 +41,7 @@ const ProfileHeader = () => {
             <Image
               imageUrl={user.avatar}
               alt="user profile"
-              className="rounded-full"
+              className="rounded-full object-cover h-full"
             />
           </div>
         </div>

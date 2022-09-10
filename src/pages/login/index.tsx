@@ -14,6 +14,7 @@ import SignupDialog from "./components/Signup";
 import useAuth from "hooks/useAuth";
 import TfaAuth from "./components/TfaAuth";
 import { User } from "types/app";
+import useTitle from "hooks/useTitle";
 
 export default function Login() {
   const [code, seCode] = useState("");
@@ -25,6 +26,12 @@ export default function Login() {
   const [is2FA, set2FA] = useState(false);
   const state = location.state as { from: string };
   const from = state ? state.from : "/home";
+
+  const setTitle = useTitle();
+
+  useEffect(() => {
+    setTitle("Sign in | Pong");
+  }, []);
 
   const hundleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

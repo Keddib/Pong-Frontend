@@ -237,7 +237,7 @@
   .message-wrapper {
     @apply w-fit flex flex-col max-w-full break-words relative;
   }
-  .message-wrapper button {
+  .message-wrapper a {
     @apply pl-2 font-light hover:scale-105 transition;
   }
   .message-wrapper p {
@@ -250,7 +250,7 @@
   .message-wrapper.own {
     @apply self-end;
   }
-  .message-wrapper.own button {
+  .message-wrapper.own a {
     @apply self-end;
   }
   .message-wrapper.own p {

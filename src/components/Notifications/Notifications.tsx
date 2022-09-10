@@ -5,7 +5,7 @@ import { FunctionComponent, useEffect, useState } from "react";
 import Dropdown from "components/Dropdown";
 import { Link } from "react-router-dom";
 import { Notification } from "types/app";
-import { friendsSocket } from "services/axios/socket";
+import { friendsSocket } from "services/socket";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 
 export default function Notifications() {

@@ -3,7 +3,7 @@ import {
   useLocation,
   useNavigate,
   useSearchParams,
-  Navigate
+  Navigate,
 } from "react-router-dom";
 import Play from "./components/Playing";
 import Waiting from "./components/Waiting";
@@ -12,6 +12,7 @@ import { User } from "types/user";
 import { Socket } from "socket.io-client";
 import useAuth from "hooks/useAuth";
 import { GameState } from "./components/Pong/utils/Types";
+import useTitle from "~/src/hooks/useTitle";
 
 interface CustomGamePayload {
   opponent: string;
@@ -26,13 +27,18 @@ interface Loc extends Location {
 }
 // {setGameRoomId: (id: string) => void}
 const Game: FunctionComponent<{ setGameRoomId: (id: string) => void }> = ({
-  setGameRoomId
+  setGameRoomId,
 }) => {
   const location: Loc = useLocation();
   const { signin } = useAuth();
   const [searchParams] = useSearchParams();
   const { user, getAccessToken } = useAuth();
   const [opponent, setOpponent] = useState(null as null | User);
+  const setTitle = useTitle();
+
+  useEffect(() => {
+    setTitle("Game");
+  }, []);
 
   const [gameState, setGameState] = useState("waiting");
 
@@ -47,7 +53,7 @@ const Game: FunctionComponent<{ setGameRoomId: (id: string) => void }> = ({
   useEffect(() => {
     socket.current = io("ws://localhost:3001", {
       withCredentials: true,
-      extraHeaders: { Authorization: "Bearer " + getAccessToken() }
+      extraHeaders: { Authorization: "Bearer " + getAccessToken() },
     }).on("connect", () => {
       if (!location?.state) location.state = { mode: "classic" };
 
@@ -58,7 +64,7 @@ const Game: FunctionComponent<{ setGameRoomId: (id: string) => void }> = ({
         socket.current?.on("authenticated", () => {
           socket.current?.emit("playerJoined", {
             mode: location?.state?.mode,
-            custom: invitation ? { invitation } : location?.state?.custom
+            custom: invitation ? { invitation } : location?.state?.custom,
           });
           socket.current?.on("roomName", (data: { roomName: string }) => {
             setGameRoomId(data.roomName);

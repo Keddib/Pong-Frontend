@@ -1,11 +1,9 @@
-import Xmark from "assets/icons/xmark.svg";
-import { useEffect, useRef, FunctionComponent, useState } from "react";
+import { useEffect, useRef, FunctionComponent } from "react";
 import { format } from "timeago.js";
 import { uid } from "uid";
 import useAuth from "hooks/useAuth";
 import { Message } from "types/app";
-import useAxiosPrivate from "hooks/useAxiosPrivate";
-import Dropdown from "../Dropdown";
+import { NavLink } from "react-router-dom";
 
 const Messages: FunctionComponent<{ messages: Message[] }> = ({ messages }) => {
   const messagesEndRef = useRef<HTMLHeadingElement>(null);
@@ -32,19 +30,13 @@ const Messages: FunctionComponent<{ messages: Message[] }> = ({ messages }) => {
 
 const Message: FunctionComponent<{ message: Message; own: boolean }> = ({
   message,
-  own
+  own,
 }) => {
-  const [show, setShow] = useState(false);
-
-  function showDropDown() {
-    setShow(!show);
-  }
-
   return (
     <li className={own ? "message-wrapper own" : "message-wrapper"}>
-      <button className="relative" onClick={showDropDown}>
+      <NavLink to={`/profile/${message.username}`} className="relative">
         {message.username}
-      </button>
+      </NavLink>
       <p className="normal-case">{message.text}</p>
       <span>{format(new Date(message.date))}</span>
     </li>

@@ -2,8 +2,15 @@ import { Route, Routes } from "react-router-dom";
 import ConversationsList from "./components/Conversations";
 import ChatMessages from "./components/Chat";
 import SetErrorPage from "components/ErrorPage";
+import useTitle from "~/src/hooks/useTitle";
+import { useEffect } from "react";
 
 const Messages = () => {
+  const setTitle = useTitle();
+
+  useEffect(() => {
+    setTitle("Messages");
+  }, []);
   return (
     <>
       <div className="m-auto w-full h-full flex flex-col gap-4">

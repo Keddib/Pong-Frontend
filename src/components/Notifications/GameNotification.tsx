@@ -6,7 +6,7 @@ import useMedia from "hooks/useMedia";
 import { GameNotify } from "types/app";
 import { useNavigate } from "react-router-dom";
 import useUserStatus from "hooks/useUserStatus";
-import { gameSocket } from "services/axios/socket";
+import { gameSocket } from "services/socket";
 
 export default function Notifications() {
   const xl = useMedia(mediaQueries.xl);

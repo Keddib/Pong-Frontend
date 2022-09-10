@@ -2,7 +2,7 @@ import { FunctionComponent, useEffect, useState } from "react";
 import MessageInput from "components/Messages/MessageInput";
 import Messages from "components/Messages/Messages";
 import useAuth from "hooks/useAuth";
-import { usersSocket } from "services/axios/socket";
+import { usersSocket } from "~/src/services/socket";
 import { Message } from "types/app";
 
 const GameRoom: FunctionComponent<{ show: boolean; roomId: string }> = ({
@@ -13,10 +13,10 @@ const GameRoom: FunctionComponent<{ show: boolean; roomId: string }> = ({
   const [msgFromsrv, setmsgFromsrv] = useState({} as Message);
   const [inputMessage, setInputMessage] = useState("");
   const { user } = useAuth();
-  const recognizableRoomId = "GAME_"+roomId
+  const recognizableRoomId = "GAME_" + roomId;
   useEffect(() => {
     if (!roomId) return;
-    
+
     usersSocket.emit("joinRoomToServer", recognizableRoomId);
     usersSocket.on("msgToClient", (msg) => {
       if (msg.room != recognizableRoomId) return;
