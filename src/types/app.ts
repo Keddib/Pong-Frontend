@@ -81,6 +81,7 @@ type Conversation = {
   type: string;
   messages: Message[];
   // status: 'online' | 'offline' | 'playing' | 'spectating'; // members status
+  news?: boolean;
 };
 
 export {
@@ -93,5 +94,5 @@ export {
   Room,
   ProfileContext,
   UserStatus,
-  Conversation
+  Conversation,
 };

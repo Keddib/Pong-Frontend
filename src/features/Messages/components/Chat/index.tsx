@@ -1,9 +1,8 @@
 import BackArrow from "assets/icons/back-arrow.svg";
 import RightArrow from "assets/icons/right-arrow.svg";
 import Ellipsis from "assets/icons/ellipsis.svg";
-
 import { useEffect, useState } from "react";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useOutletContext, useParams } from "react-router-dom";
 import MessageInput from "components/Messages/MessageInput";
 import Messages from "components/Messages/Messages";
 import { Message, Conversation } from "types/app";
@@ -16,7 +15,6 @@ import { mediaQueries } from "src/config";
 import useMedia from "hooks/useMedia";
 import RoomInfo from "./RoomInfo";
 import SetErrorPage from "components/ErrorPage";
-// import Conversation from "./Conversations/Conversation";
 
 const ChatMessages = () => {
   const { coversationID } = useParams();
@@ -29,11 +27,13 @@ const ChatMessages = () => {
   const [refresh, setRefresh] = useState(false);
   const [roomInfo, setRoomInfo] = useState(false);
   const axiosPrivate = useAxiosPrivate();
+  const { setActiveConv } = useOutletContext<any>();
   const { user } = useAuth();
   const lg = useMedia(mediaQueries.lg);
 
   useEffect(() => {
     // get conversation
+    setActiveConv(coversationID || "");
     async function getConversation() {
       try {
         const res = await axiosPrivate.get<Conversation>(
@@ -48,32 +48,29 @@ const ChatMessages = () => {
         setError(true);
       }
     }
+    async function getConversationMessages() {
+      try {
+        const res = await axiosPrivate.get(
+          `http://localhost:3500/chat/messages/${coversationID}`
+        );
+        if (Array.isArray(res.data)) {
+          setMessages(res.data);
+        }
+        // get messages
+        setLoading(false);
+      } catch (error) {
+        setError(true);
+        setLoading(false);
+      }
+    }
     setLoading(true);
-    getConversation();
+    getConversation().then(() => {
+      // getConversationMessages();
+    });
     setLoading(false);
   }, [refresh, axiosPrivate, coversationID]);
 
   useEffect(() => {
-    // get messages
-
-    async function getConversationMessages() {
-      // try {
-      //   const res = await axiosPrivate.get<Conversation>(
-      //     `chat/${coversationID}`
-      //   );
-      //   setConv(res.data);
-      //   // setMessages(res.data.messages);
-      //   // get messages
-      //   setLoading(false);
-      // } catch (error) {
-      //   setError(true);
-      //   setLoading(false);
-      //   // setError()
-      // }
-      // get messages
-    }
-    // setLoading(true);
-
     usersSocket.emit("joinRoomToServer", coversationID);
     usersSocket.on("msgToClient", (msg) => {
       if (msg.room != coversationID) return;
@@ -84,6 +81,7 @@ const ChatMessages = () => {
         date: new Date(),
       };
       if (user.uid !== msg["ownerId"]) {
+        // setmsgFromsrv(newMessage);
         setmsgFromsrv(newMessage);
       }
     });

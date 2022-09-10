@@ -8,22 +8,25 @@ import { mediaQueries } from "config/index";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import { Spinner } from "components/Loading";
 import { Conversation } from "types/app";
-import { usersSocket } from "~/src/services/socket";
+import { usersSocket } from "services/socket";
+
+type Istate = {
+  state: { receiver?: string };
+  pathname: string;
+};
 
 const ConversationsList = () => {
   const [welcome, setWelcome] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [activeConv, setActiveConv] = useState("");
+  const [activeConv, setActiveConv] = useState<string>("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const location = useLocation() as {
-    state: { receiver?: string };
-    pathname: string;
-  };
+  const location = useLocation() as Istate;
   const lg = useMedia(mediaQueries.lg);
   const [conversations, SetConversations] = useState([] as Conversation[]);
   const axiosPrivate = useAxiosPrivate();
 
+  // get conversations
   useEffect(() => {
     const abortController = new AbortController();
     const GetConversations = async () => {
@@ -52,6 +55,7 @@ const ConversationsList = () => {
     };
   }, []);
 
+  // send message
   useEffect(() => {
     if (!loading) {
       const receiver = location?.state?.receiver;
@@ -95,7 +99,11 @@ const ConversationsList = () => {
       return (
         <>
           {conversations.map((conv) => (
-            <CoversationCard key={conv.cid} conversation={conv} />
+            <CoversationCard
+              key={conv.cid}
+              conversation={conv}
+              activeConv={[activeConv, setActiveConv]}
+            />
           ))}
         </>
       );
@@ -122,7 +130,7 @@ const ConversationsList = () => {
       ) : (
         <></>
       )}
-      <Outlet />
+      <Outlet context={{ setActiveConv }} />
     </>
   );
 };
