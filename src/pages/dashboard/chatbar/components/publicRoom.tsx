@@ -30,12 +30,12 @@ const PublicRoom: FunctionComponent<{ show: boolean }> = ({ show }) => {
       usersSocket.on("msgToClient", (msg) => {
         if (msg.room != "public") return;
         let newMessage: Message = {
-          userId: msg["userId"],
+          ownerId: msg["ownerId"],
           username: msg["username"],
           text: msg["text"],
           date: new Date(),
         };
-        if (user.uid !== msg["userId"]) {
+        if (user.uid !== msg["ownerId"]) {
           setmsgFromsrv(newMessage);
         }
       });
@@ -43,28 +43,21 @@ const PublicRoom: FunctionComponent<{ show: boolean }> = ({ show }) => {
   }, []);
 
   useEffect(() => {
-    // send message
-    // setMessahes([...messages, newMessage]);
+
     if (!msgFromsrv.text) return;
 
     setMessages([...messages, msgFromsrv]);
   }, [msgFromsrv]);
 
-  // useEffect(() => {
-  //   // messegses
-  //   // setMessahes([...messages, newMessage]);
-  // }, [messages]);
-
   useEffect(() => {
-    // send message
-    // setMessahes([...messages, newMessage]);
+
     if (!inputMessage.length) return;
     usersSocket.emit("msgToServer", {
       room: "public",
       message: inputMessage,
     });
     let newMessage: Message = {
-      userId: user.uid,
+      ownerId: user.uid,
       username: user.username,
       text: inputMessage,
       date: new Date(),

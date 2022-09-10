@@ -50,7 +50,7 @@ type Message = {
   text: string;
   date: Date;
   username: string;
-  userId: string;
+  ownerId: string;
 };
 
 type Room = {

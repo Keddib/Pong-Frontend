@@ -21,12 +21,12 @@ const GameRoom: FunctionComponent<{ show: boolean; roomId: string }> = ({
       if (msg.room != roomId) return;
 
       let newMessage: Message = {
-        userId: msg["userId"],
+        ownerId: msg["ownerId"],
         username: msg["username"],
         text: msg["text"],
         date: new Date(),
       };
-      if (user.uid !== msg["userId"]) {
+      if (user.uid !== msg["ownerId"]) {
         setmsgFromsrv(newMessage);
       }
     });
@@ -43,7 +43,7 @@ const GameRoom: FunctionComponent<{ show: boolean; roomId: string }> = ({
       message: inputMessage,
     });
     let newMessage: Message = {
-      userId: user.uid,
+      ownerId: user.uid,
       username: user.username,
       text: inputMessage,
       date: new Date(),

@@ -40,6 +40,8 @@ const ChatMessages = () => {
         );
         res.data.admins.push(res.data.owner);
         setConv(res.data);
+        setMessages(res.data.messages);
+        console.log(res.data);
         // if not in convs set error
       } catch (error) {
         setError(true);
@@ -70,16 +72,17 @@ const ChatMessages = () => {
       // get messages
     }
     // setLoading(true);
+
     usersSocket.emit("joinRoomToServer", coversationID);
     usersSocket.on("msgToClient", (msg) => {
       if (msg.room != coversationID) return;
       let newMessage: Message = {
-        userId: msg["userId"],
+        ownerId: msg["ownerId"],
         username: msg["username"],
         text: msg["text"],
-        date: new Date(),
+        date: new Date()
       };
-      if (user.uid !== msg["userId"]) {
+      if (user.uid !== msg["ownerId"]) {
         setmsgFromsrv(newMessage);
       }
     });
@@ -95,13 +98,13 @@ const ChatMessages = () => {
     if (inputMessage) {
       usersSocket.emit("msgToServer", {
         room: coversationID,
-        message: inputMessage,
+        message: inputMessage
       });
       const newMsg = {
         username: user.username,
         text: inputMessage,
         date: new Date(),
-        userId: user.uid,
+        ownerId: user.uid
       };
       setMessages([...messages, newMsg]);
       setInputMessage("");

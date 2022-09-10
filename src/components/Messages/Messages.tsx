@@ -22,7 +22,7 @@ const Messages: FunctionComponent<{ messages: Message[] }> = ({ messages }) => {
           <Message
             key={uid()}
             message={message}
-            own={message.userId == user.uid}
+            own={message.ownerId == user.uid}
           />
         ))}
       <div ref={messagesEndRef}></div>
@@ -32,7 +32,7 @@ const Messages: FunctionComponent<{ messages: Message[] }> = ({ messages }) => {
 
 const Message: FunctionComponent<{ message: Message; own: boolean }> = ({
   message,
-  own,
+  own
 }) => {
   const [show, setShow] = useState(false);
 

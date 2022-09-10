@@ -29,10 +29,15 @@ const ConversationsList = () => {
     const GetConversations = async () => {
       try {
         const res = await axiosPrivate.get<Conversation[]>("/friends/rooms", {
-          signal: abortController.signal,
+          signal: abortController.signal
         });
+        console.log(res.data);
         SetConversations(
-          res.data.filter((c) => c.messages?.length > 0 || c.type != "private")
+          res.data.filter(
+            (c) =>
+              (c.messages as any) /** messagesCount */ > 0 ||
+              c.type != "private"
+          )
         );
         setLoading(false);
       } catch (error) {
