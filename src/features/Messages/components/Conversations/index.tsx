@@ -32,7 +32,7 @@ const ConversationsList = () => {
     const GetConversations = async () => {
       try {
         const res = await axiosPrivate.get<Conversation[]>("/friends/rooms", {
-          signal: abortController.signal
+          signal: abortController.signal,
         });
         console.log(res.data);
         SetConversations(
@@ -57,7 +57,7 @@ const ConversationsList = () => {
   //  make the last avtive room at the top of the list
   const listener = (data: Message) => {
     console.log("room", data.room);
-    setFirstConv(data.room);
+    setFirstConv(data.room || "");
   };
   useEffect(() => {
     if (!loading) {
@@ -78,6 +78,7 @@ const ConversationsList = () => {
       console.log("index", rIndex);
       if (rIndex == -1 || rIndex == 0) return;
       const fRoom = conversations.splice(rIndex, 1)[0];
+      fRoom.news = true;
       console.log("convs", conversations, fRoom);
       SetConversations([fRoom, ...conversations]);
     }

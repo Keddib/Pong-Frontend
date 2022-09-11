@@ -72,19 +72,24 @@ const ChatMessages = () => {
 
   useEffect(() => {
     usersSocket.emit("joinRoomToServer", coversationID);
-    usersSocket.on("msgToClient", (msg) => {
+    const hundleMessage = (msg: Message) => {
       if (msg.room != coversationID) return;
       let newMessage: Message = {
         ownerId: msg["ownerId"],
         username: msg["username"],
         text: msg["text"],
-        date: new Date()
+        date: new Date(),
       };
       if (user.uid !== msg["ownerId"]) {
         // setmsgFromsrv(newMessage);
         setmsgFromsrv(newMessage);
       }
-    });
+    };
+    usersSocket.on("msgToClient", hundleMessage);
+
+    return () => {
+      usersSocket.off("msgToClient", hundleMessage);
+    };
     // get messages
   }, [coversationID]);
 
@@ -97,13 +102,13 @@ const ChatMessages = () => {
     if (inputMessage) {
       usersSocket.emit("msgToServer", {
         room: conv.cid,
-        message: inputMessage
+        message: inputMessage,
       });
       const newMsg = {
         username: user.username,
         text: inputMessage,
         date: new Date(),
-        ownerId: user.uid
+        ownerId: user.uid,
       };
       setMessages([...messages, newMsg]);
       setFirstConv(conv.cid);
