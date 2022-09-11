@@ -26,13 +26,15 @@ const ConversationsList = () => {
   const [conversations, SetConversations] = useState([] as Conversation[]);
   const axiosPrivate = useAxiosPrivate();
 
+  const [updatedRoom, setUpdatedRoom] = useState("");
+
   // get conversations
   useEffect(() => {
     const abortController = new AbortController();
     const GetConversations = async () => {
       try {
         const res = await axiosPrivate.get<Conversation[]>("/friends/rooms", {
-          signal: abortController.signal,
+          signal: abortController.signal
         });
         console.log(res.data);
         SetConversations(
@@ -53,15 +55,18 @@ const ConversationsList = () => {
     return () => {
       abortController.abort();
     };
-  }, []);
+  }, [updatedRoom]);
   //  make the last avtive room at the top of the list
   const listener = (data: Message) => {
     console.log("room", data.room);
     setFirstConv(data.room || "");
   };
+
+  const newMessageListener = (data: { room: string }) => {};
   useEffect(() => {
     if (!loading) {
       usersSocket.on("msgToClient", listener);
+      usersSocket.emit("listeningForNewMessage");
     }
     return () => {
       usersSocket.off("msgToClient", listener);
@@ -78,18 +83,21 @@ const ConversationsList = () => {
       console.log("index", rIndex);
       if (rIndex == -1 || rIndex == 0) return;
       const fRoom = conversations.splice(rIndex, 1)[0];
+
+      // only if user isnt the message sender + remove when seen
       fRoom.news = true;
       console.log("convs", conversations, fRoom);
       SetConversations([fRoom, ...conversations]);
     }
   }, [firstConv]);
 
-  // send message
+  // private room and new message notif
   useEffect(() => {
     if (!loading) {
+      // calling private room with user :location?.state?.receiver
       const receiver = location?.state?.receiver;
       if (receiver) {
-        console.log("---->");
+        console.log("---->receiver");
         usersSocket.emit("createPrivateRoom", { receiver });
         usersSocket.on("privateRoomCreated", (room: Conversation) => {
           console.log("---->1", room);
@@ -98,14 +106,35 @@ const ConversationsList = () => {
           if (!exRoom) {
             console.log("convs", room);
 
-            SetConversations((prev) => [{ ...room, name: "noname" }, ...prev]);
+            SetConversations((prev) => [
+              { ...room, name: "nonahgffghgfme" },
+              ...prev
+            ]);
           }
           navigate(room.cid);
         });
       }
+
+      // listening for new message
+      usersSocket.on("newMessage", (data: { sender: string; room: string }) => {
+        console.log("----> wwwa", data.room);
+        console.log(data.room);
+        const updatedRoom = conversations.find((c) => c.cid == data.room);
+        console.log("");
+        if (updatedRoom) {
+          console.log("should notify");
+          // setFirstConv(updatedRoom.cid);
+
+          // add red dot on conv
+        } else {
+          console.log("should refresh");
+          setUpdatedRoom(data.room);
+        }
+      });
     }
     return () => {
       usersSocket.removeAllListeners("privateRoomCreated");
+      usersSocket.removeAllListeners("newMessage");
     };
   }, [loading]);
 
