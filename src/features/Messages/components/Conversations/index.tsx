@@ -7,18 +7,18 @@ import useMedia from "hooks/useMedia";
 import { mediaQueries } from "config/index";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import { Spinner } from "components/Loading";
-import { Conversation } from "types/app";
+import { Conversation, Message } from "types/app";
 import { usersSocket } from "services/socket";
 
 type Istate = {
   state: { receiver?: string };
   pathname: string;
 };
-
 const ConversationsList = () => {
   const [welcome, setWelcome] = useState(false);
   const [loading, setLoading] = useState(true);
   const [activeConv, setActiveConv] = useState<string>("");
+  const [firstConv, setFirstConv] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const location = useLocation() as Istate;
@@ -32,7 +32,7 @@ const ConversationsList = () => {
     const GetConversations = async () => {
       try {
         const res = await axiosPrivate.get<Conversation[]>("/friends/rooms", {
-          signal: abortController.signal,
+          signal: abortController.signal
         });
         console.log(res.data);
         SetConversations(
@@ -54,6 +54,34 @@ const ConversationsList = () => {
       abortController.abort();
     };
   }, []);
+  //  make the last avtive room at the top of the list
+  const listener = (data: Message) => {
+    console.log("room", data.room);
+    setFirstConv(data.room);
+  };
+  useEffect(() => {
+    if (!loading) {
+      usersSocket.on("msgToClient", listener);
+    }
+    return () => {
+      usersSocket.off("msgToClient", listener);
+    };
+  }, [loading]);
+
+  useEffect(() => {
+    if (firstConv) {
+      console.log(conversations);
+      const rIndex = conversations.findIndex((conv) => {
+        console.log("ciidd", conv.cid);
+        return conv.cid === firstConv;
+      });
+      console.log("index", rIndex);
+      if (rIndex == -1 || rIndex == 0) return;
+      const fRoom = conversations.splice(rIndex, 1)[0];
+      console.log("convs", conversations, fRoom);
+      SetConversations([fRoom, ...conversations]);
+    }
+  }, [firstConv]);
 
   // send message
   useEffect(() => {
@@ -98,13 +126,16 @@ const ConversationsList = () => {
       //
       return (
         <>
-          {conversations.map((conv) => (
-            <CoversationCard
-              key={conv.cid}
-              conversation={conv}
-              activeConv={[activeConv, setActiveConv]}
-            />
-          ))}
+          {conversations.map((conv) => {
+            usersSocket.emit("joinRoomToServer", conv.cid);
+            return (
+              <CoversationCard
+                key={conv.cid}
+                conversation={conv}
+                activeConversation={{ activeConv, setActiveConv }}
+              />
+            );
+          })}
         </>
       );
     } else if (error) {
@@ -130,7 +161,7 @@ const ConversationsList = () => {
       ) : (
         <></>
       )}
-      <Outlet context={{ setActiveConv }} />
+      <Outlet context={{ setFirstConv, setActiveConv }} />
     </>
   );
 };

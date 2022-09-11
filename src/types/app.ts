@@ -51,6 +51,7 @@ type Message = {
   date: Date;
   username: string;
   ownerId: string;
+  room?: string;
 };
 
 type Room = {
@@ -94,5 +95,5 @@ export {
   Room,
   ProfileContext,
   UserStatus,
-  Conversation,
+  Conversation
 };

@@ -6,18 +6,20 @@ import { Conversation } from "types/app";
 
 const Conversation: FunctionComponent<{
   conversation: Conversation;
-  activeConv: [activeConv: string, setActiveConv: (s: string) => void];
-}> = ({ conversation, activeConv }) => {
-  const [aConv, setAConv] = activeConv;
-
+  activeConversation: {
+    activeConv: string;
+    setActiveConv: (s: string) => void;
+  };
+}> = ({ conversation, activeConversation }) => {
+  const { activeConv, setActiveConv } = activeConversation;
   return (
     <Link
       to={conversation.cid}
       onClick={() => {
-        setAConv(conversation.cid);
+        setActiveConv(conversation.cid);
       }}
     >
-      <ElementBar rank={aConv == conversation.cid ? 0 : -1}>
+      <ElementBar rank={activeConv == conversation.cid ? 0 : -1}>
         <div className="flex justify-between items-center w-full">
           <RoomCard room={conversation} />
           {conversation?.news && (
