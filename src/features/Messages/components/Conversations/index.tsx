@@ -14,11 +14,12 @@ type Istate = {
   state: { receiver?: string };
   pathname: string;
 };
+
 const ConversationsList = () => {
   const [welcome, setWelcome] = useState(false);
   const [loading, setLoading] = useState(true);
   const [activeConv, setActiveConv] = useState<string>("");
-  const [firstConv, setFirstConv] = useState("");
+  const [firstConv, setFirstConv] = useState({ room: "", new: false });
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const location = useLocation() as Istate;
@@ -34,15 +35,19 @@ const ConversationsList = () => {
     const GetConversations = async () => {
       try {
         const res = await axiosPrivate.get<Conversation[]>("/friends/rooms", {
-          signal: abortController.signal
+          signal: abortController.signal,
         });
         console.log(res.data);
         SetConversations(
-          res.data.filter(
-            (c) =>
+          res.data.filter((c) => {
+            if (c.cid == updatedRoom) {
+              c.news = true;
+            }
+            return (
               (c.messages as any) /** messagesCount */ > 0 ||
               c.type != "private"
-          )
+            );
+          })
         );
         setLoading(false);
       } catch (error) {
@@ -50,7 +55,6 @@ const ConversationsList = () => {
         setLoading(false);
       }
     };
-
     GetConversations();
     return () => {
       abortController.abort();
@@ -59,7 +63,7 @@ const ConversationsList = () => {
   //  make the last avtive room at the top of the list
   const listener = (data: Message) => {
     console.log("room", data.room);
-    setFirstConv(data.room || "");
+    setFirstConv({ room: data.room || "", new: true });
   };
 
   const newMessageListener = (data: { room: string }) => {};
@@ -74,18 +78,22 @@ const ConversationsList = () => {
   }, [loading]);
 
   useEffect(() => {
-    if (firstConv) {
+    if (firstConv.room) {
       console.log(conversations);
       const rIndex = conversations.findIndex((conv) => {
         console.log("ciidd", conv.cid);
-        return conv.cid === firstConv;
+        return conv.cid === firstConv.room;
       });
       console.log("index", rIndex);
-      if (rIndex == -1 || rIndex == 0) return;
+      if (rIndex == -1) return;
+      else if (rIndex == 0) {
+        const fRoom = conversations[0];
+        if (firstConv.new && firstConv.room != activeConv) fRoom.news = true;
+        return;
+      }
       const fRoom = conversations.splice(rIndex, 1)[0];
-
+      if (firstConv.new && firstConv.room != activeConv) fRoom.news = true;
       // only if user isnt the message sender + remove when seen
-      fRoom.news = true;
       console.log("convs", conversations, fRoom);
       SetConversations([fRoom, ...conversations]);
     }
@@ -108,7 +116,7 @@ const ConversationsList = () => {
 
             SetConversations((prev) => [
               { ...room, name: "nonahgffghgfme" },
-              ...prev
+              ...prev,
             ]);
           }
           navigate(room.cid);
@@ -123,7 +131,7 @@ const ConversationsList = () => {
         console.log("");
         if (updatedRoom) {
           console.log("should notify");
-          // setFirstConv(updatedRoom.cid);
+          setFirstConv({ room: updatedRoom.cid, new: true });
 
           // add red dot on conv
         } else {

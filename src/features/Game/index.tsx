@@ -13,6 +13,7 @@ import { Socket } from "socket.io-client";
 import useAuth from "hooks/useAuth";
 import { GameState } from "./components/Pong/utils/Types";
 import useTitle from "~/src/hooks/useTitle";
+import { toast } from "react-toastify";
 
 interface CustomGamePayload {
   opponent: string;
@@ -99,11 +100,21 @@ const Game: FunctionComponent<{ setGameRoomId: (id: string) => void }> = ({
       });
       socket.current?.on("invalidSpectate", () => {
         socket.current?.close();
-        navigate("/");
+        navigate(location.state.from || "/", { replace: true });
+        (() => {
+          toast.error("Error Notification !", {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+        })();
       });
       socket.current?.on("invalidInvitation", () => {
         socket.current?.close();
-        navigate("/");
+        navigate(location.state.from || "/", { replace: true });
+        (() => {
+          toast.error("Error Notification !", {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+        })();
       });
     });
 

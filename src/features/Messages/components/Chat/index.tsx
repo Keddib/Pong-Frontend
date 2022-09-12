@@ -111,7 +111,7 @@ const ChatMessages = () => {
         ownerId: user.uid,
       };
       setMessages([...messages, newMsg]);
-      setFirstConv(conv.cid);
+      setFirstConv({ room: conv.cid, new: false });
       setInputMessage("");
     }
   }, [inputMessage]);

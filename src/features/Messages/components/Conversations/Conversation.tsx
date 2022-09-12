@@ -17,13 +17,14 @@ const Conversation: FunctionComponent<{
       to={conversation.cid}
       onClick={() => {
         setActiveConv(conversation.cid);
+        conversation.news = false;
       }}
     >
       <ElementBar rank={activeConv == conversation.cid ? 0 : -1}>
         <div className="flex justify-between items-center w-full">
           <RoomCard room={conversation} />
           {conversation?.news && (
-            <span className="bg-pictonBlue w-2 h-2 rounded-full flex justify-center items-center"></span>
+            <span className="bg-red w-2 h-2 rounded-full flex justify-center items-center"></span>
           )}
         </div>
       </ElementBar>

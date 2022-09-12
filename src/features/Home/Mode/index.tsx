@@ -17,7 +17,9 @@ const Mode: FunctionComponent<Props> = ({ modeName, className, player }) => {
         <h4 className="text-lotion/50">1 vs 1</h4>
         <button
           onClick={() => {
-            navigate("/game", { state: { mode: modeName } });
+            navigate("/game", {
+              state: { mode: modeName, from: location.pathname },
+            });
           }}
           className="uppercase button--2 mt-4  max-w-[200px]"
         >

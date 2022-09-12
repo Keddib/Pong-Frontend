@@ -49,6 +49,9 @@ export default function Notifications() {
         invitation: data.invitation,
       });
     });
+    gameSocket.on("invitationCanceled", () => {
+      dismissNotification();
+    });
     gameSocket.on("userStatusUpdate", async (data) => {
       updateUser(data);
     });
