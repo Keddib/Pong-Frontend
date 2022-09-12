@@ -7,7 +7,7 @@ import { Spinner } from "components/Loading";
 
 const EditPassword: FunctionComponent<{
   conv: Conversation;
-  setRefresh: (b: boolean) => void;
+  setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ conv, setRefresh }) => {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);

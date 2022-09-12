@@ -4,10 +4,11 @@ import { Conversation, User } from "types/app";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import SelectFriends from "components/SelectFriends";
 import { Spinner } from "components/Loading";
+import useAuth from "src/hooks/useAuth";
 
 const AddMemeberToGroup: FunctionComponent<{
   conv: Conversation;
-  setRefresh: (b: boolean) => void;
+  setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ conv, setRefresh }) => {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -15,6 +16,7 @@ const AddMemeberToGroup: FunctionComponent<{
   const [error, setError] = useState("");
   const doneButtonRef = useRef(null);
   const axiosPrivate = useAxiosPrivate();
+  const { user } = useAuth();
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -23,7 +25,12 @@ const AddMemeberToGroup: FunctionComponent<{
         const res = await axiosPrivate.get<User[]>("/friends/all", {
           signal: abortController.signal,
         });
-        setFriends(res.data);
+        setFriends(
+          res.data.filter((f) => {
+            const mem = conv.members.find((m) => m.uid == f.uid);
+            return !mem;
+          })
+        );
         setLoading(false);
         console.log("well");
       } catch (error) {
@@ -34,7 +41,7 @@ const AddMemeberToGroup: FunctionComponent<{
     return () => {
       abortController.abort();
     };
-  }, [axiosPrivate]);
+  }, [axiosPrivate, conv]);
 
   async function submit(e: React.SyntheticEvent) {
     e.preventDefault();
@@ -71,9 +78,12 @@ const AddMemeberToGroup: FunctionComponent<{
       }
     }
     try {
-      //
-      // send request to server
-      console.log(members);
+      await axiosPrivate.post<Conversation>("/chat/addmemeber", {
+        cid: conv.cid,
+        members: members,
+      });
+      setRefresh((prev) => !prev);
+      setShow(false);
     } catch (err) {
       setError("upload filed! please try again");
     }

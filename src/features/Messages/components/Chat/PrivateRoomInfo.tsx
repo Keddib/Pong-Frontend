@@ -9,7 +9,7 @@ import Spectate from "~/src/components/Spectate";
 
 const PrivateRoomInfo: FunctionComponent<{
   user: User;
-  setRefresh: (b: boolean) => void;
+  setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ user, setRefresh }) => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -20,15 +20,15 @@ const PrivateRoomInfo: FunctionComponent<{
       state: {
         mode: gameMode,
         custom: { opponent: user.uid },
-        from: location.pathname
-      }
+        from: location.pathname,
+      },
     });
   };
 
   const hundleBlock = () => {
     //
     console.log("action block");
-    setRefresh(true);
+    setRefresh((prev) => !prev);
   };
 
   const hundleSpectate = () => {

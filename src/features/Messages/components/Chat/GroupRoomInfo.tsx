@@ -12,7 +12,7 @@ import EditPassword from "./GroupPassword";
 
 const GroupRoomInfo: FunctionComponent<{
   conv: Conversation;
-  setRefresh: (b: boolean) => void;
+  setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ conv, setRefresh }) => {
   const [userPosition, setUserPosition] = useState(
     "" as "admin" | "owner" | "member"
@@ -21,9 +21,11 @@ const GroupRoomInfo: FunctionComponent<{
   const axiosPrivate = useAxiosPrivate();
   const [showModal, setShowModal] = useState(false);
   const [action, setAction] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log("group room info");
     if (conv.owner.uid == user.uid) {
       setUserPosition("owner");
     } else if (conv.admins.find((u) => u.uid == user.uid)) {
@@ -31,20 +33,22 @@ const GroupRoomInfo: FunctionComponent<{
     } else {
       setUserPosition("member");
     }
-  }, []);
+  }, [conv, user.uid]);
 
   async function leaveRoom() {
     //
     try {
-      await axiosPrivate.post("chat/removemember", {
+      console.log("delete user from conversation", conv, user);
+      await axiosPrivate.post("chat/leave", {
         cid: conv.cid,
-        uid: user.uid,
       });
       setShowModal(false);
       // refresh
-      navigate("/messages");
+      // setRefresh((prev) => !prev);
+      navigate("/messages", { state: { refresh: true } });
     } catch (error) {
       // set error
+      setError("somthing went wrong! please try again");
       console.log("delete error", error);
     }
     //
@@ -60,6 +64,7 @@ const GroupRoomInfo: FunctionComponent<{
       navigate("/messages");
     } catch (error) {
       // set error
+      setError("somthing went wrong! please try again");
       console.log("delete error", error);
     }
     //
@@ -72,6 +77,7 @@ const GroupRoomInfo: FunctionComponent<{
         setShowModal={setShowModal}
         leaveRoom={leaveRoom}
         deleteRoom={deleteRoom}
+        error={error}
       />
     </Modal>
   ) : null;
@@ -104,6 +110,7 @@ const GroupRoomInfo: FunctionComponent<{
         className="message-more-button group hover:text-red/70"
         onClick={() => {
           setAction("leave");
+          setError("");
           setShowModal(true);
         }}
       >
@@ -115,6 +122,7 @@ const GroupRoomInfo: FunctionComponent<{
           className="message-more-button group hover:text-red/70"
           onClick={() => {
             setAction("delete");
+            setError("");
             setShowModal(true);
           }}
         >
@@ -132,8 +140,9 @@ const ConfirmAction: FunctionComponent<{
   setShowModal: (b: boolean) => void;
   leaveRoom: () => void;
   deleteRoom: () => void;
+  error: string;
   action: string;
-}> = ({ setShowModal, action, deleteRoom, leaveRoom }) => {
+}> = ({ setShowModal, action, deleteRoom, leaveRoom, error }) => {
   return (
     <div className="modal ">
       <div className="modal-content w-[300px] bg-queenBlue/50  text-lotion">
@@ -161,6 +170,9 @@ const ConfirmAction: FunctionComponent<{
           >
             Cancel
           </button>
+          {error && (
+            <p className="text-red text-center text-xs mt-2">{error}</p>
+          )}
         </div>
       </div>
     </div>

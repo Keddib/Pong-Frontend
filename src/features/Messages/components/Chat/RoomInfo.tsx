@@ -7,7 +7,7 @@ import useUserStatus from "~/src/hooks/useUserStatus";
 
 const RoomInfo: FunctionComponent<{
   conv: Conversation;
-  setRefresh: (b: boolean) => void;
+  setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ conv, setRefresh }) => {
   const { user } = useAuth();
   const [convUser, setConvUser] = useState({} as User);

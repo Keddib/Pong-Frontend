@@ -1,6 +1,6 @@
 import { FunctionComponent, useEffect, useRef } from "react";
 import { mediaQueries } from "config/index";
-import { ToastContainer, toast, ToastOptions, Id } from "react-toastify";
+import { ToastContainer, toast, Id } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useMedia from "hooks/useMedia";
 import { GameNotify } from "types/app";

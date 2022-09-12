@@ -33,7 +33,9 @@ const ChatMessages = () => {
 
   useEffect(() => {
     // get conversation
-    setActiveConv(coversationID || "");
+    if (lg) {
+      setActiveConv(coversationID || "");
+    }
     async function getConversation() {
       try {
         const res = await axiosPrivate.get<Conversation>(
@@ -42,33 +44,15 @@ const ChatMessages = () => {
         res.data.admins.push(res.data.owner);
         setConv(res.data);
         setMessages(res.data.messages);
-        console.log(res.data);
-        // if not in convs set error
+        console.log("conv ===>", res.data);
       } catch (error) {
         setError(true);
-      }
-    }
-    async function getConversationMessages() {
-      try {
-        const res = await axiosPrivate.get(
-          `http://localhost:3500/chat/messages/${coversationID}`
-        );
-        if (Array.isArray(res.data)) {
-          setMessages(res.data);
-        }
-        // get messages
-        setLoading(false);
-      } catch (error) {
-        setError(true);
-        setLoading(false);
       }
     }
     setLoading(true);
-    getConversation().then(() => {
-      // getConversationMessages();
-    });
+    getConversation();
     setLoading(false);
-  }, [refresh, axiosPrivate, coversationID]);
+  }, [refresh, coversationID]);
 
   useEffect(() => {
     usersSocket.emit("joinRoomToServer", coversationID);

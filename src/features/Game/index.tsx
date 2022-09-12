@@ -104,6 +104,7 @@ const Game: FunctionComponent<{ setGameRoomId: (id: string) => void }> = ({
         (() => {
           toast.error("Error Notification !", {
             position: toast.POSITION.TOP_RIGHT,
+            className: "game-invite-notification",
           });
         })();
       });

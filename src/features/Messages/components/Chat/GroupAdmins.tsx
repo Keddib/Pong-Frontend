@@ -9,7 +9,7 @@ import useAxiosPrivate from "hooks/useAxiosPrivate";
 const GroupAdmins: FunctionComponent<{
   conv: Conversation;
   position: string;
-  setRefresh: (b: boolean) => void;
+  setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ conv, position, setRefresh }) => {
   const axiosPrivate = useAxiosPrivate();
 
@@ -21,7 +21,7 @@ const GroupAdmins: FunctionComponent<{
         uid: adId,
       });
       // refresh
-      setRefresh(true);
+      setRefresh((prev) => !prev);
     } catch (error) {
       console.log("error chat/admin", error);
     }

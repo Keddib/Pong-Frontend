@@ -11,7 +11,7 @@ import { Conversation, Message } from "types/app";
 import { usersSocket } from "services/socket";
 
 type Istate = {
-  state: { receiver?: string };
+  state: { receiver?: string; refresh: boolean };
   pathname: string;
 };
 
@@ -66,7 +66,6 @@ const ConversationsList = () => {
     setFirstConv({ room: data.room || "", new: true });
   };
 
-  const newMessageListener = (data: { room: string }) => {};
   useEffect(() => {
     if (!loading) {
       usersSocket.on("msgToClient", listener);
@@ -154,6 +153,10 @@ const ConversationsList = () => {
       setWelcome(true);
     } else {
       setWelcome(false);
+    }
+    console.log("state of location", location.state);
+    if (location?.state?.refresh) {
+      setUpdatedRoom("....");
     }
   }, [location, setWelcome, lg]);
 

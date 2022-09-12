@@ -3,6 +3,8 @@ import ElementBar from "components/ElementBar";
 import RoomCard from "components/RoomCard";
 import { FunctionComponent } from "react";
 import { Conversation } from "types/app";
+import { mediaQueries } from "config";
+import useMedia from "hooks/useMedia";
 
 const Conversation: FunctionComponent<{
   conversation: Conversation;
@@ -12,11 +14,14 @@ const Conversation: FunctionComponent<{
   };
 }> = ({ conversation, activeConversation }) => {
   const { activeConv, setActiveConv } = activeConversation;
+  const lg = useMedia(mediaQueries.lg);
   return (
     <Link
       to={conversation.cid}
       onClick={() => {
-        setActiveConv(conversation.cid);
+        if (lg) {
+          setActiveConv(conversation.cid);
+        }
         conversation.news = false;
       }}
     >
