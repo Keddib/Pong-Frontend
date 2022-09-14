@@ -57,7 +57,7 @@ export default function Notifications() {
         <Bell className="iconBell" />
       </button>
       {show && (
-        <Dropdown className="sm:w-[300px]">
+        <Dropdown className="sm:w-[300px]" close={() => setShow(false)}>
           <>
             <div className="flex justify-between">
               <p>Notifications </p>

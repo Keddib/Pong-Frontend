@@ -25,7 +25,7 @@ const Conversation: FunctionComponent<{
         conversation.news = false;
       }}
     >
-      <ElementBar rank={activeConv == conversation.cid ? 0 : -1}>
+      <ElementBar rank={activeConv == conversation.cid ? 0 : -1} className="">
         <div className="flex justify-between items-center w-full">
           <RoomCard room={conversation} />
           {conversation?.news && (

@@ -11,7 +11,7 @@ type Props = {
 const LeaderBoardList: FunctionComponent<Props> = ({ users }) => {
   const list = users.map((user, index) => (
     <li key={index}>
-      <ElementBar rank={index}>
+      <ElementBar rank={index} className="">
         <>
           <Rank index={index} />
           <div className="flex justify-between items-center w-full">

@@ -54,9 +54,15 @@ const GroupMembers: FunctionComponent<{
       )}
       <ul className="flex-col flex gap-1 ">
         {conv.members.map((member) => {
+          if (
+            conv.admins.find((ad) => ad.uid == member.uid) ||
+            member.uid == conv.owner.uid
+          ) {
+            return <span key={member.uid} className="hidden"></span>;
+          }
           return (
             <li key={member.uid} className=" flex items-center justify-between">
-              <GroupMember member={member}>
+              <GroupMember member={member} className="">
                 <>
                   {(position == "admin" || position == "owner") && (
                     <>

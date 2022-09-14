@@ -41,7 +41,7 @@ const Actions: FunctionComponent<{ user: User }> = ({ user }) => {
         <Ellipsis className="iconBell" />
       </button>
       {show && (
-        <Dropdown className="w-[200px]">
+        <Dropdown className="w-[200px]" close={() => setShow(false)}>
           <>
             <div className=" flex justify-end">
               <button onClick={showDropDown}>

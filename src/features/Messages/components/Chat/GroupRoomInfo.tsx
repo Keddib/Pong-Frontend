@@ -9,6 +9,7 @@ import useAxiosPrivate from "hooks/useAxiosPrivate";
 import Modal from "components/Modal";
 import { useNavigate } from "react-router-dom";
 import EditPassword from "./GroupPassword";
+import GroupMember from "./GroupMember";
 
 const GroupRoomInfo: FunctionComponent<{
   conv: Conversation;
@@ -130,7 +131,12 @@ const GroupRoomInfo: FunctionComponent<{
           delete room
         </button>
       )}
-      <p className="py-4 text-yonder">owned by {conv.owner.nickname}</p>
+      <div className=" p-2 pb-4  bg-cornFlower rounded-3xl">
+        <p className="mb-2">owned by</p>
+        <GroupMember member={conv.owner} className=" rounded-lg">
+          <></>
+        </GroupMember>
+      </div>
     </>
   );
 };

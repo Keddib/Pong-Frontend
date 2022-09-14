@@ -1,6 +1,7 @@
 type Props = {
   children: JSX.Element | JSX.Element[];
   rank: number;
+  className: undefined | string;
 };
 
 const RANKS = [
@@ -23,7 +24,7 @@ const ElementBar = (props: Props) => {
     <div
       className={`group element-bar gap-10 ${
         props.rank != -1 && props.rank < 3 ? RANKS[props.rank].className : ""
-      }`}
+      } ${props.className}`}
     >
       <span
         className={`element-bar-line ${

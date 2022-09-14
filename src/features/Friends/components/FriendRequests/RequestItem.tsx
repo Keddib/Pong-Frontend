@@ -38,7 +38,7 @@ const RequestListItem: FunctionComponent<{
   }
 
   return (
-    <ElementBar rank={-1}>
+    <ElementBar rank={-1} className="">
       <div className="w-full flex justify-between items-center">
         <UserCard user={user} />
         <div className="flex items-center sm:gap-8 sm:mr-8">

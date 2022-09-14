@@ -26,7 +26,7 @@ const RoomInfo: FunctionComponent<{
   }, [userStatus]);
 
   return (
-    <div className="message-more">
+    <div className="message-more ">
       {conv.type == "private" ? (
         <PrivateRoomInfo user={convUser} setRefresh={setRefresh} />
       ) : (

@@ -41,7 +41,6 @@ const ChatMessages = () => {
         const res = await axiosPrivate.get<Conversation>(
           `chat/${coversationID}`
         );
-        res.data.admins.push(res.data.owner);
         setConv(res.data);
         setMessages(res.data.messages);
         console.log("conv ===>", res.data);

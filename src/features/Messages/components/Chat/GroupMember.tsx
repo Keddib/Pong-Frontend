@@ -15,7 +15,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 const GroupMember: FunctionComponent<{
   member: User;
   children: JSX.Element[] | JSX.Element;
-}> = ({ member, children }) => {
+  className: undefined | string;
+}> = ({ member, children, className }) => {
   const { user } = useAuth();
   const { userStatus } = useUserStatus();
   const [status, setStatus] = useState(member.status);
@@ -31,7 +32,7 @@ const GroupMember: FunctionComponent<{
   }, [userStatus, setStatus, member]);
 
   return (
-    <ElementBar rank={-1}>
+    <ElementBar rank={-1} className={className}>
       <div className="w-full flex justify-between items-center">
         <div className="user-wrapper group cursor-auto">
           <div className="relative">
@@ -59,7 +60,12 @@ const GroupMember: FunctionComponent<{
               <Ellipsis className="iconBell group-hover:bg-transparent" />
             </button>
             {drop && (
-              <Dropdown className="top-8 w-60">
+              <Dropdown
+                className="top-8 w-60"
+                close={() => {
+                  setDrop(false);
+                }}
+              >
                 <>
                   <div className="flex justify-end">
                     <button
