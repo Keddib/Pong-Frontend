@@ -1,7 +1,7 @@
 import Glasses from "assets/icons/glasses.svg";
 import { FunctionComponent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useCurrentGame from "../hooks/useCurrentGame";
+import useCurrentGame from "hooks/useCurrentGame";
 
 const Spectate: FunctionComponent<{ userId: string }> = ({ userId }) => {
   const [text, setText] = useState("");

@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import ConversationsList from "./components/Conversations";
 import ChatMessages from "./components/Chat";
-import SetErrorPage from "components/ErrorPage";
-import useTitle from "~/src/hooks/useTitle";
+import SetErrorPage from "components/Error";
+import useTitle from "hooks/useTitle";
 import { useEffect } from "react";
 
 const Messages = () => {

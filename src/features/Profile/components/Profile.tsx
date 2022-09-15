@@ -9,7 +9,7 @@ import { useGetGames } from "../hooks/useUserData";
 import { Spinner } from "components/Loading";
 import useProfileState from "../hooks/useProfileState";
 import { useActor } from "@xstate/react";
-import SetErrorPage from "components/ErrorPage";
+import SetErrorPage from "components/Error";
 
 const links = {
   first: {

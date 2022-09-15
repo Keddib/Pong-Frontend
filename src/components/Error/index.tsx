@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import useErrorStatus from "../hooks/useErrorStatus";
+import useErrorStatus from "hooks/useErrorStatus";
 
 const SetErrorPage = () => {
   const { setErrorStatusCode } = useErrorStatus();

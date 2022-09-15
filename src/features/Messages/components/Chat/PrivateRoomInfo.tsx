@@ -1,11 +1,10 @@
 import Profile from "assets/icons/user.svg";
 import GamePad from "assets/icons/gamepad.svg";
-import Glasses from "assets/icons/glasses.svg";
 import Block from "assets/icons/block-user.svg";
 import { FunctionComponent } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { User } from "types/app";
-import Spectate from "~/src/components/Spectate";
+import Spectate from "components/Spectate";
 
 const PrivateRoomInfo: FunctionComponent<{
   user: User;

@@ -14,7 +14,7 @@ import useAuth from "hooks/useAuth";
 import { mediaQueries } from "src/config";
 import useMedia from "hooks/useMedia";
 import RoomInfo from "./RoomInfo";
-import SetErrorPage from "components/ErrorPage";
+import SetErrorPage from "components/Error";
 
 const ChatMessages = () => {
   const { coversationID } = useParams();
