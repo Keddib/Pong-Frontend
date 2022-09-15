@@ -68,12 +68,13 @@ const ChatMessages = () => {
     console.log("chat refresh request", data);
 
     if (
-      conversationID == data.room &&
-      data.type == "remove" &&
-      data.removedUser == user.uid
+      (conversationID == data.room &&
+        data.type == "remove" &&
+        data.removedUser == user.uid) ||
+      data.removedUser == "*"
     )
       navigate("/messages", { replace: true });
-    else if (conversationID == data.room) setRefresh(!refresh);
+    else if (conversationID == data.room) setRefresh((prev) => !prev);
   };
 
   useEffect(() => {
