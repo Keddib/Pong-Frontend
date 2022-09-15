@@ -1,9 +1,11 @@
 import Trash from "assets/icons/trash.svg";
 import RightArrow from "assets/icons/right-arrow.svg";
 import BottomArrow from "assets/icons/bottom-arrow.svg";
-import { FunctionComponent, useRef, useState } from "react";
+import { FunctionComponent, useEffect, useRef, useState } from "react";
 import { Conversation } from "types/app";
 import { Spinner } from "components/Loading";
+import useAxiosPrivate from "~/src/hooks/useAxiosPrivate";
+import Modal from "~/src/components/Modal";
 
 const EditPassword: FunctionComponent<{
   conv: Conversation;
@@ -12,7 +14,17 @@ const EditPassword: FunctionComponent<{
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showModal, setShowModal] = useState(false);
   const doneButtonRef = useRef(null);
+  const axiosPrivate = useAxiosPrivate();
+
+  useEffect(() => {
+    return () => {
+      setShow(false);
+      setLoading(false);
+      setError("");
+    };
+  }, []);
 
   async function submit(e: React.SyntheticEvent) {
     e.preventDefault();
@@ -22,8 +34,8 @@ const EditPassword: FunctionComponent<{
       };
       currentButton.disabled = true;
     }
-    setLoading(true);
     setError("");
+    setLoading(true);
     // get data
     const target = e.target as typeof e.target & {
       elements: {
@@ -38,11 +50,21 @@ const EditPassword: FunctionComponent<{
     const newPassword = target.elements.Password.value;
     const confirmPassword = target.elements.Password2.value;
 
-    try {
-      // send data to server
-      console.log(oldPassword, newPassword, confirmPassword);
-    } catch (err) {
-      setError("upload filed! please try again");
+    if (confirmPassword != newPassword) {
+      setError("invalid password");
+    } else {
+      try {
+        // send data to server
+        console.log(oldPassword, newPassword, confirmPassword);
+        await axiosPrivate.post("chat/updateroompass", {
+          cid: conv.cid,
+          oldPass: oldPassword,
+          newPass: newPassword,
+        });
+        setRefresh((prev) => !prev);
+      } catch (err) {
+        setError("failed to update! please try again");
+      }
     }
     if (doneButtonRef.current) {
       const currentButton = doneButtonRef.current as typeof doneButtonRef & {
@@ -53,10 +75,43 @@ const EditPassword: FunctionComponent<{
     setLoading(false);
   }
 
-  function deletePassword() {
+  async function deletePassword() {
     //
+    console.log("----> delete password");
+    setRefresh((prev) => !prev);
   }
 
+  const modal = showModal ? (
+    <Modal>
+      <div className="modal ">
+        <div className="modal-content w-[300px] bg-queenBlue/50  text-lotion">
+          <h4>Delete Room Password</h4>
+          <div className="w-[200px]">
+            <button className="button--2" onClick={deletePassword}>
+              confirm
+            </button>
+          </div>
+          <div className="w-[200px]">
+            <button
+              className="button--5"
+              onClick={() => {
+                setShowModal(false);
+              }}
+            >
+              Cancel
+            </button>
+            {error && (
+              <p className="text-red text-center text-xs mt-2">{error}</p>
+            )}
+          </div>
+        </div>
+      </div>
+    </Modal>
+  ) : null;
+
+  if (conv.type == "privategroup") {
+    return <></>;
+  }
   return (
     <>
       <div className="messages-members rounded-3xl bg-queenBlue/50">
@@ -99,6 +154,7 @@ const EditPassword: FunctionComponent<{
                       placeholder="Old Password"
                       type="password"
                       className="input--2 text-lotion border border-lotion placeholder-lotion/50"
+                      minLength={4}
                     />
                   </label>
                 </>
@@ -114,6 +170,7 @@ const EditPassword: FunctionComponent<{
                   placeholder="Password"
                   type="password"
                   className="input--2 text-lotion border border-lotion placeholder-lotion/50"
+                  minLength={4}
                 />
               </label>
               <label
@@ -127,6 +184,7 @@ const EditPassword: FunctionComponent<{
                   placeholder="Confirm Password"
                   type="password"
                   className="input--2 text-lotion border border-lotion placeholder-lotion/50"
+                  minLength={4}
                 />
               </label>
               <button
@@ -137,16 +195,21 @@ const EditPassword: FunctionComponent<{
                 {loading ? <Spinner /> : "Done"}
               </button>
               {error && <p className="text-red/70 text-center">{error}</p>}
-              {conv.type == "protected" && (
+            </form>
+            {conv.type == "protected" && (
+              <>
                 <button
-                  className="flex items-center justify-center gap-2 text-xs group hover:text-red/70"
-                  onClick={deletePassword}
+                  className="flex m-auto mt-2 items-center justify-center gap-2 text-xs group hover:text-red/70"
+                  onClick={() => {
+                    setShowModal(true);
+                  }}
                 >
                   <Trash className="w-5 h-3 fill-lotion/50 group-hover:fill-red/70 ease-in duration-150" />
                   delete password
                 </button>
-              )}
-            </form>
+                {modal}
+              </>
+            )}
           </div>
         )}
       </div>

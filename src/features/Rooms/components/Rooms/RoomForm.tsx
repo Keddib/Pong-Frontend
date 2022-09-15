@@ -153,6 +153,7 @@ const RoomForm: FunctionComponent<{
                   placeholder="Password"
                   type="password"
                   className="input--2 text-lotion border border-lotion placeholder-lotion/50"
+                  minLength={4}
                 />
               </label>
               <SelectFriends friends={friends} />

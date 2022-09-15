@@ -1,0 +1,7 @@
+1. admin can add, update and remove room password
+
+that means the the room type will change : (4 cases [] )
+c.1 -> if room is private -> protected : add password
+c.2 -> if room is public -> protected : add password
+c.3 -> if room protected -> protected : update password (needs valid old password)
+c.4 -> if room protected -> public : delete password (needs valid old password)

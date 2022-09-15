@@ -14,7 +14,7 @@ function getData(e: React.SyntheticEvent) {
   const RoomPassword = target.elements.Password.value;
   const RoomDescription = target.elements.Description.value;
   const type = target.elements.private.checked
-    ? "private"
+    ? "privategroup"
     : RoomPassword
     ? "protected"
     : "public";
