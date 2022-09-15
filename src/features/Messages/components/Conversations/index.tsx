@@ -28,6 +28,8 @@ const ConversationsList = () => {
   const axiosPrivate = useAxiosPrivate();
 
   const [updatedRoom, setUpdatedRoom] = useState("");
+  const [joinedRoom, setJoinedRoom] = useState("");
+  const [joinedRoomCounter, setJoinedRoomCounter] = useState(0);
 
   // get conversations
   useEffect(() => {
@@ -35,13 +37,18 @@ const ConversationsList = () => {
     const GetConversations = async () => {
       try {
         const res = await axiosPrivate.get<Conversation[]>("/friends/rooms", {
-          signal: abortController.signal,
+          signal: abortController.signal
         });
         console.log(res.data);
+        console.log("refreshing ", joinedRoom, joinedRoomCounter, updatedRoom);
+
         SetConversations(
           res.data.filter((c) => {
             if (c.cid == updatedRoom) {
               c.news = true;
+            }
+            if (c.cid == joinedRoom) {
+              setFirstConv({ room: joinedRoom, new: false });
             }
             return (
               (c.messages as any) /** messagesCount */ > 0 ||
@@ -59,20 +66,35 @@ const ConversationsList = () => {
     return () => {
       abortController.abort();
     };
-  }, [updatedRoom]);
+  }, [updatedRoom, joinedRoomCounter]);
+
   //  make the last avtive room at the top of the list
-  const listener = (data: Message) => {
+  const msgToClientHandler = (data: Message) => {
     console.log("room", data.room);
     setFirstConv({ room: data.room || "", new: true });
   };
 
+  const refreshRequestHandler = (data: {
+    type: string;
+    room: string;
+    removedUser?: string;
+  }) => {
+    console.log("convs refresh request", data);
+
+    setJoinedRoom(data.type == "remove" ? "" : data.room);
+
+    setJoinedRoomCounter((prev) => prev + 1);
+  };
+
   useEffect(() => {
     if (!loading) {
-      usersSocket.on("msgToClient", listener);
-      usersSocket.emit("listeningForNewMessage");
+      usersSocket.on("msgToClient", msgToClientHandler);
+      usersSocket.on("convsRefreshRequest", refreshRequestHandler);
+      usersSocket.emit("listeningForEvents");
     }
     return () => {
-      usersSocket.off("msgToClient", listener);
+      usersSocket.off("msgToClient", msgToClientHandler);
+      usersSocket.off("convsRefreshRequest", refreshRequestHandler);
     };
   }, [loading]);
 
@@ -115,7 +137,7 @@ const ConversationsList = () => {
 
             SetConversations((prev) => [
               { ...room, name: "nonahgffghgfme" },
-              ...prev,
+              ...prev
             ]);
           }
           navigate(room.cid);

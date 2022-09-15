@@ -2,7 +2,13 @@ import BackArrow from "assets/icons/back-arrow.svg";
 import RightArrow from "assets/icons/right-arrow.svg";
 import Ellipsis from "assets/icons/ellipsis.svg";
 import { useEffect, useState } from "react";
-import { NavLink, useOutletContext, useParams } from "react-router-dom";
+import {
+  Navigate,
+  NavLink,
+  useNavigate,
+  useOutletContext,
+  useParams
+} from "react-router-dom";
 import MessageInput from "components/Messages/MessageInput";
 import Messages from "components/Messages/Messages";
 import { Message, Conversation } from "types/app";
@@ -17,7 +23,7 @@ import RoomInfo from "./RoomInfo";
 import SetErrorPage from "components/Error";
 
 const ChatMessages = () => {
-  const { coversationID } = useParams();
+  const { conversationID } = useParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [conv, setConv] = useState({} as Conversation);
@@ -29,17 +35,18 @@ const ChatMessages = () => {
   const axiosPrivate = useAxiosPrivate();
   const { setActiveConv, setFirstConv } = useOutletContext<any>();
   const { user } = useAuth();
+  const navigate = useNavigate();
   const lg = useMedia(mediaQueries.lg);
 
   useEffect(() => {
     // get conversation
     if (lg) {
-      setActiveConv(coversationID || "");
+      setActiveConv(conversationID || "");
     }
     async function getConversation() {
       try {
         const res = await axiosPrivate.get<Conversation>(
-          `chat/${coversationID}`
+          `chat/${conversationID}`
         );
         setConv(res.data);
         setMessages(res.data.messages);
@@ -51,17 +58,43 @@ const ChatMessages = () => {
     setLoading(true);
     getConversation();
     setLoading(false);
-  }, [refresh, coversationID]);
+  }, [refresh, conversationID]);
+
+  const refreshRequestHandler = (data: {
+    type: string;
+    room: string;
+    removedUser?: string;
+  }) => {
+    console.log("chat refresh request", data);
+
+    if (
+      conversationID == data.room &&
+      data.type == "remove" &&
+      data.removedUser == user.uid
+    )
+      navigate("/messages", { replace: true });
+    else if (conversationID == data.room) setRefresh(!refresh);
+  };
 
   useEffect(() => {
-    usersSocket.emit("joinRoomToServer", coversationID);
+    if (!loading) {
+      usersSocket.on("chatRefreshRequest", refreshRequestHandler);
+      usersSocket.emit("listeningForEvents");
+    }
+    return () => {
+      usersSocket.off("chatRefreshRequest", refreshRequestHandler);
+    };
+  }, [loading]);
+
+  useEffect(() => {
+    usersSocket.emit("joinRoomToServer", conversationID);
     const hundleMessage = (msg: Message) => {
-      if (msg.room != coversationID) return;
+      if (msg.room != conversationID) return;
       let newMessage: Message = {
         ownerId: msg["ownerId"],
         username: msg["username"],
         text: msg["text"],
-        date: new Date(),
+        date: new Date()
       };
       if (user.uid !== msg["ownerId"]) {
         // setmsgFromsrv(newMessage);
@@ -74,7 +107,7 @@ const ChatMessages = () => {
       usersSocket.off("msgToClient", hundleMessage);
     };
     // get messages
-  }, [coversationID]);
+  }, [conversationID]);
 
   useEffect(() => {
     if (!msgFromsrv.text) return;
@@ -85,13 +118,13 @@ const ChatMessages = () => {
     if (inputMessage) {
       usersSocket.emit("msgToServer", {
         room: conv.cid,
-        message: inputMessage,
+        message: inputMessage
       });
       const newMsg = {
         username: user.username,
         text: inputMessage,
         date: new Date(),
-        ownerId: user.uid,
+        ownerId: user.uid
       };
       setMessages([...messages, newMsg]);
       setFirstConv({ room: conv.cid, new: false });

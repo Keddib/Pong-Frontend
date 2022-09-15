@@ -17,7 +17,7 @@ const Messages = () => {
         <div className="py-4 flex flex-col lg:flex-row gap-4 h-full relative">
           <Routes>
             <Route path="" element={<ConversationsList />}>
-              <Route path=":coversationID" element={<ChatMessages />} />
+              <Route path=":conversationID" element={<ChatMessages />} />
             </Route>
             <Route path="*" element={<SetErrorPage />} />
           </Routes>
