@@ -20,6 +20,7 @@ const authenticateUser = async (code: string) => {
   }>("/auth", {
     params: { code: code },
   });
+  console.log("res.data", res.data);
   if (res.status == 201) {
     return "TFA";
   }
