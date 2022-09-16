@@ -76,6 +76,7 @@ const ChatMessages = () => {
         );
         setConv(res.data);
         setMessages(res.data.messages);
+        setMuted((res.data as any).mutedUntil > Date.now());
         console.log("conv ===>", res.data);
       } catch (error) {
         setError(true);
