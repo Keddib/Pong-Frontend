@@ -6,6 +6,7 @@ import { Conversation } from "types/app";
 import { Spinner } from "components/Loading";
 import useAxiosPrivate from "~/src/hooks/useAxiosPrivate";
 import Modal from "~/src/components/Modal";
+import axios from "axios";
 
 const EditPassword: FunctionComponent<{
   conv: Conversation;
@@ -51,7 +52,7 @@ const EditPassword: FunctionComponent<{
     const confirmPassword = target.elements.Password2.value;
 
     if (confirmPassword != newPassword) {
-      setError("invalid password");
+      setError("Passwords do not match");
     } else {
       try {
         // send data to server
@@ -59,11 +60,14 @@ const EditPassword: FunctionComponent<{
         await axiosPrivate.post("chat/updateroompass", {
           cid: conv.cid,
           oldPass: oldPassword,
-          newPass: newPassword,
+          newPass: newPassword
         });
-        // setRefresh((prev) => !prev);
+        setRefresh((prev) => !prev);
       } catch (err) {
-        setError("failed to update! please try again");
+        if (axios.isAxiosError(err)) {
+          if (err.response?.status == 403) setError("Incorrect old password");
+          else setError("Couldnt update password, please try again.");
+        } else setError("Network error");
       }
     }
     if (doneButtonRef.current) {
@@ -75,10 +79,20 @@ const EditPassword: FunctionComponent<{
     setLoading(false);
   }
 
-  async function deletePassword() {
+  async function deletePassword(oldPassword: string) {
     //
-    console.log("----> delete password");
-    // setRefresh((prev) => !prev);
+    try {
+      await axiosPrivate.post("chat/deleteroompass", {
+        cid: conv.cid,
+        oldPass: oldPassword
+      });
+      setRefresh((prev) => !prev);
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        if (err.response?.status == 403) setError("Incorrect old password");
+        else setError("Couldnt delete password, please try again.");
+      } else setError("Network error");
+    }
   }
 
   const modal = showModal ? (

@@ -56,10 +56,30 @@ const ChatMessages = () => {
       }
     }
     setLoading(true);
-    getConversation();
-    setLoading(false);
-  }, [refresh, conversationID]);
+    getConversation().then(() => {
+      setLoading(false);
+    });
+  }, [conversationID]);
 
+  useEffect(() => {
+    // get conversation
+    if (lg) {
+      setActiveConv(conversationID || "");
+    }
+    async function getConversation() {
+      try {
+        const res = await axiosPrivate.get<Conversation>(
+          `chat/${conversationID}`
+        );
+        setConv(res.data);
+        setMessages(res.data.messages);
+        console.log("conv ===>", res.data);
+      } catch (error) {
+        setError(true);
+      }
+    }
+    getConversation();
+  }, [refresh, conversationID]);
   const refreshRequestHandler = (data: {
     type: string;
     room: string;
