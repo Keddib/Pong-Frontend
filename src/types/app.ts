@@ -34,8 +34,9 @@ interface FriendRequest {
 }
 
 type Notification = {
-  type: "request" | "accept";
+  type: "request" | "accept" | "joinedRoom";
   sender: string; // username
+  room?: { cid: string; name: string };
 };
 
 type GameNotify = {

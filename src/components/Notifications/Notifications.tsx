@@ -5,7 +5,7 @@ import { FunctionComponent, useEffect, useState } from "react";
 import Dropdown from "components/Dropdown";
 import { Link } from "react-router-dom";
 import { Notification } from "types/app";
-import { friendsSocket } from "services/socket";
+import { friendsSocket, usersSocket } from "services/socket";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 
 export default function Notifications() {
@@ -47,6 +47,12 @@ export default function Notifications() {
         setNotifications((notifs) => [data, ...notifs]);
         setNews(true);
       });
+      usersSocket.emit("listeningForEvents");
+      usersSocket.on("notification", async (data) => {
+        // add notification to notification states
+        setNotifications((notifs) => [data, ...notifs]);
+        setNews(true);
+      });
     });
   }, []);
 
@@ -76,6 +82,46 @@ export default function Notifications() {
   );
 }
 
+const NotificationItem: FunctionComponent<{
+  notification: Notification;
+}> = ({ notification }) => {
+  if (notification.type == "request")
+    return (
+      <Link
+        className="rounded-xl bg-queenBlue flex flex-col p-4"
+        to={"/friends/requests"}
+      >
+        <p>
+          <strong>{notification.sender}</strong> sent you a friend request
+        </p>
+      </Link>
+    );
+  else if (notification.type == "accept")
+    return (
+      <Link
+        className="rounded-xl bg-queenBlue flex flex-col p-4"
+        to={`/profile/${notification.sender}`}
+      >
+        <p>
+          <strong>{notification.sender}</strong> accepted your friend request
+        </p>
+      </Link>
+    );
+  else if (notification.type == "joinedRoom")
+    return (
+      <Link
+        className="rounded-xl bg-queenBlue flex flex-col p-4"
+        to={`/messages/${notification.room?.cid}`}
+      >
+        <p>
+          <strong>{notification.sender}</strong> invited you to room :{" "}
+          {notification.room?.name}
+        </p>
+      </Link>
+    );
+  else return <></>;
+};
+
 const NotificationList: FunctionComponent<{
   notifications: Notification[];
   clearNotifs: () => void;
@@ -94,21 +140,7 @@ const NotificationList: FunctionComponent<{
         {notifications.map((n, i) => {
           return (
             <li key={i}>
-              <Link
-                className="rounded-xl bg-queenBlue flex flex-col p-4"
-                to={
-                  n.type == "request"
-                    ? "/friends/requests"
-                    : `/profile/${n.sender}`
-                }
-              >
-                <p>
-                  <strong>{n.sender}</strong>{" "}
-                  {n.type == "request"
-                    ? "sent you a friend request"
-                    : "accept your friend request"}
-                </p>
-              </Link>
+              <NotificationItem notification={n} />
             </li>
           );
         })}
