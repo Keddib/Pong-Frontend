@@ -25,12 +25,17 @@ const AddMemeberToGroup: FunctionComponent<{
         const res = await axiosPrivate.get<User[]>("/friends/all", {
           signal: abortController.signal,
         });
-        setFriends(
-          res.data.filter((f) => {
-            const mem = conv.members.find((m) => m.uid == f.uid);
-            return !mem;
-          })
-        );
+        let filtFriends = res.data.filter((f) => {
+          const mem = conv.members.find((m) => m.uid == f.uid);
+
+          return !mem;
+        });
+        filtFriends = filtFriends.filter((f) => {
+          const banned = conv?.banned.find((m) => m.uid == f.uid);
+          return !banned;
+        });
+        console.log("filtered frineds...", filtFriends);
+        setFriends(filtFriends);
         setLoading(false);
         console.log("well");
       } catch (error) {

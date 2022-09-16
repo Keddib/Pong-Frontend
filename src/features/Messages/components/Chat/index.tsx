@@ -65,6 +65,7 @@ const ChatMessages = () => {
   }, [conversationID]);
 
   useEffect(() => {
+    console.log("refresh------->");
     // get conversation
     if (lg) {
       setActiveConv(conversationID || "");

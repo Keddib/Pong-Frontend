@@ -114,8 +114,8 @@ const NotificationItem: FunctionComponent<{
         to={`/messages/${notification.room?.cid}`}
       >
         <p>
-          <strong>{notification.sender}</strong> invited you to room :{" "}
-          {notification.room?.name}
+          <strong>{notification.sender} </strong>
+          invited you to room : {notification.room?.name}
         </p>
       </Link>
     );

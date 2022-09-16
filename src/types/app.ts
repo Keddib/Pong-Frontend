@@ -80,9 +80,9 @@ type Conversation = {
   owner: User;
   members: User[];
   admins: User[];
+  banned: User[];
   type: string;
   messages: Message[];
-  // status: 'online' | 'offline' | 'playing' | 'spectating'; // members status
   news?: boolean;
 };
 
@@ -96,5 +96,5 @@ export {
   Room,
   ProfileContext,
   UserStatus,
-  Conversation
+  Conversation,
 };
