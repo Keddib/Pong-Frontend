@@ -23,7 +23,7 @@ const GroupMembers: FunctionComponent<{
     try {
       await axiosPrivate.post("chat/removemember", {
         cid: conv.cid,
-        uid: mId,
+        uid: mId
       });
       // refresh
       setRefresh((prev) => !prev);
@@ -37,7 +37,7 @@ const GroupMembers: FunctionComponent<{
     try {
       await axiosPrivate.post("chat/admin", {
         cid: conv.cid,
-        uid: mId,
+        uid: mId
       });
       // refresh
       setRefresh((prev) => !prev);
@@ -45,7 +45,19 @@ const GroupMembers: FunctionComponent<{
       console.log("error chat/admin", error);
     }
   }
-
+  async function banMember(mId: string) {
+    console.log(conv.cid, mId);
+    try {
+      await axiosPrivate.post("chat/ban", {
+        cid: conv.cid,
+        uid: mId
+      });
+      // refresh
+      setRefresh((prev) => !prev);
+    } catch (error) {
+      console.log("error chat/ban", error);
+    }
+  }
   return (
     <div className="messages-members rounded-3xl bg-queenBlue/50 pt-2 pb-6 pl-1">
       <p className="py-2"> members</p>
@@ -86,7 +98,9 @@ const GroupMembers: FunctionComponent<{
                       </button>
                       <button
                         className="start chating flex gap-2 items-center group text-lotion/50 hover:text-lotion"
-                        onClick={() => {}}
+                        onClick={() => {
+                          banMember(member.uid);
+                        }}
                       >
                         <Ban className="w-5 h-5  fill-lotion/50 group-hover:fill-lotion ease-in duration-150" />
                         ban
