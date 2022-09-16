@@ -61,7 +61,7 @@ const EditPassword: FunctionComponent<{
           oldPass: oldPassword,
           newPass: newPassword,
         });
-        setRefresh((prev) => !prev);
+        // setRefresh((prev) => !prev);
       } catch (err) {
         setError("failed to update! please try again");
       }
@@ -78,7 +78,7 @@ const EditPassword: FunctionComponent<{
   async function deletePassword() {
     //
     console.log("----> delete password");
-    setRefresh((prev) => !prev);
+    // setRefresh((prev) => !prev);
   }
 
   const modal = showModal ? (

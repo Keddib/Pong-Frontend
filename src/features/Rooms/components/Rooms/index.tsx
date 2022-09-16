@@ -90,9 +90,7 @@ const Rooms = () => {
   useEffect(() => {
     const rooms = async () => {
       try {
-        const res = await axiosPrivate.get<Conversation[]>(
-          `http://localhost:3500/chat/rooms`
-        );
+        const res = await axiosPrivate.get<Conversation[]>("chat/rooms");
         setRooms(res.data);
       } catch (error) {
         setError("failed loading rooms! please try again");

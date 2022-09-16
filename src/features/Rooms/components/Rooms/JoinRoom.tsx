@@ -2,6 +2,7 @@ import { FunctionComponent, useState } from "react";
 import { Conversation } from "types/app";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const JoinRoom: FunctionComponent<{
   setShowModal: (b: boolean) => void;
@@ -28,6 +29,14 @@ const JoinRoom: FunctionComponent<{
       // redirect to /messages/convID
       navigate(`/messages/${conv.cid}`);
     } catch (err) {
+      if (axios.isAxiosError(err)) {
+        if (err.response?.status) {
+          if (err.response?.status == 403) {
+            setError("wrong password");
+            return;
+          }
+        }
+      }
       setError("somthing went wrong! please try again");
     }
   }
