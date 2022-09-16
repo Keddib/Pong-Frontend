@@ -11,8 +11,10 @@ Tasks :
   [x] 5. Admins can remove members
   [x] 6. Members can Leave Room
   [] 7. Admins cat ban or mute users fro a limited time
+    [x] 7.0 admins can ban users
+    [] 7.1 admins can mute users
   [] 8. No messages from blocked users
-  [] 9. Notification : first message / group invitation
+  [x] 9. Notification : group invitation
   [] 10. freez chat input when user is muted
       [x] 10.0 front end
       [] 10.1 back end

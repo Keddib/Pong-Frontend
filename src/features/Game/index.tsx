@@ -8,12 +8,13 @@ import {
 import Play from "./components/Playing";
 import Waiting from "./components/Waiting";
 import io from "socket.io-client";
-import { User } from "types/user";
+import { User } from "types/app";
 import { Socket } from "socket.io-client";
 import useAuth from "hooks/useAuth";
 import { GameState } from "./components/Pong/utils/Types";
-import useTitle from "~/src/hooks/useTitle";
+import useTitle from "hooks/useTitle";
 import { toast } from "react-toastify";
+import GameInviteCancel from "components/GameInviteCanceled";
 
 interface CustomGamePayload {
   opponent: string;
@@ -102,7 +103,8 @@ const Game: FunctionComponent<{ setGameRoomId: (id: string) => void }> = ({
         socket.current?.close();
         navigate(location.state.from || "/", { replace: true });
         (() => {
-          toast.error("Error Notification !", {
+          toast(<GameInviteCancel />, {
+            autoClose: 1500,
             position: toast.POSITION.TOP_RIGHT,
             className: "game-invite-notification",
           });
@@ -112,8 +114,10 @@ const Game: FunctionComponent<{ setGameRoomId: (id: string) => void }> = ({
         socket.current?.close();
         navigate(location.state.from || "/", { replace: true });
         (() => {
-          toast.error("Error Notification !", {
+          toast(<GameInviteCancel />, {
+            autoClose: 1500,
             position: toast.POSITION.TOP_RIGHT,
+            className: "game-invite-notification",
           });
         })();
       });
