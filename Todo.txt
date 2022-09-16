@@ -14,7 +14,9 @@ Tasks :
   [] 8. No messages from blocked users
   [] 9. Notification : first message / group invitation
   [] 10. freez chat input when user is muted
-  [] 11. redirect new users to profile/edit
+      [x] 10.0 front end
+      [] 10.1 back end
+  [x] 11. redirect new users to profile/settings
 
 Later :
 	[x] chat info owner card

@@ -46,9 +46,12 @@ export default function Login() {
           set2FA(true);
           return;
         }
-        setAccessToken(authenticateRes);
+        setAccessToken(authenticateRes.accessToken);
         signin({} as User);
-        navigate(from, { replace: true });
+        const toFrom = authenticateRes.isNew
+          ? `/profile${authenticateRes.username}/settings`
+          : from;
+        navigate(toFrom, { replace: true });
       } catch (error) {
         setErrorMsg("Authentication failed");
       }

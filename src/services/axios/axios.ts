@@ -13,13 +13,21 @@ const axiosPrivate = axios.create({
 });
 
 const authenticateUser = async (code: string) => {
-  var res = await axiosAuth.get<{ access_token: string }>("/auth", {
+  var res = await axiosAuth.get<{
+    access_token: string;
+    isNew: boolean;
+    username: string;
+  }>("/auth", {
     params: { code: code },
   });
   if (res.status == 201) {
     return "TFA";
   }
-  const accessToken = res.data.access_token;
+  const accessToken = {
+    accessToken: res.data.access_token,
+    isNew: res.data.isNew,
+    username: res.data.username,
+  };
   return accessToken;
 };
 
