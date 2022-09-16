@@ -7,7 +7,7 @@ import {
   NavLink,
   useNavigate,
   useOutletContext,
-  useParams,
+  useParams
 } from "react-router-dom";
 import MessageInput from "components/Messages/MessageInput";
 import Messages from "components/Messages/Messages";
@@ -49,8 +49,10 @@ const ChatMessages = () => {
         const res = await axiosPrivate.get<Conversation>(
           `chat/${conversationID}`
         );
+
         setConv(res.data);
         setMessages(res.data.messages);
+        setMuted((res.data as any).mutedUntil > Date.now());
         console.log("conv ===>", res.data);
       } catch (error) {
         setError(true);
@@ -116,7 +118,7 @@ const ChatMessages = () => {
         ownerId: msg["ownerId"],
         username: msg["username"],
         text: msg["text"],
-        date: new Date(),
+        date: new Date()
       };
       if (user.uid !== msg["ownerId"]) {
         // setmsgFromsrv(newMessage);
@@ -140,13 +142,13 @@ const ChatMessages = () => {
     if (inputMessage) {
       usersSocket.emit("msgToServer", {
         room: conv.cid,
-        message: inputMessage,
+        message: inputMessage
       });
       const newMsg = {
         username: user.username,
         text: inputMessage,
         date: new Date(),
-        ownerId: user.uid,
+        ownerId: user.uid
       };
       setMessages([...messages, newMsg]);
       setFirstConv({ room: conv.cid, new: false });
@@ -205,7 +207,7 @@ const ChatMessages = () => {
             <>
               <Messages messages={messages} />
               {/* mute must be true if the user is muted at this room  */}
-              <MessageInput setMsg={setInputMessage} mute={true} />
+              <MessageInput setMsg={setInputMessage} mute={mute} />
             </>
           )}
         </>
