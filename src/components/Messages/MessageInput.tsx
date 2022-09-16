@@ -1,9 +1,10 @@
 import SendIcon from "assets/icons/dm.svg";
 import { FunctionComponent } from "react";
 
-const MessageInput: FunctionComponent<{ setMsg: (msg: string) => void }> = ({
-  setMsg,
-}) => {
+const MessageInput: FunctionComponent<{
+  setMsg: (msg: string) => void;
+  mute: boolean;
+}> = ({ setMsg, mute }) => {
   function hundleSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
     const target = e.target as typeof e.target & {
@@ -23,19 +24,26 @@ const MessageInput: FunctionComponent<{ setMsg: (msg: string) => void }> = ({
         >
           message
         </label>
-        <div className="message-input-wrapper">
+        <div className={`message-input-wrapper ${mute && "border-crayola/50"}`}>
           <input
             autoComplete="off"
             type="message"
             name="messageInput"
             id="default-message"
-            className="message-input w-full"
+            className={`message-input w-full ${
+              mute && "placeholder:text-crayola/50"
+            }`}
             placeholder="message for players..."
             required
+            disabled={mute}
           />
           <div className="flex items-center pr-4">
             <button type="submit">
-              <SendIcon className="fill-pictonBlue w-5 h-5" />
+              <SendIcon
+                className={`fill-pictonBlue w-5 h-5 ${
+                  mute && "fill-crayola/50"
+                }`}
+              />
             </button>
           </div>
         </div>

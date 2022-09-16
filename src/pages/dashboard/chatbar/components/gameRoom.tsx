@@ -58,7 +58,7 @@ const GameRoom: FunctionComponent<{ show: boolean; roomId: string }> = ({
       {show && (
         <>
           <Messages messages={messages} />
-          <MessageInput setMsg={setInputMessage} />
+          <MessageInput setMsg={setInputMessage} mute={false} />
         </>
       )}
     </>

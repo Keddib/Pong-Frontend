@@ -1,7 +1,25 @@
-1. admin can add, update and remove room password
+Tasks :
+  [x] 1. admin can add, update and remove room password
+    :::-> that means the the room type will change : (4 cases [] )
+    [x] c.2 -> if room is public -> protected : add password
+    [x] c.3 -> if room protected -> protected : update password (needs valid old password)
+    [x] c.4 -> if room protected -> public : delete password (needs valid old password)
 
-that means the the room type will change : (4 cases [] )
-c.1 -> if room is private -> protected : add password
-c.2 -> if room is public -> protected : add password
-c.3 -> if room protected -> protected : update password (needs valid old password)
-c.4 -> if room protected -> public : delete password (needs valid old password)
+  [x] 2. Admin can set other users as admin
+  [x] 3. Admin can add other members
+  [x] 4. Owner can delete room
+  [x] 5. Admins can remove members
+  [x] 6. Members can Leave Room
+  [] 7. Admins cat ban or mute users fro a limited time
+  [] 8. No messages from blocked users
+  [] 9. Notification : first message / group invitation
+  [] 10. freez chat input when user is muted
+  [] 11. redirect new users to profile/edit
+
+Later :
+	[x] chat info owner card
+	[] complete the welcome page
+	[] error notification for game invitation
+
+Bugs :
+  [x] 1. Protected room password bug

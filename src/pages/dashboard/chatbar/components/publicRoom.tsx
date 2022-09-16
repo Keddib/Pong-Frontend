@@ -70,7 +70,7 @@ const PublicRoom: FunctionComponent<{ show: boolean }> = ({ show }) => {
       {show && (
         <>
           <Messages messages={messages} />
-          <MessageInput setMsg={setInputMessage} />
+          <MessageInput setMsg={setInputMessage} mute={false} />
         </>
       )}
     </>
