@@ -68,7 +68,7 @@ const actions = {
       axiosAuth.post(
         "/friends/block",
         {
-          uid: context.rule.request.uid,
+          uid: context.uid,
         },
         {
           headers: {
@@ -86,7 +86,7 @@ const actions = {
       axiosAuth.post(
         "/friends/unblock",
         {
-          uid: context.uid,
+          uid: context.rule.request.uid,
         },
         {
           headers: {

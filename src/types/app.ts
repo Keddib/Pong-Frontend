@@ -31,6 +31,8 @@ interface FriendRequest {
   uid: string;
   status: boolean;
   sender: User;
+  block: boolean;
+  blockedBy: string;
 }
 
 type Notification = {

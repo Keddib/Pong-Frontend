@@ -103,17 +103,17 @@
   }
 
   .h2calc {
-    font-size: calc(18.24px + 4.3vw);
+    font-size: calc(16.24px + 4.3vw);
   }
   .strong {
-    @apply font-beaufort font-heavy uppercase h1calc sm:h1calcmd lg:text-6xl;
+    @apply font-beaufort font-heavy uppercase text-2xl md:h1calc sm:h1calcmd lg:text-6xl;
   }
   h1 {
     @apply font-beaufort font-heavy uppercase h1calc sm:h1calcmd lg:text-6xl;
   }
 
   h2 {
-    @apply font-spiegel font-bold uppercase h2calc sm:text-5xl;
+    @apply font-spiegel font-bold uppercase h2calc lg:text-5xl;
   }
 
   h3 {

@@ -7,7 +7,7 @@ import {
   NavLink,
   useNavigate,
   useOutletContext,
-  useParams
+  useParams,
 } from "react-router-dom";
 import MessageInput from "components/Messages/MessageInput";
 import Messages from "components/Messages/Messages";
@@ -65,11 +65,10 @@ const ChatMessages = () => {
   }, [conversationID]);
 
   useEffect(() => {
-    console.log("refresh------->");
-    // get conversation
     if (lg) {
       setActiveConv(conversationID || "");
     }
+    let timeOut: NodeJS.Timeout;
     async function getConversation() {
       try {
         const res = await axiosPrivate.get<Conversation>(
@@ -77,13 +76,28 @@ const ChatMessages = () => {
         );
         setConv(res.data);
         setMessages(res.data.messages);
-        setMuted((res.data as any).mutedUntil > Date.now());
+        const until = (res.data as any).mutedUntil;
+        console.log(until);
+        if (until > Date.now()) {
+          console.log("mutted", until - Date.now());
+          setMuted(true);
+          timeOut = setTimeout(() => {
+            console.log("time callback");
+            setMuted(false);
+          }, until - Date.now());
+        } else {
+          setMuted(false);
+        }
         console.log("conv ===>", res.data);
       } catch (error) {
         setError(true);
       }
     }
     getConversation();
+    return () => {
+      console.log("cleaaner");
+      clearTimeout(timeOut);
+    };
   }, [refresh, conversationID]);
   const refreshRequestHandler = (data: {
     type: string;
@@ -120,7 +134,7 @@ const ChatMessages = () => {
         ownerId: msg["ownerId"],
         username: msg["username"],
         text: msg["text"],
-        date: new Date()
+        date: new Date(),
       };
       if (user.uid !== msg["ownerId"]) {
         // setmsgFromsrv(newMessage);
@@ -144,13 +158,13 @@ const ChatMessages = () => {
     if (inputMessage) {
       usersSocket.emit("msgToServer", {
         room: conv.cid,
-        message: inputMessage
+        message: inputMessage,
       });
       const newMsg = {
         username: user.username,
         text: inputMessage,
         date: new Date(),
-        ownerId: user.uid
+        ownerId: user.uid,
       };
       setMessages([...messages, newMsg]);
       setFirstConv({ room: conv.cid, new: false });

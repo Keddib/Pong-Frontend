@@ -42,7 +42,10 @@ function useGetUser() {
     }
     return newUser;
   }
-  return [data, error];
+  if (error) {
+    return [null, error];
+  }
+  return [data, null];
 }
 
 export { useGetUser, useGetGames };
