@@ -16,20 +16,20 @@ export default function Notifications() {
 
   async function clearNotifs() {
     setNotifications([]);
-    await axiosPrivate.delete("http://localhost:3500/notification");
+    await axiosPrivate.delete("/notification");
   }
 
   async function showDropDown() {
     setShow(!show);
     if (news) {
       setNews(!news);
-      await axiosPrivate.patch("http://localhost:3500/notification");
+      await axiosPrivate.patch("/notification");
     }
     // notify();
   }
   useEffect(() => {
     const getNotifications = async () => {
-      const res = await axiosPrivate.get("http://localhost:3500/notification");
+      const res = await axiosPrivate.get("/notification");
       let news = false;
       setNotifications(
         res.data.map((n) => {
