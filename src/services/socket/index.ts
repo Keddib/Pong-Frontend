@@ -1,32 +1,33 @@
 import { io } from "socket.io-client";
+import { api } from "config/index";
 
-const usersSocket = io("http://localhost:3500/", {
+const usersSocket = io(api.users, {
   withCredentials: true,
   extraHeaders: {
-    Authorization: "Bearer " + localStorage.getItem("accessToken")
-  }
+    Authorization: "Bearer " + localStorage.getItem("accessToken"),
+  },
 });
 
 usersSocket.on("connect_error", () => {
   usersSocket.connect();
 });
 
-const gameSocket = io("ws://localhost:3001", {
+const gameSocket = io(api.game, {
   withCredentials: true,
   extraHeaders: {
-    Authorization: "Bearer " + localStorage.getItem("accessToken")
-  }
+    Authorization: "Bearer " + localStorage.getItem("accessToken"),
+  },
 });
 
 gameSocket.on("connect_error", () => {
   gameSocket.connect();
 });
 
-const friendsSocket = io("ws://localhost:3500/friends", {
+const friendsSocket = io(`${api.users}/friends`, {
   withCredentials: true,
   extraHeaders: {
-    Authorization: "Bearer " + localStorage.getItem("accessToken")
-  }
+    Authorization: "Bearer " + localStorage.getItem("accessToken"),
+  },
 });
 friendsSocket.on("connect_error", () => {
   friendsSocket.connect();
