@@ -19,37 +19,42 @@ const PublicRoom: FunctionComponent<{ show: boolean }> = ({ show }) => {
     usersSocket.emit("joinRoomToServer", "public");
 
     const getMessages = async () => {
-      const res = await axiosPrivate.get(
-        "http://localhost:3500/chat/messages/public"
-      );
+      const res = await axiosPrivate.get("/chat/messages/public");
       if (Array.isArray(res.data)) {
         setMessages(res.data);
       }
     };
+
+    const listener = (msg: any) => {
+      if (msg.room != "public") return;
+      let newMessage: Message = {
+        ownerId: msg["ownerId"],
+        username: msg["username"],
+        text: msg["text"],
+        date: new Date(),
+      };
+      if (user.uid !== msg["ownerId"]) {
+        setmsgFromsrv(newMessage);
+      }
+    };
     getMessages().then(() => {
-      usersSocket.on("msgToClient", (msg) => {
-        if (msg.room != "public") return;
-        let newMessage: Message = {
-          ownerId: msg["ownerId"],
-          username: msg["username"],
-          text: msg["text"],
-          date: new Date(),
-        };
-        if (user.uid !== msg["ownerId"]) {
-          setmsgFromsrv(newMessage);
-        }
-      });
+      usersSocket.on("msgToClient", listener);
     });
+    return () => {
+      usersSocket.off("msgToClient", listener);
+    };
   }, []);
 
   useEffect(() => {
     if (!msgFromsrv.text) return;
 
     setMessages([...messages, msgFromsrv]);
+    console.log("----->shjdgsjhdgjshdg");
   }, [msgFromsrv]);
 
   useEffect(() => {
     if (!inputMessage.length) return;
+    console.log("----input");
     usersSocket.emit("msgToServer", {
       room: "public",
       message: inputMessage,
