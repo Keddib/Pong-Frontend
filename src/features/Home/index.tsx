@@ -13,7 +13,43 @@ export default function Home() {
       />
       <div className="flex flex-wrap justify-between gap-y-5">
         <Mode modeName="Goalkeeper" className="bg-mode-two" player={ModeImg2} />
-        <Mode modeName="DoublePaddle" className="bg-mode-three" player={ModeImg3} />
+        <Mode
+          modeName="DoublePaddle"
+          className="bg-mode-three"
+          player={ModeImg3}
+        />
+      </div>
+      <div className="mt-2 bg-cornFlower rounded-xl p-4">
+        <h4>rules</h4>
+        <ul>
+          <li>
+            <p>
+              <strong>rule 1</strong> Lorem ipsum dolor sit amet consectetur
+              adipisicing elit. Eius quo possimus dignissimos facere.
+              Distinctio, ut aliquid!
+            </p>
+          </li>
+          <li>
+            <p>
+              <strong>rule 2</strong> Lorem ipsum dolor sit amet consectetur
+              adipisicing elit. Eius quo possimus dignissimos facere.
+              Distinctio, ut aliquid!
+            </p>
+          </li>
+          <li>
+            <p>
+              <strong>rule 3</strong> Lorem ipsum dolor sit amet consectetur
+              adipisicing elit. Eius quo possimus dignissimos facere.
+              Distinctio, ut aliquid!
+            </p>
+          </li>
+          <li>
+            <p></p>
+          </li>
+          <li>
+            <p></p>
+          </li>
+        </ul>
       </div>
     </div>
   );
