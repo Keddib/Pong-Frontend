@@ -3,7 +3,8 @@ import { MediaQuery } from "types/config";
 
 const api = {
   auth42: process.env.AUTH42REDIRECT,
-  users: process.env.USERS_API,
+  users: process.env.USERS_API || "http://localhost:3500",
+  game: process.env.GAME_API || "http://localhost:3001",
 };
 
 interface MediaQueries {
