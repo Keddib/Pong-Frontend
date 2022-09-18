@@ -19,9 +19,9 @@ Tasks :
   [x] 9. Notification : group invitation
   [x] 11. redirect new users to profile/settings
   [x] 16. GAME rules at home page
-  [ ] 12. nickname must be unique
+  [x] 12. nickname must be unique
     [x] back end
-    [] front [message]
+    [x] front [message]
   [x] 15. owener can ban mute kick amdins
   [ ] 14. validate data back end
   [ ] end game page ...
