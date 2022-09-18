@@ -27,6 +27,35 @@ const GroupAdmins: FunctionComponent<{
     }
   }
 
+  async function banMember(mId: string) {
+    console.log(conv.cid, mId);
+    try {
+      await axiosPrivate.post("chat/ban", {
+        cid: conv.cid,
+        uid: mId,
+      });
+      // refresh
+      setRefresh((prev) => !prev);
+    } catch (error) {
+      console.log("error chat/ban", error);
+    }
+  }
+  async function muteMember(mId: string) {
+    console.log(conv.cid, mId);
+    try {
+      await axiosPrivate.post("chat/mute", {
+        //{ cid: string; uid: string; minutes: number }
+        cid: conv.cid,
+        uid: mId,
+        minutes: 1,
+      });
+      // refresh
+      setRefresh((prev) => !prev);
+    } catch (error) {
+      console.log("error chat/mute", error);
+    }
+  }
+
   return (
     <div className="messages-members rounded-3xl bg-queenBlue/50 pt-2 pb-6 pl-1">
       <p className="py-2">admins</p>
@@ -52,14 +81,18 @@ const GroupAdmins: FunctionComponent<{
                       </button>
                       <button
                         className="start chating flex gap-2 items-center group text-lotion/50 hover:text-lotion"
-                        onClick={() => {}}
+                        onClick={() => {
+                          banMember(admin.uid);
+                        }}
                       >
                         <Ban className="w-6 h-6  fill-lotion/50 group-hover:fill-lotion ease-in duration-150" />
                         ban
                       </button>
                       <button
                         className="start chating flex gap-2 items-center group text-lotion/50 hover:text-lotion"
-                        onClick={() => {}}
+                        onClick={() => {
+                          muteMember(admin.uid);
+                        }}
                       >
                         <Mute className="w-6 h-6  fill-lotion/50 group-hover:fill-lotion ease-in duration-150" />
                         mute for one houre

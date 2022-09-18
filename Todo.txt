@@ -18,10 +18,12 @@ Tasks :
   [x] 8. No messages from blocked users
   [x] 9. Notification : group invitation
   [x] 11. redirect new users to profile/settings
+  [x] 16. GAME rules at home page
   [ ] 12. nickname must be unique
-  [ ] 14. valide data back end
-  [ ] 15. owener can ban mute kick amdins
-  [ ] 16. GAME rules at home page
+    [x] back end
+    [] front [message]
+  [x] 15. owener can ban mute kick amdins
+  [ ] 14. validate data back end
   [ ] end game page ...
     [ ] 13. back to qeue or exit
 
@@ -33,5 +35,5 @@ Later :
 Bugs :
   [x] 1. Protected room password bug
   [x] 2. message duplicate
-  [x] 3. two fa
+  [ ] 3. two fa
   [ ] 5. game crach

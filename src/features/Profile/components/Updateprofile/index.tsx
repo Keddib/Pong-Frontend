@@ -5,6 +5,7 @@ import useAxiosPrivate from "hooks/useAxiosPrivate";
 import { Spinner } from "components/Loading";
 import { User } from "types/app";
 import useProfileState from "features/Profile/hooks/useProfileState";
+import axios from "axios";
 
 function EditProfile() {
   const { user, updateUser } = useAuth();
@@ -84,7 +85,20 @@ function EditProfile() {
       }
       target.elements.nickname.value = "";
     } catch (err) {
-      setError("upload filed! please try again");
+      if (axios.isAxiosError(err)) {
+        if (err.response) {
+          if (err.response?.data["message"] == "nickname Already Used") {
+            setError("nickname Already Used");
+          } else if (
+            err.response?.data["message"] ==
+            "Validation failed (expected size is less than 2097152)"
+          ) {
+            setError("photo size too larg : try with less than 2MB");
+          }
+        }
+        console.log("response errror", err.response);
+      }
+      setError("somrthing went wrong! please retry later");
     }
     setLoading(false);
     if (subButtonRef.current) {
