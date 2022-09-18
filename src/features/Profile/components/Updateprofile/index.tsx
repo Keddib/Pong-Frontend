@@ -87,6 +87,7 @@ function EditProfile() {
     } catch (err) {
       if (axios.isAxiosError(err)) {
         if (err.response) {
+          console.log("body message", err.response.data["message"]);
           if (err.response?.data["message"] == "nickname Already Used") {
             setError("nickname Already Used");
           } else if (
@@ -97,8 +98,9 @@ function EditProfile() {
           }
         }
         console.log("response errror", err.response);
+      } else {
+        setError("somrthing went wrong! please retry later");
       }
-      setError("somrthing went wrong! please retry later");
     }
     setLoading(false);
     if (subButtonRef.current) {
