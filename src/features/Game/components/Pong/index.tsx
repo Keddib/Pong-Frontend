@@ -264,7 +264,7 @@ const Pong: React.FC<GameWindowProps> = (props: GameWindowProps) => {
   };
   const drawPing = (p5: p5Types) => {
     p5.push();
-    if (p5.frameCount % 40 == 0)
+    if (p5.frameCount % 20 == 0)
       ping = Date.now() - getGameStateData().timestamp;
     p5.textSize(15);
     p5.textAlign(p5.CENTER);

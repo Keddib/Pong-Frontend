@@ -4,10 +4,12 @@ import Ellipsis from "assets/icons/ellipsis.svg";
 import Xmark from "assets/icons/xmark.svg";
 import Block from "assets/icons/block-user.svg";
 import Dropdown from "components/Dropdown";
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { User } from "types/app";
 import useProfileState from "../../hooks/useProfileState";
+import useUserStatus from "~/src/hooks/useUserStatus";
+import useCurrentGame from "~/src/hooks/useCurrentGame";
 
 const Actions: FunctionComponent<{ user: User }> = ({ user }) => {
   const [show, setShow] = useState(false);
@@ -16,16 +18,31 @@ const Actions: FunctionComponent<{ user: User }> = ({ user }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.pathname;
+  const { userStatus } = useUserStatus();
+  const currentGameId = useCurrentGame(user.uid);
+
+  const [inGame, setInGame] = useState(user.status == "playing");
+
+  useEffect(() => {
+    if (userStatus.userId == user.uid) {
+      if (userStatus.status == "playing") setInGame(true);
+      else setInGame(false);
+    }
+  }, [userStatus]);
 
   function showDropDown() {
     setShow(!show);
   }
 
-  const handleInviteToPlayButton = () => {
-    const gameMode = "classic";
-    navigate("/game", {
-      state: { mode: gameMode, custom: { opponent: user.uid }, from },
-    });
+  const handleInviteToPlayOrSpectateButton = () => {
+    if (inGame) {
+      navigate("/game?spectate=" + currentGameId);
+    } else {
+      const gameMode = "classic";
+      navigate("/game", {
+        state: { mode: gameMode, custom: { opponent: user.uid }, from }
+      });
+    }
   };
 
   const hundleBlock = () => {
@@ -50,10 +67,19 @@ const Actions: FunctionComponent<{ user: User }> = ({ user }) => {
             </div>
             <button
               className="send game request flex gap-2 items-center group"
-              onClick={handleInviteToPlayButton}
+              onClick={handleInviteToPlayOrSpectateButton}
             >
-              <GamePad className="w-6 h-6 fill-lotion/50  ease-in duration-150 group-hover:fill-lotion" />
-              invite to play
+              {!inGame ? (
+                <>
+                  <GamePad className="w-6 h-6 fill-lotion/50  ease-in duration-150 group-hover:fill-lotion" />
+                  Invite to play
+                </>
+              ) : (
+                <>
+                  <GamePad className="w-6 h-6 fill-lotion/50  ease-in duration-150 group-hover:fill-lotion" />
+                  Spectate
+                </>
+              )}
             </button>
             <button
               className="start chating flex gap-2 items-center group"

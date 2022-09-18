@@ -22,15 +22,15 @@ const PrivateRoomInfo: FunctionComponent<{
       state: {
         mode: gameMode,
         custom: { opponent: user.uid },
-        from: location.pathname,
-      },
+        from: location.pathname
+      }
     });
   };
 
   async function hundleBlock() {
     try {
       await axiosPrivate.post("/friends/block", {
-        uid: user.uid,
+        uid: user.uid
       });
       setRefresh((prev) => !prev);
       navigate("/messages");
