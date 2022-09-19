@@ -127,7 +127,7 @@ const GroupMembers: FunctionComponent<{
                         }}
                       >
                         <Mute className="w-6 h-6  fill-lotion/50 group-hover:fill-lotion ease-in duration-150" />
-                        mute for one houre
+                        mute for one minute
                       </button>
                     </>
                   )}

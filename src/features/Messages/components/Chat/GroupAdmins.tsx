@@ -18,7 +18,7 @@ const GroupAdmins: FunctionComponent<{
     try {
       await axiosPrivate.post("chat/deleteadmin", {
         cid: conv.cid,
-        uid: adId,
+        uid: adId
       });
       // refresh
       setRefresh((prev) => !prev);
@@ -32,7 +32,7 @@ const GroupAdmins: FunctionComponent<{
     try {
       await axiosPrivate.post("chat/ban", {
         cid: conv.cid,
-        uid: mId,
+        uid: mId
       });
       // refresh
       setRefresh((prev) => !prev);
@@ -47,7 +47,7 @@ const GroupAdmins: FunctionComponent<{
         //{ cid: string; uid: string; minutes: number }
         cid: conv.cid,
         uid: mId,
-        minutes: 1,
+        minutes: 1
       });
       // refresh
       setRefresh((prev) => !prev);
@@ -95,7 +95,7 @@ const GroupAdmins: FunctionComponent<{
                         }}
                       >
                         <Mute className="w-6 h-6  fill-lotion/50 group-hover:fill-lotion ease-in duration-150" />
-                        mute for one houre
+                        mute for one minute
                       </button>
                     </>
                   )}
