@@ -20,8 +20,8 @@ const ChatBarTabs: FunctionComponent<{
     <div className="Links flex items-center justify-evenly rounded-3xl bg-queenBlue/50 p-1">
       <button onClick={hundlePublic}>
         <p
-          className={`text-sm font-semibold text-lotion/50 hover:text-lotion ${
-            currentRoom == rooms[0] && "text-lotion"
+          className={`text-sm font-semibold   ${
+            currentRoom != rooms[0] && "text-lotion/50"
           }`}
         >
           public{" "}
@@ -35,9 +35,9 @@ const ChatBarTabs: FunctionComponent<{
       <span className="bg-pictonBlue w-1 h-8 rounded-xl"></span>
       <button onClick={hundleGame} disabled={!rooms[1]}>
         <p
-          className={`text-sm font-semibold text-lotion/50 ${
-            rooms[1] && "hover:text-lotion"
-          } ${currentRoom == rooms[1] && "text-lotion"}`}
+          className={`text-sm font-semibold  ${rooms[1] && ""} ${
+            currentRoom != rooms[1] && "text-lotion/50"
+          }`}
         >
           game
         </p>

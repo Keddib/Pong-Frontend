@@ -23,7 +23,7 @@ Tasks :
     [x] back end
     [x] front [message]
   [x] 15. owener can ban mute kick amdins
-  [ ] 14. validate data back end
+  [x] 14. validate data back end
   [ ] end game page ...
     [ ] 13. back to qeue or exit
 
@@ -35,5 +35,5 @@ Later :
 Bugs :
   [x] 1. Protected room password bug
   [x] 2. message duplicate
-  [ ] 3. two fa
+  [x] 3. two fa
   [ ] 5. game crach
