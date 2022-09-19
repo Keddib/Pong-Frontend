@@ -24,23 +24,19 @@ export default function Home() {
         <ul>
           <li>
             <p>
-              <strong>rule 1</strong> Lorem ipsum dolor sit amet consectetur
-              adipisicing elit. Eius quo possimus dignissimos facere.
-              Distinctio, ut aliquid!
+              <strong>Rule 1</strong> Hold left mouse button above or below your
+              paddle to move it.
             </p>
           </li>
           <li>
             <p>
-              <strong>rule 2</strong> Lorem ipsum dolor sit amet consectetur
-              adipisicing elit. Eius quo possimus dignissimos facere.
-              Distinctio, ut aliquid!
+              <strong>Rule 2</strong> Dont let the ball enter you zone.
             </p>
           </li>
           <li>
             <p>
-              <strong>rule 3</strong> Lorem ipsum dolor sit amet consectetur
-              adipisicing elit. Eius quo possimus dignissimos facere.
-              Distinctio, ut aliquid!
+              <strong>Rule 3</strong> You win if you score N goals before your
+              opponent.
             </p>
           </li>
           <li>
