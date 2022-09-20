@@ -53,7 +53,6 @@ const ChatMessages = () => {
         setConv(res.data);
         setMessages(res.data.messages);
         setMuted((res.data as any).mutedUntil > Date.now());
-        console.log("conv ===>", res.data);
       } catch (error) {
         setError(true);
       }
@@ -77,25 +76,20 @@ const ChatMessages = () => {
         setConv(res.data);
         setMessages(res.data.messages);
         const until = (res.data as any).mutedUntil;
-        console.log(until);
         if (until > Date.now()) {
-          console.log("mutted", until - Date.now());
           setMuted(true);
           timeOut = setTimeout(() => {
-            console.log("time callback");
             setMuted(false);
           }, until - Date.now());
         } else {
           setMuted(false);
         }
-        console.log("conv ===>", res.data);
       } catch (error) {
         setError(true);
       }
     }
     getConversation();
     return () => {
-      console.log("cleaaner");
       clearTimeout(timeOut);
     };
   }, [refresh, conversationID]);
@@ -104,8 +98,6 @@ const ChatMessages = () => {
     room: string;
     removedUser?: string;
   }) => {
-    console.log("chat refresh request", data);
-
     if (
       (conversationID == data.room &&
         data.type == "remove" &&

@@ -24,8 +24,8 @@ Tasks :
     [x] front [message]
   [x] 15. owener can ban mute kick amdins
   [x] 14. validate data back end
-  [ ] end game page ...
-    [ ] 13. back to qeue or exit
+  [x] end game page ...
+    [x] 13. back to qeue or exit
 
 Later :
 	[x] chat info owner card
@@ -37,3 +37,8 @@ Bugs :
   [x] 2. message duplicate
   [x] 3. two fa
   [ ] 5. game crach
+
+ending :
+  [] 1. clean the code
+  [] 2. search how to serve the build version
+  [] 3. push to intra repo

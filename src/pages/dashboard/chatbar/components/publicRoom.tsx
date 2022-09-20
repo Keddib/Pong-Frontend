@@ -49,12 +49,10 @@ const PublicRoom: FunctionComponent<{ show: boolean }> = ({ show }) => {
     if (!msgFromsrv.text) return;
 
     setMessages([...messages, msgFromsrv]);
-    console.log("----->shjdgsjhdgjshdg");
   }, [msgFromsrv]);
 
   useEffect(() => {
     if (!inputMessage.length) return;
-    console.log("----input");
     usersSocket.emit("msgToServer", {
       room: "public",
       message: inputMessage,

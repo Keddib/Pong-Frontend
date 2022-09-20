@@ -2,7 +2,7 @@ import UserPlus from "assets/icons/user-plus.svg";
 import UserMinus from "assets/icons/user-minus.svg";
 import Ban from "assets/icons/ban.svg";
 import Mute from "assets/icons/mute.svg";
-import { FunctionComponent, useEffect } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import { Conversation } from "types/app";
 import GroupMember from "./GroupMember";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
@@ -14,63 +14,57 @@ const GroupMembers: FunctionComponent<{
   setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ conv, position, setRefresh }) => {
   const axiosPrivate = useAxiosPrivate();
-
-  useEffect(() => {
-    console.log("members....>");
-  }, [conv]);
+  const [error, setError] = useState("");
 
   async function removeMember(mId: string) {
     try {
       await axiosPrivate.post("chat/removemember", {
         cid: conv.cid,
-        uid: mId
+        uid: mId,
       });
       // refresh
       setRefresh((prev) => !prev);
     } catch (error) {
-      console.log("error chat/admin", error);
+      setError("error! try again");
     }
   }
 
   async function setMemberAdmin(mId: string) {
-    console.log(conv.cid, mId);
     try {
       await axiosPrivate.post("chat/admin", {
         cid: conv.cid,
-        uid: mId
+        uid: mId,
       });
       // refresh
       setRefresh((prev) => !prev);
     } catch (error) {
-      console.log("error chat/admin", error);
+      setError("error! try again");
     }
   }
   async function banMember(mId: string) {
-    console.log(conv.cid, mId);
     try {
       await axiosPrivate.post("chat/ban", {
         cid: conv.cid,
-        uid: mId
+        uid: mId,
       });
       // refresh
       setRefresh((prev) => !prev);
     } catch (error) {
-      console.log("error chat/ban", error);
+      setError("error! try again");
     }
   }
   async function muteMember(mId: string) {
-    console.log(conv.cid, mId);
     try {
       await axiosPrivate.post("chat/mute", {
         //{ cid: string; uid: string; minutes: number }
         cid: conv.cid,
         uid: mId,
-        minutes: 1
+        minutes: 1,
       });
       // refresh
       setRefresh((prev) => !prev);
     } catch (error) {
-      console.log("error chat/mute", error);
+      setError("error! try again");
     }
   }
   return (
@@ -129,6 +123,7 @@ const GroupMembers: FunctionComponent<{
                         <Mute className="w-6 h-6  fill-lotion/50 group-hover:fill-lotion ease-in duration-150" />
                         mute for one minute
                       </button>
+                      {error && <p>{error}</p>}
                     </>
                   )}
                 </>

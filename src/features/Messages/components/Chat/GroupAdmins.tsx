@@ -1,10 +1,11 @@
 import UserMinus from "assets/icons/user-minus.svg";
 import Ban from "assets/icons/ban.svg";
 import Mute from "assets/icons/mute.svg";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useState } from "react";
 import { Conversation } from "types/app";
 import GroupMember from "./GroupMember";
 import useAxiosPrivate from "hooks/useAxiosPrivate";
+import SetErrorPage from "~/src/components/Error";
 
 const GroupAdmins: FunctionComponent<{
   conv: Conversation;
@@ -12,47 +13,44 @@ const GroupAdmins: FunctionComponent<{
   setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ conv, position, setRefresh }) => {
   const axiosPrivate = useAxiosPrivate();
+  const [error, setError] = useState("");
 
   async function removeAdmin(adId: string) {
-    console.log(conv.cid, adId);
     try {
       await axiosPrivate.post("chat/deleteadmin", {
         cid: conv.cid,
-        uid: adId
+        uid: adId,
       });
       // refresh
       setRefresh((prev) => !prev);
     } catch (error) {
-      console.log("error chat/admin", error);
+      setError("error! try again");
     }
   }
 
   async function banMember(mId: string) {
-    console.log(conv.cid, mId);
     try {
       await axiosPrivate.post("chat/ban", {
         cid: conv.cid,
-        uid: mId
+        uid: mId,
       });
       // refresh
       setRefresh((prev) => !prev);
     } catch (error) {
-      console.log("error chat/ban", error);
+      setError("error! try again");
     }
   }
   async function muteMember(mId: string) {
-    console.log(conv.cid, mId);
     try {
       await axiosPrivate.post("chat/mute", {
-        //{ cid: string; uid: string; minutes: number }
         cid: conv.cid,
         uid: mId,
-        minutes: 1
+        minutes: 1,
       });
       // refresh
       setRefresh((prev) => !prev);
     } catch (error) {
-      console.log("error chat/mute", error);
+      setError("error! try again");
     }
   }
 
@@ -97,6 +95,7 @@ const GroupAdmins: FunctionComponent<{
                         <Mute className="w-6 h-6  fill-lotion/50 group-hover:fill-lotion ease-in duration-150" />
                         mute for one minute
                       </button>
+                      {error && <p>{error}</p>}
                     </>
                   )}
                 </>

@@ -26,7 +26,6 @@ const GroupRoomInfo: FunctionComponent<{
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("group room info");
     if (conv.owner.uid == user.uid) {
       setUserPosition("owner");
     } else if (conv.admins.find((u) => u.uid == user.uid)) {
@@ -39,7 +38,6 @@ const GroupRoomInfo: FunctionComponent<{
   async function leaveRoom() {
     //
     try {
-      console.log("delete user from conversation", conv, user);
       await axiosPrivate.post("chat/leave", {
         cid: conv.cid,
       });
@@ -50,7 +48,6 @@ const GroupRoomInfo: FunctionComponent<{
     } catch (error) {
       // set error
       setError("somthing went wrong! please try again");
-      console.log("delete error", error);
     }
     //
   }
@@ -59,14 +56,12 @@ const GroupRoomInfo: FunctionComponent<{
       //
 
       const res = await axiosPrivate.delete(`chat/${conv.cid}`);
-      console.log("---->", res);
       setShowModal(false);
       // refresh
       navigate("/messages");
     } catch (error) {
       // set error
       setError("somthing went wrong! please try again");
-      console.log("delete error", error);
     }
     //
   }

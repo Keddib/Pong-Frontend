@@ -30,7 +30,6 @@ const ProfileWrapper = () => {
         if (res.data.uid == user.uid) {
           updateUser(res.data);
         }
-        console.log(res.data);
         send({
           type: "DATA_CHANGED",
           data: res.data,
@@ -48,7 +47,6 @@ const ProfileWrapper = () => {
   }, [username]);
 
   useEffect(() => {
-    console.log("state", state.value);
     if (state.matches("error")) {
       setErrorStatusCode(400);
       return;

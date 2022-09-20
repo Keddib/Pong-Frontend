@@ -56,11 +56,10 @@ const EditPassword: FunctionComponent<{
     } else {
       try {
         // send data to server
-        console.log(oldPassword, newPassword, confirmPassword);
         await axiosPrivate.post("chat/updateroompass", {
           cid: conv.cid,
           oldPass: oldPassword,
-          newPass: newPassword
+          newPass: newPassword,
         });
         setRefresh((prev) => !prev);
       } catch (err) {
@@ -84,7 +83,7 @@ const EditPassword: FunctionComponent<{
     try {
       await axiosPrivate.post("chat/deleteroompass", {
         cid: conv.cid,
-        oldPass: oldPassword
+        oldPass: oldPassword,
       });
       setRefresh((prev) => !prev);
     } catch (err) {

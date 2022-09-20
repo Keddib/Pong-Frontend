@@ -5,6 +5,7 @@ import useMedia from "hooks/useMedia";
 import UserCard from "components/Usercard";
 import { User } from "types/user";
 import LoadingPlayer from "../Waiting/components/LoadingUser";
+import { useLocation, useNavigate } from "react-router-dom";
 
 type Players = User[];
 
@@ -31,6 +32,10 @@ const Play: FunctionComponent<Props> = (props) => {
   const [sectionWidth, setSectionWidth] = useState(0);
   const [sectionHeight, setSectionHeight] = useState(0);
   const [ready, setReady] = useState(false);
+  const [gameEnd, setGameEnd] = useState(false);
+  const [gameMode, setGameMode] = useState("");
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const setup = () => {
@@ -51,12 +56,38 @@ const Play: FunctionComponent<Props> = (props) => {
         className="gameComponent w-full align-center grow rounded-3xl"
       >
         {ready && (
-          <Pong
-            gameStateData={props.gameStateData}
-            socket={props.socket}
-            width={sectionWidth}
-            height={sectionHeight}
-          />
+          <>
+            <Pong
+              gameStateData={props.gameStateData}
+              socket={props.socket}
+              width={sectionWidth}
+              height={sectionHeight}
+            />
+            {gameEnd && (
+              <div className="bg-queenBlue p-4 rounded-b-3xl">
+                <div className="flex items-center justify-center gap-2">
+                  <button
+                    className="button--4 w-1/2 border-none"
+                    onClick={() => {
+                      navigate("/home");
+                    }}
+                  >
+                    Back home
+                  </button>
+                  <button
+                    className="button--3 w-1/2"
+                    onClick={() => {
+                      navigate("/game", {
+                        state: { mode: gameMode, from: location.pathname },
+                      });
+                    }}
+                  >
+                    Play again
+                  </button>
+                </div>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

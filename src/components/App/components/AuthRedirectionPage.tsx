@@ -7,7 +7,6 @@ const AuthRedirection = () => {
 
   useEffect(() => {
     const code = searchParams.get("code");
-    console.log("code from redirect url", code);
     if (!code) {
       navigate("/", { replace: true });
     }

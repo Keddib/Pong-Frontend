@@ -97,7 +97,6 @@ const Rooms = () => {
       }
       setloading(false);
     };
-    console.log("------>");
     rooms();
   }, [qeury, refresh]);
 

@@ -34,10 +34,8 @@ const AddMemeberToGroup: FunctionComponent<{
           const banned = conv?.banned.find((m) => m.uid == f.uid);
           return !banned;
         });
-        console.log("filtered frineds...", filtFriends);
         setFriends(filtFriends);
         setLoading(false);
-        console.log("well");
       } catch (error) {
         setLoading(false);
       }

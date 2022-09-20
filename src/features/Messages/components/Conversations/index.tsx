@@ -37,11 +37,8 @@ const ConversationsList = () => {
     const GetConversations = async () => {
       try {
         const res = await axiosPrivate.get<Conversation[]>("/friends/rooms", {
-          signal: abortController.signal
+          signal: abortController.signal,
         });
-        console.log(res.data);
-        console.log("refreshing ", joinedRoom, joinedRoomCounter, updatedRoom);
-
         SetConversations(
           res.data.filter((c) => {
             if (c.cid == updatedRoom) {
@@ -70,7 +67,6 @@ const ConversationsList = () => {
 
   //  make the last avtive room at the top of the list
   const msgToClientHandler = (data: Message) => {
-    console.log("room", data.room);
     setFirstConv({ room: data.room || "", new: true });
   };
 
@@ -79,8 +75,6 @@ const ConversationsList = () => {
     room: string;
     removedUser?: string;
   }) => {
-    console.log("convs refresh request", data);
-
     setJoinedRoom(data.type == "remove" ? "" : data.room);
 
     setJoinedRoomCounter((prev) => prev + 1);
@@ -100,12 +94,9 @@ const ConversationsList = () => {
 
   useEffect(() => {
     if (firstConv.room) {
-      console.log(conversations);
       const rIndex = conversations.findIndex((conv) => {
-        console.log("ciidd", conv.cid);
         return conv.cid === firstConv.room;
       });
-      console.log("index", rIndex);
       if (rIndex == -1) return;
       else if (rIndex == 0) {
         const fRoom = conversations[0];
@@ -115,7 +106,6 @@ const ConversationsList = () => {
       const fRoom = conversations.splice(rIndex, 1)[0];
       if (firstConv.new && firstConv.room != activeConv) fRoom.news = true;
       // only if user isnt the message sender + remove when seen
-      console.log("convs", conversations, fRoom);
       SetConversations([fRoom, ...conversations]);
     }
   }, [firstConv]);
@@ -126,18 +116,13 @@ const ConversationsList = () => {
       // calling private room with user :location?.state?.receiver
       const receiver = location?.state?.receiver;
       if (receiver) {
-        console.log("---->receiver");
         usersSocket.emit("createPrivateRoom", { receiver });
         usersSocket.on("privateRoomCreated", (room: Conversation) => {
-          console.log("---->1", room);
-          console.log(room);
           const exRoom = conversations.find((c) => c.cid == room.cid);
           if (!exRoom) {
-            console.log("convs", room);
-
             SetConversations((prev) => [
               { ...room, name: "nonahgffghgfme" },
-              ...prev
+              ...prev,
             ]);
           }
           navigate(room.cid);
@@ -146,17 +131,12 @@ const ConversationsList = () => {
 
       // listening for new message
       usersSocket.on("newMessage", (data: { sender: string; room: string }) => {
-        console.log("----> wwwa", data.room);
-        console.log(data.room);
         const updatedRoom = conversations.find((c) => c.cid == data.room);
-        console.log("");
         if (updatedRoom) {
-          console.log("should notify");
           setFirstConv({ room: updatedRoom.cid, new: true });
 
           // add red dot on conv
         } else {
-          console.log("should refresh");
           setUpdatedRoom(data.room);
         }
       });
@@ -176,7 +156,6 @@ const ConversationsList = () => {
     } else {
       setWelcome(false);
     }
-    console.log("state of location", location.state);
     if (location?.state?.refresh) {
       setUpdatedRoom("....");
     }
