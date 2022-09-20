@@ -39,6 +39,6 @@ Bugs :
   [ ] 5. game crach
 
 ending :
-  [] 1. clean the code
+  [x] 1. clean the code
   [] 2. search how to serve the build version
   [] 3. push to intra repo
