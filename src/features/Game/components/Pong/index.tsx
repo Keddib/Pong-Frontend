@@ -7,7 +7,7 @@ import {
   GameState,
   GameWindowProps,
   GoalKeeperConfig,
-  DoublePaddleConfig,
+  DoublePaddleConfig
 } from "./utils/Types";
 
 // import AuthService , {LoginDto, RegisterDto} from "../../services/auth/auth.service"
@@ -257,6 +257,8 @@ const Pong: React.FC<GameWindowProps> = (props: GameWindowProps) => {
           relativeWidth / 2,
           relativeHeight / 2 + 50
         );
+        props.setGameMode(getGameStateData().mode);
+        props.setGameEnd(true);
       }
       return true;
     }

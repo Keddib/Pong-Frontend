@@ -6,6 +6,7 @@ import UserCard from "components/Usercard";
 import { User } from "types/user";
 import LoadingPlayer from "../Waiting/components/LoadingUser";
 import { useLocation, useNavigate } from "react-router-dom";
+import { randomBytes } from "crypto";
 
 type Players = User[];
 
@@ -62,6 +63,8 @@ const Play: FunctionComponent<Props> = (props) => {
               socket={props.socket}
               width={sectionWidth}
               height={sectionHeight}
+              setGameEnd={setGameEnd}
+              setGameMode={setGameMode}
             />
             {gameEnd && (
               <div className="bg-queenBlue p-4 rounded-b-3xl">
@@ -78,7 +81,11 @@ const Play: FunctionComponent<Props> = (props) => {
                     className="button--3 w-1/2"
                     onClick={() => {
                       navigate("/game", {
-                        state: { mode: gameMode, from: location.pathname },
+                        state: {
+                          mode: gameMode,
+                          from: location.pathname,
+                          retry: randomBytes(10).toString()
+                        }
                       });
                     }}
                   >

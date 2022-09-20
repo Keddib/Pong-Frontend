@@ -1,61 +1,62 @@
 interface GameWindowProps {
-    gameStateData: any;
-    socket: any;
-    width: number;
-    height: number;
-  }
-  
+  gameStateData: any;
+  socket: any;
+  width: number;
+  height: number;
+  setGameEnd: (v: boolean) => void;
+  setGameMode: (v: string) => void;
+}
+
 interface DoublePaddleConfig {
-    paddleYOffset: number; // 30% of height
-    paddleXOffset: number; // 30% of width
-    
+  paddleYOffset: number; // 30% of height
+  paddleXOffset: number; // 30% of width
 }
 interface GoalKeeperConfig {
-    borderSize: number; // % of height
-    goalSize: number;
+  borderSize: number; // % of height
+  goalSize: number;
 }
 interface GameState {
-    mode: string; //gamemode
+  mode: string; //gamemode
 
-    // Window dimensions
-    aspectRatio: number;
-    width: number;
-    height: number;
+  // Window dimensions
+  aspectRatio: number;
+  width: number;
+  height: number;
 
-    //ball
-    ballX: number;
-    ballY: number;
-    ballDirX: number;
-    ballDirY: number;
-    ballSpeed: number;
-    ballRadius: number;
+  //ball
+  ballX: number;
+  ballY: number;
+  ballDirX: number;
+  ballDirY: number;
+  ballSpeed: number;
+  ballRadius: number;
 
-    //paddle
-    paddleWidth: number;
-    paddleHeight: number;
-    paddleSpeed: number;
-    paddleOneX: number;
-    paddleOneY: number;
-    paddleTwoX: number;
-    paddleTwoY: number;
+  //paddle
+  paddleWidth: number;
+  paddleHeight: number;
+  paddleSpeed: number;
+  paddleOneX: number;
+  paddleOneY: number;
+  paddleTwoX: number;
+  paddleTwoY: number;
 
-    state: 0 | 1 | 2 | 3 | 4;
+  state: 0 | 1 | 2 | 3 | 4;
 
-    scores: Array<number>;
-    maxScore: number;
-    players: Array<string>;
-    timestamp: number;
+  scores: Array<number>;
+  maxScore: number;
+  players: Array<string>;
+  timestamp: number;
 
-    done: boolean;
+  done: boolean;
 
-    winner: string;
+  winner: string;
 
-    timeout: number; // 0 for no timeout // time player left game 
-    timeoutPeriodInSeconds: number;
-    
-    gameModeConfig: null | DoublePaddleConfig | GoalKeeperConfig
+  timeout: number; // 0 for no timeout // time player left game
+  timeoutPeriodInSeconds: number;
 
-    playerData: string
+  gameModeConfig: null | DoublePaddleConfig | GoalKeeperConfig;
+
+  playerData: string;
 }
 
-export { GameState, GameWindowProps, GoalKeeperConfig, DoublePaddleConfig}
+export { GameState, GameWindowProps, GoalKeeperConfig, DoublePaddleConfig };
