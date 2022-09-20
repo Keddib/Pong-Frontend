@@ -4,7 +4,7 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "dev": "parcel -p 8000 public/index.html",
+    "dev": "parcel -p 80 public/index.html",
     "build": "parcel build public/index.html",
     "production": "node src/server.js",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
