@@ -13,6 +13,7 @@ import useAuth from "hooks/useAuth";
 const RoomItem: FunctionComponent<{ room: Conversation }> = ({ room }) => {
   const [showModal, setShowModal] = useState(false);
   const [roomName, setRoomName] = useState(room.name);
+  const [ownerName, setOwnerName] = useState(room.owner.nickname);
   const { user } = useAuth();
   const navigate = useNavigate();
   const modal = showModal ? (
@@ -30,6 +31,12 @@ const RoomItem: FunctionComponent<{ room: Conversation }> = ({ room }) => {
     }
   }, [room]);
 
+  useEffect(() => {
+    if (ownerName && ownerName.length > 16) {
+      setOwnerName(ownerName.substring(0, 15) + ".");
+    }
+  }, [ownerName]);
+
   return (
     <>
       {modal}
@@ -37,11 +44,12 @@ const RoomItem: FunctionComponent<{ room: Conversation }> = ({ room }) => {
         {room.type == "protected" && (
           <Lock className="absolute top-4 right-4 w-5 fill-lotion" />
         )}
-        <div className="flex flex-col mt-4 gap-2">
+        <div className="flex flex-col mt-4 gap-2 grow">
           <h4 className="text-2xl ">{roomName}</h4>
-          <p className="text-lotion/70 text-xl normal-case font-light">
+          <p className="text-lotion/70 text-xl normal-case font-light break-words">
             {room.description || "description may containe 50 character"}
           </p>
+          <span className="grow"></span>
           <p className="text-sm font-light flex items-center gap-2 self-end ">
             members :
             <span className="text-electricGreen">{room.members.length}</span>
@@ -57,7 +65,7 @@ const RoomItem: FunctionComponent<{ room: Conversation }> = ({ room }) => {
                 className="w-8 h-8 bg-queenBlue/50 rounded-full"
               />
               <Link to={`/profile/${room.owner.username}`}>
-                <p>{room.owner.nickname}</p>
+                <p>{ownerName}</p>
               </Link>
             </>
           }

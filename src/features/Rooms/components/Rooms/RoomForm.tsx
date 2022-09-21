@@ -76,8 +76,7 @@ const RoomForm: FunctionComponent<{
       setRefresh((prev) => !prev);
       showDropDown();
     } catch (err) {
-      if (axios)
-      setError("upload filed! please try again");
+      if (axios) setError("upload filed! please try again");
     }
     if (doneButtonRef.current) {
       const currentButton = doneButtonRef.current as typeof doneButtonRef & {
@@ -124,7 +123,7 @@ const RoomForm: FunctionComponent<{
                   id="RoomName"
                   placeholder="Room Name"
                   type="text"
-                  className="input--2 text-lotion border border-lotion placeholder-lotion/50"
+                  className="input--2 text-lotion border border-lotion placeholder-lotion/50 normal-case"
                   required
                 />
               </label>
@@ -139,7 +138,7 @@ const RoomForm: FunctionComponent<{
                   id="Description"
                   placeholder="Description"
                   type="text"
-                  className="input--2 text-lotion border border-lotion placeholder-lotion/50"
+                  className="input--2 text-lotion border border-lotion placeholder-lotion/50 normal-case"
                   required
                 />
               </label>
@@ -153,7 +152,7 @@ const RoomForm: FunctionComponent<{
                   id="Password"
                   placeholder="Password"
                   type="password"
-                  className="input--2 text-lotion border border-lotion placeholder-lotion/50"
+                  className="input--2 text-lotion border border-lotion placeholder-lotion/50 normal-case"
                   minLength={4}
                 />
               </label>

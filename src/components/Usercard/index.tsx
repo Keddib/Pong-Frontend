@@ -7,6 +7,7 @@ import useUserStatus from "hooks/useUserStatus";
 const UserCard: FunctionComponent<{ user: User }> = ({ user }) => {
   const { userStatus } = useUserStatus();
   const [status, setStatus] = useState(user.status);
+  const [name, setName] = useState(user.nickname);
 
   useEffect(() => {
     if (userStatus.userId == user.uid) {
@@ -14,6 +15,12 @@ const UserCard: FunctionComponent<{ user: User }> = ({ user }) => {
       user.status = userStatus.status;
     }
   }, [userStatus, setStatus, user]);
+
+  useEffect(() => {
+    if (name && name.length > 16) {
+      setName(name.substring(0, 15) + ".");
+    }
+  }, [name]);
 
   return (
     <Link to={"/profile/" + user.username} className="user-wrapper group">
@@ -24,7 +31,7 @@ const UserCard: FunctionComponent<{ user: User }> = ({ user }) => {
         <span className={status}></span>
       </div>
       <div className="group-hover:text-lotion/70 ml-4">
-        <h4 className="text-sm sm:text-lg">{user.nickname}</h4>
+        <h4 className="text-sm sm:text-lg">{name}</h4>
         <p className="hidden sm:block text-sm">{user.username}</p>
       </div>
     </Link>

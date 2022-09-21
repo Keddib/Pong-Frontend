@@ -166,7 +166,7 @@ const EditPassword: FunctionComponent<{
                       id="OldPassword"
                       placeholder="Old Password"
                       type="password"
-                      className="input--2 text-lotion border border-lotion placeholder-lotion/50"
+                      className="input--2 text-lotion border border-lotion placeholder-lotion/50 normal-case"
                       minLength={4}
                     />
                   </label>
@@ -182,7 +182,7 @@ const EditPassword: FunctionComponent<{
                   id="Password"
                   placeholder="Password"
                   type="password"
-                  className="input--2 text-lotion border border-lotion placeholder-lotion/50"
+                  className="input--2 text-lotion border border-lotion placeholder-lotion/50 normal-case"
                   minLength={4}
                 />
               </label>
@@ -196,7 +196,7 @@ const EditPassword: FunctionComponent<{
                   id="Password2"
                   placeholder="Confirm Password"
                   type="password"
-                  className="input--2 text-lotion border border-lotion placeholder-lotion/50"
+                  className="input--2 text-lotion border border-lotion placeholder-lotion/50 normal-case"
                   minLength={4}
                 />
               </label>

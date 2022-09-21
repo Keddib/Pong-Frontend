@@ -30,14 +30,18 @@ function EditProfile() {
     }
   }
 
-  async function submit(e: React.SyntheticEvent) {
-    e.preventDefault();
+  function disableButton(v: boolean) {
     if (subButtonRef.current) {
       const currentButton = subButtonRef.current as typeof subButtonRef & {
         disabled: boolean;
       };
-      currentButton.disabled = true;
+      currentButton.disabled = v;
     }
+  }
+
+  async function submit(e: React.SyntheticEvent) {
+    e.preventDefault();
+    disableButton(true);
     setLoading(true);
     setError("");
     const target = e.target as typeof e.target & {
@@ -48,15 +52,18 @@ function EditProfile() {
     };
     const nickname = target.elements.nickname.value;
     const avatar = target.elements.avatar.files[0];
+    if (nickname) {
+      if (nickname.length > 32) {
+        setError("nickname is too long");
+        setLoading(false);
+        disableButton(false);
+        return;
+      }
+    }
     if (!nickname && !avatar) {
       setError("one failed is required");
       setLoading(false);
-      if (subButtonRef.current) {
-        const currentButton = subButtonRef.current as typeof subButtonRef & {
-          disabled: boolean;
-        };
-        currentButton.disabled = false;
-      }
+      disableButton(false);
       return;
     }
     // send response to update user
@@ -101,12 +108,7 @@ function EditProfile() {
       }
     }
     setLoading(false);
-    if (subButtonRef.current) {
-      const currentButton = subButtonRef.current as typeof subButtonRef & {
-        disabled: boolean;
-      };
-      currentButton.disabled = false;
-    }
+    disableButton(false);
   }
 
   return (
@@ -139,7 +141,7 @@ function EditProfile() {
               id="nickname"
               placeholder="nickname"
               type="text"
-              className="input--2 text-lotion border border-lotion placeholder-lotion/50"
+              className="input--2 text-lotion border border-lotion placeholder-lotion/50 normal-case"
               maxLength={32}
               minLength={10}
             />

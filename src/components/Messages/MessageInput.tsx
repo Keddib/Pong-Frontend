@@ -11,7 +11,7 @@ const MessageInput: FunctionComponent<{
       messageInput: { value: string };
     };
     const msg = target.messageInput.value;
-    setMsg(msg);
+    setMsg(msg.trim());
     target.messageInput.value = "";
   }
 
