@@ -3,7 +3,7 @@ import {
   useLocation,
   useNavigate,
   useSearchParams,
-  Navigate
+  Navigate,
 } from "react-router-dom";
 import Play from "./components/Playing";
 import Waiting from "./components/Waiting";
@@ -15,7 +15,7 @@ import { GameState } from "./components/Pong/utils/Types";
 import useTitle from "hooks/useTitle";
 import { toast } from "react-toastify";
 import GameInviteCancel from "components/GameInviteCanceled";
-import {api } from "config/index";
+import { api } from "config/index";
 
 interface CustomGamePayload {
   opponent: string;
@@ -31,7 +31,7 @@ interface Loc extends Location {
 }
 // {setGameRoomId: (id: string) => void}
 const Game: FunctionComponent<{ setGameRoomId: (id: string) => void }> = ({
-  setGameRoomId
+  setGameRoomId,
 }) => {
   const location: Loc = useLocation();
   const { signin } = useAuth();
@@ -51,8 +51,11 @@ const Game: FunctionComponent<{ setGameRoomId: (id: string) => void }> = ({
   const socket = useRef(null as null | Socket);
   let once = false;
   const invitation = searchParams.get("invitation");
+
   const spectate = searchParams.get("spectate");
+
   const [players, setPlayers] = useState([] as User[]);
+
   useEffect(() => {
     if (location.state?.retry) {
       setGameState("waiting");
@@ -64,7 +67,7 @@ const Game: FunctionComponent<{ setGameRoomId: (id: string) => void }> = ({
 
     socket.current = io(api.game, {
       withCredentials: true,
-      extraHeaders: { Authorization: "Bearer " + getAccessToken() }
+      extraHeaders: { Authorization: "Bearer " + getAccessToken() },
     }).on("connect", () => {
       //gameStateData.current = null;
       if (!location?.state) location.state = { mode: "classic" };
@@ -76,7 +79,7 @@ const Game: FunctionComponent<{ setGameRoomId: (id: string) => void }> = ({
         socket.current?.on("authenticated", () => {
           socket.current?.emit("playerJoined", {
             mode: location?.state?.mode,
-            custom: invitation ? { invitation } : location?.state?.custom
+            custom: invitation ? { invitation } : location?.state?.custom,
           });
           socket.current?.on("roomName", (data: { roomName: string }) => {
             setGameRoomId(data.roomName);
@@ -87,7 +90,8 @@ const Game: FunctionComponent<{ setGameRoomId: (id: string) => void }> = ({
       socket.current?.on("gameState", (data: GameState) => {
         if (
           (gameState == "waiting" || location.state?.retry) &&
-          location?.state?.mode.toLowerCase() === data.mode.toLowerCase() &&
+          (location?.state?.mode.toLowerCase() === data.mode.toLowerCase() ||
+            spectate) &&
           (!opponent || location.state?.retry) &&
           !once
         ) {
@@ -116,7 +120,7 @@ const Game: FunctionComponent<{ setGameRoomId: (id: string) => void }> = ({
           toast(<GameInviteCancel />, {
             autoClose: 1500,
             position: toast.POSITION.TOP_RIGHT,
-            className: "game-invite-notification"
+            className: "game-invite-notification",
           });
         })();
       });
@@ -127,7 +131,7 @@ const Game: FunctionComponent<{ setGameRoomId: (id: string) => void }> = ({
           toast(<GameInviteCancel />, {
             autoClose: 1500,
             position: toast.POSITION.TOP_RIGHT,
-            className: "game-invite-notification"
+            className: "game-invite-notification",
           });
         })();
       });
