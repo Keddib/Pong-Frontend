@@ -140,6 +140,8 @@ function EditProfile() {
               placeholder="nickname"
               type="text"
               className="input--2 text-lotion border border-lotion placeholder-lotion/50"
+              maxLength={32}
+              minLength={10}
             />
           </label>
           {error && <p className="text-red/70">{error}</p>}

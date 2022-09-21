@@ -76,6 +76,7 @@ const RoomForm: FunctionComponent<{
       setRefresh((prev) => !prev);
       showDropDown();
     } catch (err) {
+      if (axios)
       setError("upload filed! please try again");
     }
     if (doneButtonRef.current) {

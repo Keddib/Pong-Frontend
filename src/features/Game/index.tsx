@@ -15,6 +15,7 @@ import { GameState } from "./components/Pong/utils/Types";
 import useTitle from "hooks/useTitle";
 import { toast } from "react-toastify";
 import GameInviteCancel from "components/GameInviteCanceled";
+import {api } from "config/index";
 
 interface CustomGamePayload {
   opponent: string;
@@ -61,7 +62,7 @@ const Game: FunctionComponent<{ setGameRoomId: (id: string) => void }> = ({
       once = false;
     }
 
-    socket.current = io("ws://localhost:3001", {
+    socket.current = io(api.game, {
       withCredentials: true,
       extraHeaders: { Authorization: "Bearer " + getAccessToken() }
     }).on("connect", () => {
