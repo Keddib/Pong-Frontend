@@ -1,8 +1,3 @@
-src
 .parcel-cache
 dist
 node_modules
-public
-.*
-tailwind.config.js
-tsconfig.json

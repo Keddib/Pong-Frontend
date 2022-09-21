@@ -2,12 +2,12 @@ FROM node:16-alpine
 
 # set working directory
 WORKDIR /usr/src/app
-RUN npm install -g npm@8.17.0
 
-COPY package-lock.json /usr/src/app/
-COPY package.json /usr/src/app/
+# COPY package.json /usr/src/app/
 
-RUN npm install
+# RUN npm install
+
+# COPY . /usr/src/app/
 
 # start app
 CMD ["/bin/sh", "run.sh"]
